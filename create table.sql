@@ -2,9 +2,9 @@ CREATE SCHEMA PERSISTIENDO
 
 CREATE TABLE PERSISTIENDO.Usuario(
 Usuario_username nvarchar(30) NOT NULL,
-Usuario_password nvarchar(30) NOT NULL,
-Usuario_nuevo bit NOT NULL,
+Usuario_password varbinary(100) NOT NULL,
 Usuario_habilitado bit NOT NULL,
+Usuario_nuevo bit NOT NULL,
 Usuario_administrador bit NOT NULL,
 PRIMARY KEY (Usuario_username)
 )
