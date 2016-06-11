@@ -42,3 +42,18 @@ C:\Users\franc\Documents\Facultad\Gestión de Datos\repo\GD\WindowsFormsApplicat
 C:\Users\franc\Documents\Facultad\Gestión de Datos\repo\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form2.resources
 C:\Users\franc\Documents\Facultad\Gestión de Datos\repo\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
 C:\Users\franc\Documents\Facultad\Gestión de Datos\repo\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe.config
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.exe
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.pdb
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.exe
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\bin\Debug\WindowsFormsApplication1.pdb
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csprojResolveAssemblyReference.cache
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rol.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rol.Form2.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rol.Form3.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rol.Form4.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Form2.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache

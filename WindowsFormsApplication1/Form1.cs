@@ -12,6 +12,8 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
+
+        Form2 form2 = new Form2();
         public Form1()
         {
             InitializeComponent();
@@ -35,14 +37,26 @@ namespace WindowsFormsApplication1
         private void button1_Click(object sender, EventArgs e)
         {
 
-            Form1 frm1 = new Form1();
-            this.Hide();
+            validarCampos();
 
-            Form2 frm = new Form2();
-            frm.Show();
+        }
 
-          
-            
+        private void validarCampos()
+        {
+            if (string.IsNullOrEmpty(textBox1.Text) | string.IsNullOrEmpty(textBox2.Text))
+            {
+                String mensaje = "Los campos Username y Password son obligatorios";
+                String caption = "Ingrese Username y Password";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+
+            }
+            else
+            {
+                form2.Show();
+
+            }
+
         }
     }
 }
