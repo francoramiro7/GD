@@ -38,6 +38,7 @@ namespace WindowsFormsApplication1
         {
 
             validarCampos();
+            
 
         }
 
@@ -48,6 +49,7 @@ namespace WindowsFormsApplication1
                 String mensaje = "Los campos Username y Password son obligatorios";
                 String caption = "Ingrese Username y Password";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                
 
 
             }

@@ -12,6 +12,10 @@ namespace WindowsFormsApplication1.ABM_Rol
 {
     public partial class Form1 : Form
     {
+        ABM_Rol.Form2 crearRol = new ABM_Rol.Form2();
+        ABM_Rol.Form3 modificarRol = new ABM_Rol.Form3();
+        ABM_Rol.Form4 eliminarRol = new ABM_Rol.Form4();
+
         public Form1()
         {
             InitializeComponent();
@@ -24,17 +28,17 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ABM_Rol.Form2 crear = new ABM_Rol.Form2();
-            crear.Show();
-            this.Hide();
+            
+            crearRol.Show();
+            this.Close();
 
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ABM_Rol.Form3 modificar= new ABM_Rol.Form3();
-            modificar.Show();
-            this.Hide();
+            
+            modificarRol.Show();
+            this.Close();
            
         }
 
@@ -45,9 +49,9 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            ABM_Rol.Form4 eliminar = new ABM_Rol.Form4();
-            eliminar.Show();
-            this.Hide();
+            
+            eliminarRol.Show();
+            this.Close();
         }
     }
 }
