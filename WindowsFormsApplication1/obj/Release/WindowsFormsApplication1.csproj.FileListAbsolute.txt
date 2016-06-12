@@ -13,3 +13,4 @@ C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csprojResolveAssemblyReference.cache

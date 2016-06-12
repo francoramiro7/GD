@@ -14,14 +14,18 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
 
-        SqlConnection coneccion, con2;
-        SqlCommand cmd,cmd2;
+        SqlConnection coneccion;
+        SqlCommand validarUsuario, validarContra, cantidadRoles, validarIntentos, 
+            actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo;
         SqlDataReader data;
+        
 
         
         public Form1()
         {
             InitializeComponent();
+            coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+            coneccion.Open();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,33 +47,130 @@ namespace WindowsFormsApplication1
         {
             if (validarCampos())
             {
-                coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
-                coneccion.Open();
+                
+              
                
-                cmd = new SqlCommand("PERSISTIENDO.ValidarUsuario", coneccion);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
-
-                cmd.Parameters.Add("@Password", SqlDbType.VarChar).Value = textBox2.Text;
-                var resultado = cmd.Parameters.Add("@Valor", SqlDbType.Int);
+                validarUsuario = new SqlCommand("PERSISTIENDO.ValidarUsuario", coneccion);
+               
+                validarUsuario.CommandType = CommandType.StoredProcedure;
+                validarUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+               
+                var resultado = validarUsuario.Parameters.Add("@Valor", SqlDbType.Int);
                 resultado.Direction = ParameterDirection.ReturnValue;
-                cmd.ExecuteReader();
+              data = validarUsuario.ExecuteReader();
+              data.Close();
+
                 var resultado2 = resultado.Value;
-                coneccion.Close();
-                if ((int)resultado2 == 1)
-                {
-                   int roles = cantidadRoles();
-                   
-                    abrirFormulario2();
+                
+               // validarbloquead;
+                 validarBloqueo = new SqlCommand("PERSISTIENDO.estaBloqueado", coneccion);
+               
+                validarBloqueo.CommandType = CommandType.StoredProcedure;
+                validarBloqueo.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+               
+                var bloq = validarBloqueo.Parameters.Add("@Valor", SqlDbType.Int);
+                bloq.Direction = ParameterDirection.ReturnValue;
+              data =  validarBloqueo.ExecuteReader();
+              data.Close();
+            
+
+                var bloqueado = bloq.Value;
+                if ((int)resultado2 == 1){
+                    if((int)bloqueado == 1){
+                                 
+
+                        validarIntentos= new SqlCommand("PERSISTIENDO.intentosFallidos", coneccion);
+
+                        validarIntentos.CommandType = CommandType.StoredProcedure;
+                        validarIntentos.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                    
+
+                        var resultadoIntentos = validarIntentos.Parameters.Add("@Valor", SqlDbType.Int);
+                        resultadoIntentos.Direction = ParameterDirection.ReturnValue;
+                        data = validarIntentos.ExecuteReader();
+                       
+                            
+                            
+                        var resultadoIntentos2= resultadoIntentos.Value;
+
+                        data.Close();
+                        if (((int)resultadoIntentos2) < 3)
+                        {
+
+                            validarContra = new SqlCommand("PERSISTIENDO.ValidarContra", coneccion);
+
+                            validarContra.CommandType = CommandType.StoredProcedure;
+                            validarContra.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                            validarContra.Parameters.Add("@Password", SqlDbType.VarChar).Value = textBox2.Text;
+
+                            var resultadoC = validarContra.Parameters.Add("@Valor", SqlDbType.Int);
+                            resultadoC.Direction = ParameterDirection.ReturnValue;
+                            data = validarContra.ExecuteReader();
+                            data.Close();
+                            var resultadoContra = resultadoC.Value;
+
+
+
+                            if ((int)resultadoContra == 1)
+                            {
+                                resetearIntentos = new SqlCommand("PERSISTIENDO.resetearIntentoFallidos", coneccion);
+
+                                resetearIntentos.CommandType = CommandType.StoredProcedure;
+                                resetearIntentos.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+                                resetearIntentos.ExecuteNonQuery();
+                                //roles();
+                            
+                            }
+                            else
+                            {
+
+                                actualizarIntentos = new SqlCommand("PERSISTIENDO.agregarIntentoFallidos", coneccion);
+
+                                actualizarIntentos.CommandType = CommandType.StoredProcedure;
+                                actualizarIntentos.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                            
+                                actualizarIntentos.ExecuteNonQuery();
+
+                                if ((((int)resultadoIntentos2) + 1) > 2)
+                                {
+
+                                   bloquearUsuario = new SqlCommand("PERSISTIENDO.bloquearUsuario", coneccion);
+
+                                    bloquearUsuario.CommandType = CommandType.StoredProcedure;
+                                    bloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+                                   bloquearUsuario.ExecuteNonQuery();
+                                }
+
+                            
+                                String mensaje = "Password incorrecto, ha perdido un intento";
+                                String caption = "Error en iniciar sesion";
+                                textBox1.Clear();
+                                textBox2.Clear();
+                                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        String mensaje = "El usuario esta bloqueado, contactar administrador 0810-999-admin";
+                        String caption = "Error en iniciar sesion";
+                        textBox1.Clear();
+                        textBox2.Clear();
+                        MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                    }
                 }
+
                 else
                 {
-                    String mensaje = "username o Password incorrectos, intetelo de nuevo";
+                    String mensaje = "Username incorrecto, intetelo de nuevo";
                     String caption = "Error en iniciar sesion";
                     textBox1.Clear();
                     textBox2.Clear();
                     MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 }
+            
 
             }
            
@@ -79,28 +180,7 @@ namespace WindowsFormsApplication1
 
         }
 
-        private int cantidadRoles()
-        {
-            con2= new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
-            con2.Open();
-            cmd2 = new SqlCommand("PERSISTIENDO.CantidadRoles", con2);
-            cmd2.CommandType = CommandType.StoredProcedure;
-            cmd2.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
-            var resultado = cmd2.Parameters.Add("@Valor", SqlDbType.Int);
-            resultado.Direction = ParameterDirection.ReturnValue;
-            cmd2.ExecuteReader();
-            var resultado2 = (int)resultado.Value;
-           
 
-            if (resultado2 == 1)
-            {
-                label8.Text = "un solo rol";
-               
-            }
-
-            return resultado2;
-
-        }
 
 
         private void abrirFormulario2()
