@@ -16,7 +16,7 @@ namespace WindowsFormsApplication1
 
         SqlConnection coneccion;
         SqlCommand validarUsuario, validarContra, cantidadRoles, validarIntentos, 
-            actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo;
+            actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo, esAdmin;
         SqlDataReader data;
         
 
@@ -119,7 +119,8 @@ namespace WindowsFormsApplication1
                                 resetearIntentos.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
 
                                 resetearIntentos.ExecuteNonQuery();
-                                //roles();
+                                //roles
+                                encontrarRoles();
                             
                             }
                             else
@@ -209,5 +210,29 @@ namespace WindowsFormsApplication1
             }
 
         }
+
+        private void encontrarRoles()
+        {
+            esAdmin = new SqlCommand("PERSISTIENDO.esAdministrador", coneccion);
+
+            esAdmin.CommandType = CommandType.StoredProcedure;
+            esAdmin.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+
+            var resultadoIntentos = esAdmin.Parameters.Add("@Valor", SqlDbType.Int);
+            resultadoIntentos.Direction = ParameterDirection.ReturnValue;
+            data = esAdmin.ExecuteReader();
+            var resultadoIntentos2 = resultadoIntentos.Value;
+            data.Close();
+
+            if (((int)resultadoIntentos2) == 1)
+            {
+                comboBox1.Items.Add("Administrador");
+            }
+
+        }
+
+
+
     }
 }
