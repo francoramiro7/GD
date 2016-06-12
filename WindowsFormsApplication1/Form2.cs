@@ -14,6 +14,7 @@ namespace WindowsFormsApplication1
     {
         string rol;
         public Form2(String Rol)
+            
         {
             rol = Rol;
             InitializeComponent();

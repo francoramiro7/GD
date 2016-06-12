@@ -59,8 +59,12 @@ C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\W
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.csproj.GenerateResource.Cache
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rubro.Form1.resources
 <<<<<<< HEAD
+<<<<<<< HEAD
 C:\Users\franc\Documents\Facultad\Gestión de Datos\repo\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Rubro.Form1.resources
 C:\Users\franc\Documents\Facultad\Gestión de Datos\repo\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.Generar_Publicación.Form1.resources
+=======
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.Form2.resources
+>>>>>>> ad651bfed7faf186dfd68db0e194483a532c1b55
 =======
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Debug\WindowsFormsApplication1.ABM_Usuario.Form2.resources
 >>>>>>> ad651bfed7faf186dfd68db0e194483a532c1b55
