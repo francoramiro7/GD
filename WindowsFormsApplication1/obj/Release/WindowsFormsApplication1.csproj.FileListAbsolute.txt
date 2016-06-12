@@ -1,1 +1,15 @@
 C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe.config
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.exe
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\bin\Release\WindowsFormsApplication1.pdb
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.ABM_Rol.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.ABM_Rol.Form2.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.ABM_Rol.Form3.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.ABM_Rol.Form4.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.ABM_Rubro.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.ABM_Usuario.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form1.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Form2.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.Properties.Resources.resources
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.csproj.GenerateResource.Cache
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.exe
+C:\Users\Alejandra\Documents\repositorio\GD\WindowsFormsApplication1\obj\Release\WindowsFormsApplication1.pdb

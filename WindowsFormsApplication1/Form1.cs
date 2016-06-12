@@ -14,8 +14,8 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
 
-        SqlConnection coneccion;
-        SqlCommand cmd;
+        SqlConnection coneccion, con2;
+        SqlCommand cmd,cmd2;
         SqlDataReader data;
 
         
@@ -45,6 +45,7 @@ namespace WindowsFormsApplication1
             {
                 coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
                 coneccion.Open();
+               
                 cmd = new SqlCommand("PERSISTIENDO.ValidarUsuario", coneccion);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
@@ -57,12 +58,16 @@ namespace WindowsFormsApplication1
                 coneccion.Close();
                 if ((int)resultado2 == 1)
                 {
+                   int roles = cantidadRoles();
+                   
                     abrirFormulario2();
                 }
                 else
                 {
                     String mensaje = "username o Password incorrectos, intetelo de nuevo";
                     String caption = "Error en iniciar sesion";
+                    textBox1.Clear();
+                    textBox2.Clear();
                     MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 }
 
@@ -74,7 +79,28 @@ namespace WindowsFormsApplication1
 
         }
 
+        private int cantidadRoles()
+        {
+            con2= new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+            con2.Open();
+            cmd2 = new SqlCommand("PERSISTIENDO.CantidadRoles", con2);
+            cmd2.CommandType = CommandType.StoredProcedure;
+            cmd2.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            var resultado = cmd2.Parameters.Add("@Valor", SqlDbType.Int);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            cmd2.ExecuteReader();
+            var resultado2 = (int)resultado.Value;
+           
 
+            if (resultado2 == 1)
+            {
+                label8.Text = "un solo rol";
+               
+            }
+
+            return resultado2;
+
+        }
 
 
         private void abrirFormulario2()
