@@ -6,6 +6,7 @@ Usuario_password varbinary(100) NOT NULL,
 Usuario_habilitado bit NOT NULL,
 Usuario_nuevo bit NOT NULL,
 Usuario_administrador bit NOT NULL,
+Usuario_intentos int NOT NULL,
 PRIMARY KEY (Usuario_username)
 )
 GO
@@ -211,18 +212,18 @@ Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('CONSULTA DE FACTUR
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('LISTADO ESTADISTICO')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('HISTORIAL DE CLIENTES')
 
-INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador)
-SELECT DISTINCT CAST(Cli_Dni as nvarchar(30)), HASHBYTES('SHA',concat (Cli_Apeliido,Cli_Nombre)), 0,1,0
+INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador,Usuario_intentos)
+SELECT DISTINCT CAST(Cli_Dni as nvarchar(30)), HASHBYTES('SHA','1234'), 0,1,0,0
 FROM GD1C2016.gd_esquema.Maestra
 where Cli_Dni IS NOT NULL
 
-INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador)
-SELECT DISTINCT CAST(Publ_Cli_Dni as nvarchar(30)), HASHBYTES('SHA',concat (Publ_Cli_Apeliido,Publ_Cli_Nombre)), 0,1,0
+INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador,Usuario_intentos)
+SELECT DISTINCT CAST(Publ_Cli_Dni as nvarchar(30)), HASHBYTES('SHA','1234'), 0,1,0,0
 FROM GD1C2016.gd_esquema.Maestra
 where Publ_Cli_Dni IS NOT NULL AND (Publ_Cli_Dni NOT IN (select Usuario_username from PERSISTIENDO.Usuario))
 
-INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador)
-SELECT DISTINCT CAST(Publ_Empresa_Cuit as nvarchar(30)), HASHBYTES('SHA', Publ_Empresa_Razon_Social),0,1,0
+INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador,Usuario_intentos)
+SELECT DISTINCT CAST(Publ_Empresa_Cuit as nvarchar(30)), HASHBYTES('SHA','1234'),0,1,0,0
 from GD1C2016.gd_esquema.Maestra
 where Publ_Empresa_Cuit IS NOT NULL
 
@@ -280,8 +281,8 @@ select distinct Oferta_Fecha,Oferta_Monto,Cast(Cli_Dni as nvarchar(30)),Publicac
 From GD1C2016.gd_esquema.Maestra
 Where Oferta_Fecha is not null
 
-Insert into PERSISTIENDO.Usuario(Usuario_username,Usuario_password,Usuario_nuevo,Usuario_habilitado,Usuario_administrador)
-values ('admin',HASHBYTES('SHA', 'w23e'),0,1,1)
+Insert into PERSISTIENDO.Usuario(Usuario_username,Usuario_password,Usuario_nuevo,Usuario_habilitado,Usuario_administrador,Usuario_intentos)
+values ('admin',HASHBYTES('SHA', 'w23e'),0,1,1,0)
 
 
 Insert into PERSISTIENDO.Rol_Por_Usuario(RPU_username,RPU_codigo_rol)
