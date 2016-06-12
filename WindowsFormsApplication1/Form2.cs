@@ -12,14 +12,17 @@ namespace WindowsFormsApplication1
 {
     public partial class Form2 : Form
     {
-        public Form2()
+        string rol;
+        public Form2(String Rol)
         {
+            rol = Rol;
             InitializeComponent();
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
             IsMdiContainer = true;
+            this.Text = rol;
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

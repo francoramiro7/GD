@@ -16,7 +16,7 @@ namespace WindowsFormsApplication1
 
         SqlConnection coneccion;
         SqlCommand validarUsuario, validarContra, cantidadRoles, validarIntentos, 
-            actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo, esAdmin;
+            actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo, esAdmin, roles;
         SqlDataReader data;
         
 
@@ -119,9 +119,10 @@ namespace WindowsFormsApplication1
                                 resetearIntentos.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
 
                                 resetearIntentos.ExecuteNonQuery();
-                                //roles
+                               
                                 encontrarRoles();
-                            
+                                
+
                             }
                             else
                             {
@@ -184,13 +185,7 @@ namespace WindowsFormsApplication1
 
 
 
-        private void abrirFormulario2()
-        {
-            Form2 form2 = new Form2();
-            //this.Close();
-            form2.Show();
-            
-        }
+        
         private Boolean validarCampos()
         {
             if (string.IsNullOrEmpty(textBox1.Text) | string.IsNullOrEmpty(textBox2.Text))
@@ -202,7 +197,7 @@ namespace WindowsFormsApplication1
                 
 
 
-            }
+   }
             else
             {
 
@@ -213,6 +208,8 @@ namespace WindowsFormsApplication1
 
         private void encontrarRoles()
         {
+
+            
             esAdmin = new SqlCommand("PERSISTIENDO.esAdministrador", coneccion);
 
             esAdmin.CommandType = CommandType.StoredProcedure;
@@ -225,11 +222,63 @@ namespace WindowsFormsApplication1
             var resultadoIntentos2 = resultadoIntentos.Value;
             data.Close();
 
+            roles = new SqlCommand("PERSISTIENDO.Nombreroles", coneccion);
+
+            roles.CommandType = CommandType.StoredProcedure;
+            roles.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+            SqlDataAdapter adapter = new SqlDataAdapter(roles);
+            DataTable tablaRoles = new DataTable();
+            
+            adapter.Fill(tablaRoles);
+           
+            comboBox1.DataSource = tablaRoles;
+            comboBox1.DisplayMember = "Rol_nombre";
+
+
             if (((int)resultadoIntentos2) == 1)
             {
-                comboBox1.Items.Add("Administrador");
+                DataRow dr = tablaRoles.NewRow();
+                dr["Rol_nombre"] = "Administrador";
+
+                tablaRoles.Rows.InsertAt(dr, 0);
+              }
+
+            if (comboBox1.Items.Count == 1)
+            {
+                
+                comboBox1.SelectedIndex = 0;
+                Form2 form = new Form2(comboBox1.Text);
+                form.Show();
+                this.Hide();
+            }
+            else
+            {
+                button1.Visible = false;
+                label9.Visible = true;
+                comboBox1.Visible = true;
+                button2.Visible = true;
             }
 
+
+
+           
+ 
+
+
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            Form2 form = new Form2(comboBox1.Text);
+            form.Show();
+            this.Hide();
         }
 
 
