@@ -16,5 +16,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form1 form1 = new Form1();
+            form1.Show();
+            this.Close();
+        }
     }
 }
