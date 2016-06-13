@@ -11,17 +11,21 @@ using System.Data.SqlClient;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
-    
+
     public partial class Form1 : Form
     {
         SqlConnection con;
-        SqlCommand rubros;
-        
-        
+        SqlDataReader data;
+        SqlCommand rubros, existeUsuario;
+        int valido;
+
+
         public Form1()
         {
             InitializeComponent();
-           
+            con = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
+            con.Open();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -34,9 +38,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
-        
 
-        
+
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -54,7 +58,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            if (comboBox2.Text == "Cliente") {
+            if (comboBox2.Text == "Cliente")
+            {
                 crearCamposCliente();
             }
 
@@ -70,7 +75,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             label3.Visible = false;
             comboBox2.Visible = false;
             button1.Visible = false;
-            label4.Visible = true; 
+            label4.Visible = true;
             label5.Visible = true;
             label7.Visible = true;
             label8.Visible = true;
@@ -94,10 +99,13 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox1.Visible = true;
             comboBox1.Text = "Seleccione Tipo de Documento";
             dateTimePicker1.Visible = true;
-            
+            button3.Visible = true;
+            button4.Visible = true;
+
         }
 
-        private void  crearCamposEmp(){
+        private void crearCamposEmp()
+        {
 
 
             label3.Visible = false;
@@ -130,26 +138,21 @@ namespace WindowsFormsApplication1.ABM_Usuario
             label9.Visible = true;
             comboBox3.Visible = true;
             label22.Visible = true;
+            button3.Visible = true;
+            button4.Visible = true;
 
-            
-            con = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
-            con.Open();
+            //cargar rubros
+
             rubros = new SqlCommand("PERSISTIENDO.listarRubros", con);
-
             rubros.CommandType = CommandType.StoredProcedure;
-            
-
             SqlDataAdapter adapter = new SqlDataAdapter(rubros);
             DataTable tablaRubros = new DataTable();
-
             adapter.Fill(tablaRubros);
-
             comboBox3.DataSource = tablaRubros;
             comboBox3.DisplayMember = "Rubro_Descripcion";
-
             comboBox3.Text = "Seleccione rubro";
 
-            }
+        }
 
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
@@ -164,12 +167,47 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
-        
+        private void button3_Click(object sender, EventArgs e)
+        {
+         
+            //verificar que no exista usuario
+
+            existeUsuario = new SqlCommand("PERSISTIENDO.existeUsuario", con);
+            existeUsuario.CommandType = CommandType.StoredProcedure;
+            existeUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            var resultado = existeUsuario.Parameters.Add("@Valor", SqlDbType.Int);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            data = existeUsuario.ExecuteReader();
+
+            var existe = resultado.Value;
+            data.Close();
+
+            if ((int)existe == 1)
+            {
+                textBox1.Text = "Usuario existente, intente nuevamente";
+            }
+            //verificar campos obligatorios
+            if (String.IsNullOrEmpty(textBox2.Text))
+            {
+                textBox2.Text = "Este campo es obligatorio";
+            }
+        }
+
+
+      
+
+       
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
 
         }
 
+       
+
         
 
-        }
-    
 
+    }
+
+}
