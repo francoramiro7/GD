@@ -272,13 +272,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
 
 
-
-
-
-
-
-
-
                 publicar = new SqlCommand("PERSISTIENDO.crearPublicacion", coneccion);
 
                 publicar.CommandType = CommandType.StoredProcedure;

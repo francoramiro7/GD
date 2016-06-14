@@ -17,7 +17,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
         SqlConnection con;
         SqlDataReader data;
         SqlCommand rubros, existeUsuario;
-        int valido;
+        Boolean ingresonum = false;
+       
 
 
         public Form1()
@@ -83,6 +84,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
             label13.Visible = true;
             label14.Visible = true;
             label15.Visible = true;
+            label20.Visible = true;
+            textBox18.Visible = true;
 
             textBox3.Visible = true; //nommbre
             textBox4.Visible = true; //apellido
@@ -117,8 +120,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
             label11.Visible = true;
             label13.Visible = true;
             label12.Visible = true;
-            label20.Visible = true;
+            label14.Visible = true;
             label21.Visible = true;
+            label23.Visible = true;
 
             textBox12.Visible = true; //razon social
             textBox13.Visible = true; //mail
@@ -136,6 +140,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox3.Visible = true;
             label22.Visible = true;
             button3.Visible = true;
+            textBox17.Visible = true;
             
 
             //cargar rubros
@@ -147,7 +152,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             adapter.Fill(tablaRubros);
             comboBox3.DataSource = tablaRubros;
             comboBox3.DisplayMember = "Rubro_Descripcion";
-            comboBox3.Text = "Seleccione rubro";
+            comboBox3.Text = "Seleccione Rubro";
 
         }
 
@@ -167,27 +172,18 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void button3_Click(object sender, EventArgs e)
         {
          
+                    if(comboBox2.Text.Equals("Cliente")){
+                       // validarCamposCliente();
+                        
+                        validarVaciosCliente();
+                    }else{
+                        validarVaciosEmpresa();
+                    }
             //verificar que no exista usuario
+                    
 
-            existeUsuario = new SqlCommand("PERSISTIENDO.existeUsuario", con);
-            existeUsuario.CommandType = CommandType.StoredProcedure;
-            existeUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
-            var resultado = existeUsuario.Parameters.Add("@Valor", SqlDbType.Int);
-            resultado.Direction = ParameterDirection.ReturnValue;
-            data = existeUsuario.ExecuteReader();
+            
 
-            var existe = resultado.Value;
-            data.Close();
-
-            if ((int)existe == 1)
-            {
-                textBox1.Text = "Usuario existente, intente nuevamente";
-            }
-            //verificar campos obligatorios
-            if (String.IsNullOrEmpty(textBox2.Text))
-            {
-                textBox2.Text = "Este campo es obligatorio";
-            }
         }
 
 
@@ -200,6 +196,126 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
+        private void validarCamposCliente()
+        {
+           
+            //se fija si existe el usuario
+            existeUsuario = new SqlCommand("PERSISTIENDO.existeUsuario", con);
+            existeUsuario.CommandType = CommandType.StoredProcedure;
+            existeUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            var resultado = existeUsuario.Parameters.Add("@Valor", SqlDbType.Int);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            data = existeUsuario.ExecuteReader();
+            var existe = resultado.Value;
+            data.Close();
+
+            if ((int)existe == 1)
+            {
+                textBox1.Text = "El usuario ya existe";
+            }
+
+            
+
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void validarVaciosCliente()
+        {
+            if (string.IsNullOrEmpty(textBox1.Text) | string.IsNullOrEmpty(textBox2.Text) | string.IsNullOrEmpty(textBox3.Text) |
+              string.IsNullOrEmpty(textBox4.Text) | string.IsNullOrEmpty(textBox5.Text) | string.IsNullOrEmpty(textBox5.Text) |
+                string.IsNullOrEmpty(textBox7.Text) | string.IsNullOrEmpty(textBox8.Text) | string.IsNullOrEmpty(textBox11.Text) |
+                string.IsNullOrEmpty(textBox6.Text) | string.IsNullOrEmpty(textBox18.Text) |
+                comboBox1.SelectedIndex == -1 | dateTimePicker1.Text == "")
+            {
+
+                String mensaje = "Los campos (*) son obligatorios";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+            }
+            else
+            {
+
+                validarCamposCliente();
+            }
+
+
+        }
+
+        private void monthCalendar1_DateChanged(object sender, DateRangeEventArgs e)
+        {
+           
+        }
+
+        private void validarVaciosEmpresa()
+        {
+            if (string.IsNullOrEmpty(textBox1.Text) | string.IsNullOrEmpty(textBox2.Text) | string.IsNullOrEmpty(textBox12.Text) |
+              string.IsNullOrEmpty(textBox13.Text) | string.IsNullOrEmpty(textBox14.Text) | string.IsNullOrEmpty(textBox15.Text) |
+                string.IsNullOrEmpty(textBox7.Text) | string.IsNullOrEmpty(textBox8.Text) | string.IsNullOrEmpty(textBox11.Text) |
+                string.IsNullOrEmpty(textBox6.Text) | string.IsNullOrEmpty(textBox16.Text) | string.IsNullOrEmpty(textBox17.Text) |
+                comboBox3.Text.Equals("Seleccione Rubro")) 
+            {
+
+                String mensaje = "Los campos (*) son obligatorios";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+            }
+            else
+            {
+
+                //validarCamposEmpresa();
+            }
+
+
+        }
+
+        private void textBox16_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+         
+
+        }
+
+        private void textBox14_LocationChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
+
+        private void textBox11_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        
+            if (char.IsNumber(e.KeyChar))
+            {
+            }
+            else
+            {
+                ingresonum = true;
+            }
+
+        
+        }
+
+
+       
+
+        
         
 
        
