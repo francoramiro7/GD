@@ -16,8 +16,15 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand rubros, existeUsuario;
+        SqlCommand rubros, existeUsuario, existeDni;
+        int validacionCliente = 0;
         Boolean ingresonum = false;
+        Boolean ingresonumNombre = false;
+        Boolean ingresoLetraDni = false;
+        Boolean ingresoletraNro = false;
+        Boolean ingresoletraPiso = false;
+        Boolean ingresoLetraCp = false;
+        
        
 
 
@@ -173,14 +180,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
          
                     if(comboBox2.Text.Equals("Cliente")){
-                       // validarCamposCliente();
-                        
+                     
                         validarVaciosCliente();
                     }else{
                         validarVaciosEmpresa();
                     }
-            //verificar que no exista usuario
-                    
+           
 
             
 
@@ -209,9 +214,151 @@ namespace WindowsFormsApplication1.ABM_Usuario
             var existe = resultado.Value;
             data.Close();
 
+
+            existeDni = new SqlCommand("PERSISTIENDO.existeDni", con);
+            existeDni.CommandType = CommandType.StoredProcedure;
+            existeDni.Parameters.Add("@Dni", SqlDbType.Float).Value = textBox5.Text;
+            var result= existeDni.Parameters.Add("@Valor", SqlDbType.Int);
+            result.Direction = ParameterDirection.ReturnValue;
+            data = existeDni.ExecuteReader();
+            var existeDoc = result.Value;
+            data.Close();
+
+
             if ((int)existe == 1)
-            {
                 textBox1.Text = "El usuario ya existe";
+            else
+                validacionCliente++;
+
+            if (textBox1.Text.Length > 30)
+                textBox1.Text = "Ha superado el limite de caracteres";
+            else
+                validacionCliente++;
+
+            if (textBox2.Text.Length > 30)
+                textBox2.Text = "Ha superado el limite de caracteres";
+            else
+                validacionCliente++;
+
+           
+            if (textBox3.Text.Length > 255)
+            {
+                textBox3.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox3.Text.Any(char.IsDigit))
+            {
+                textBox3.Text = "No se permiten caracteres numericos";
+            }
+            else
+               validacionCliente++;
+
+
+            if (textBox4.Text.Length > 255)
+            {
+                textBox4.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox4.Text.Any(char.IsDigit))
+            {
+                textBox4.Text = "No se permiten caracteres numericos";
+            }
+            else
+                validacionCliente++;
+
+
+            if ((int)existeDoc == 1)
+            {
+                textBox5.Text = "El usuario ya ha sido registrado";
+            }
+            else
+            {
+                validacionCliente++;
+            }
+
+
+            if (textBox5.Text.Length > 18)
+            {
+                textBox5.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox5.Text.Any(char.IsLetter))
+            {
+                textBox5.Text = "No se permiten caracteres alfanumericos";
+            }
+            else
+                validacionCliente++;
+
+
+
+            if (textBox7.Text.Length > 255)
+                textBox7.Text = "Ha superado el limite de caracteres";
+            else
+                validacionCliente++;
+
+
+            if (textBox8.Text.Length > 18)
+            {
+                textBox8.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox8.Text.Any(char.IsLetter))
+            {
+                textBox8.Text = "No se permiten caracteres alfanumericos";
+            }
+            else
+                validacionCliente++;
+
+
+            if (textBox9.Text.Length > 18)
+            {
+                textBox9.Text = "Ha superado el limite de caracteres";
+            }
+            else
+            
+                validacionCliente++;
+
+
+
+            if (textBox10.Text.Length > 50)
+                textBox10.Text = "Ha superado el limite de caracteres";
+            else
+                validacionCliente++;
+
+            
+            if (textBox11.Text.Length > 50)
+            {
+                textBox11.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox11.Text.Any(char.IsLetter))
+            {
+                textBox11.Text = "No se permiten caracteres alfanumericos";
+            }
+            else
+                validacionCliente++;
+
+
+            if (textBox6.Text.Length > 50)
+                textBox6.Text = "Ha superado el limite de caracteres";
+            else
+                validacionCliente++;
+
+
+            if (textBox18.Text.Length > 255)
+                textBox18.Text = "Ha superado el limite de caracteres";
+            else
+                validacionCliente++;
+
+
+            if (validacionCliente == 14)
+            {
+
+                String mensaje = "El usuario se ha creado correctamente";
+                String caption = "Usuario creado";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            }
+            else {
+
+                String mensaje = "Por favor, corrija los campos indicados";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
             }
 
             
@@ -295,21 +442,65 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void textBox11_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            if (!(char.IsNumber(e.KeyChar)))
+            {
+            }
+            else
+            {
+                ingresoLetraCp = true;
+            }
         }
 
         private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
         {
         
+            if (!(char.IsNumber(e.KeyChar)))
+            {
+            }
+            else
+            {
+                ingresoLetraDni = true;
+            }
+
+        
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
             if (char.IsNumber(e.KeyChar))
             {
             }
             else
             {
-                ingresonum = true;
+                ingresonumNombre = true;
             }
+        }
 
-        
+        private void textBox8_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsNumber(e.KeyChar)))
+            {
+            }
+            else
+            {
+                ingresoletraNro = true;
+            }
+        }
+
+        private void textBox9_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsNumber(e.KeyChar)))
+            {
+            }
+            else
+            {
+                ingresoletraPiso = true;
+            }
         }
 
 

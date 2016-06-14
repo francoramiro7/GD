@@ -188,6 +188,8 @@
             this.textBox3.Size = new System.Drawing.Size(409, 32);
             this.textBox3.TabIndex = 76;
             this.textBox3.Visible = false;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
+            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox3_KeyPress);
             // 
             // label5
             // 
@@ -302,6 +304,7 @@
             this.textBox8.Size = new System.Drawing.Size(409, 32);
             this.textBox8.TabIndex = 87;
             this.textBox8.Visible = false;
+            this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox8_KeyPress);
             // 
             // textBox9
             // 
@@ -312,6 +315,7 @@
             this.textBox9.Size = new System.Drawing.Size(409, 32);
             this.textBox9.TabIndex = 88;
             this.textBox9.Visible = false;
+            this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox9_KeyPress);
             // 
             // label12
             // 
@@ -374,7 +378,7 @@
             // 
             this.textBox6.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox6.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox6.Location = new System.Drawing.Point(372, 666);
+            this.textBox6.Location = new System.Drawing.Point(372, 657);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(409, 32);
             this.textBox6.TabIndex = 94;
@@ -397,9 +401,11 @@
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dateTimePicker1.Location = new System.Drawing.Point(372, 709);
+            this.dateTimePicker1.MaxDate = new System.DateTime(2006, 12, 31, 0, 0, 0, 0);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(409, 34);
             this.dateTimePicker1.TabIndex = 96;
+            this.dateTimePicker1.Value = new System.DateTime(2006, 12, 31, 0, 0, 0, 0);
             this.dateTimePicker1.Visible = false;
             // 
             // comboBox1
@@ -432,7 +438,7 @@
             // 
             this.textBox12.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox12.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox12.Location = new System.Drawing.Point(372, 194);
+            this.textBox12.Location = new System.Drawing.Point(372, 197);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(409, 32);
             this.textBox12.TabIndex = 99;
@@ -509,7 +515,7 @@
             // 
             this.label21.AutoSize = true;
             this.label21.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(15, 704);
+            this.label21.Location = new System.Drawing.Point(18, 700);
             this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(316, 34);
