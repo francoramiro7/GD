@@ -51,10 +51,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -100,7 +97,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox1.Text = "Seleccione Tipo de Documento";
             dateTimePicker1.Visible = true;
             button3.Visible = true;
-            button4.Visible = true;
+           
 
         }
 
@@ -139,7 +136,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox3.Visible = true;
             label22.Visible = true;
             button3.Visible = true;
-            button4.Visible = true;
+            
 
             //cargar rubros
 
@@ -202,6 +199,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
 
         }
+
+        
 
        
 

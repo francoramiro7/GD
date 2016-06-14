@@ -8,21 +8,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
+       
 
         SqlConnection coneccion;
         SqlCommand validarUsuario, validarContra, cantidadRoles, validarIntentos, 
             actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo, esAdmin, roles;
         SqlDataReader data;
-        
+        String username;
 
         
         public Form1()
         {
+            
+
             InitializeComponent();
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
             coneccion.Open();
@@ -121,7 +125,7 @@ namespace WindowsFormsApplication1
                                 resetearIntentos.ExecuteNonQuery();
                                
                                 encontrarRoles();
-                                
+                                usuario.username = textBox1.Text;
 
                             }
                             else
@@ -279,6 +283,12 @@ namespace WindowsFormsApplication1
             Form2 form = new Form2(comboBox1.Text);
             form.Show();
             this.Hide();
+            
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+           
         }
 
 
