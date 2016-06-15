@@ -235,6 +235,8 @@ namespace WindowsFormsApplication1
             DataTable tablaRoles = new DataTable();
             
             adapter.Fill(tablaRoles);
+            SqlDataReader reader = roles.ExecuteReader();
+            List<string> roleslist = new List<string>();
            
             comboBox1.DataSource = tablaRoles;
             comboBox1.DisplayMember = "Rol_nombre";
@@ -244,14 +246,21 @@ namespace WindowsFormsApplication1
             {
                 DataRow dr = tablaRoles.NewRow();
                 dr["Rol_nombre"] = "Administrador";
+                roleslist.Add("Administrador");
 
                 tablaRoles.Rows.InsertAt(dr, 0);
               }
 
             if (comboBox1.Items.Count == 1)
             {
+
+
                 
                 comboBox1.SelectedIndex = 0;
+
+                String rol = roleslist.First();
+                usuario.Rol = rol;
+
                 Form2 form = new Form2();
                 form.Show();
                 this.Hide();

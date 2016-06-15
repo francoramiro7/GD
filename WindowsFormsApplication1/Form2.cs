@@ -43,7 +43,7 @@ namespace WindowsFormsApplication1
                           }
                       reader.Close();
 
-                      crearBotones(funcionalidades);
+                     // crearBotones(funcionalidades);
 
 
         
