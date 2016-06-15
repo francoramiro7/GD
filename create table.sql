@@ -59,6 +59,7 @@ Cliente_tipo_documento nvarchar(255) NOT NULL,
 Cliente_nro_calle numeric(18,0) NOT NULL,
 Cliente_fecha_nacimiento datetime NOT NULL,
 Cliente_feche_creacion datetime,
+Cliente_localidad nvarchar(255),
 PRIMARY KEY(Cliente_username),
 CONSTRAINT fk_cliente_username FOREIGN KEY (Cliente_username) REFERENCES PERSISTIENDO.Usuario (Usuario_username)
 )
@@ -110,6 +111,9 @@ Empresa_depto nvarchar(50),
 Empresa_cod_postal nvarchar(50) NOT NULL,
 Empresa_rubro int,
 Empresa_nombre_contacto nvarchar(255),
+Empresa_localidad nvarchar(255),
+Empresa_ciudad nvarchar(255),
+Empresa_telefono numeric(18,0),
 PRIMARY KEY(Empresa_username),
 CONSTRAINT fk_empresa_username FOREIGN KEY (Empresa_username) REFERENCES PERSISTIENDO.Usuario (Usuario_username),
 CONSTRAINT fk_empresa_rubro FOREIGN KEY (Empresa_rubro) REFERENCES PERSISTIENDO.Rubro(Rubro_codigo) 
@@ -192,6 +196,15 @@ CONSTRAINT fk_compra_publicacion FOREIGN KEY (Compra_codigo_publicacion) REFEREN
 )
 GO
 
+CREATE TABLE PERSISTIENDO.Preguntas(
+Preguntas_codigo INT IDENTITY(1,1) NOT NULL,
+Preguntas_detalle nvarchar(255) NOT NULL,
+Preguntas_codigo_publicacion numeric(18,0) NOT NULL,
+PRIMARY KEY (Preguntas_codigo),
+CONSTRAINT fk_preguntas_publicacion FOREIGN KEY(Preguntas_codigo_publicacion) REFERENCES PERSISTIENDO.Publicacion(Publicacion_codigo)
+)
+GO
+
 INSERT INTO PERSISTIENDO.Rubro (Rubro_descripcion)
 SELECT DISTINCT Publicacion_Rubro_Descripcion from GD1C2016.gd_esquema.Maestra
 
@@ -202,15 +215,16 @@ Insert into PERSISTIENDO.Rol (Rol_habilitado,Rol_nombre) values (1,'Cliente')
 Insert into PERSISTIENDO.Rol (Rol_habilitado,Rol_nombre) values (1,'Empresa')
 
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('ABM ROL')
-Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('LOGGING Y SEGURIDAD')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('ABM USUARIO')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('ABM RUBRO')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('ABM VISIBILIDAD DE PUBLICACION')
+Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('PUBLICACIONES')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('COMPRAR/OFERTAR')
+Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('HISTORIAL DE CLIENTES')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('CALIFICAR AL VENDEDOR')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('CONSULTA DE FACTURAS')
 Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('LISTADO ESTADISTICO')
-Insert into PERSISTIENDO.Funcionalidad (Func_nombre) values ('HISTORIAL DE CLIENTES')
+
 
 INSERT INTO PERSISTIENDO.Usuario (Usuario_username, Usuario_password, Usuario_nuevo,Usuario_habilitado,Usuario_administrador,Usuario_intentos)
 SELECT DISTINCT CAST(Cli_Dni as nvarchar(30)), HASHBYTES('SHA','1234'), 0,1,0,0
@@ -293,11 +307,10 @@ Insert into PERSISTIENDO.Rol_Por_Usuario(RPU_username,RPU_codigo_rol)
 Select distinct Empresa_cuil,(select Rol.Rol_codigo From PERSISTIENDO.Rol Where Rol.Rol_nombre='Empresa')
 From PERSISTIENDO.Empresa
 
-Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(2,1)
+
+Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(5,1)
 Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(6,1)
 Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(7,1)
-Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(10,1)
+Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(8,1)
 
-Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(2,2)
-Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(7,2)
-Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(10,2)
+Insert into PERSISTIENDO.Funcionalidad_por_rol(FPR_codigo_func,FPR_codigo_rol) values(5,2)

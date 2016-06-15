@@ -24,9 +24,12 @@ namespace WindowsFormsApplication1.Generar_Publicación
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
             coneccion.Open();
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            cargarPublicaciones();
-
+            if (usuario.Rol.Equals("Administrador"))
+            {
+                cargarPublicaciones();
+            }else{
+                cargarPublicacionesPorUsuario();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -57,6 +60,23 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
 
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        private void cargarPublicacionesPorUsuario(){
+        
+            cargar = new SqlCommand("PERSISTIENDO.cargarPublicacionesPorUsuario", coneccion);
+            cargar.CommandType = CommandType.StoredProcedure;
+            cargar.Parameters.Add("@Username", SqlDbType.VarChar).Value = usuario.username;
+            SqlDataAdapter adapter;
+            adapter = new SqlDataAdapter(cargar);
+            DataTable table;
+            table = new DataTable("PERSISTIENDO.Publicacion");
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        
         }
     }
 }

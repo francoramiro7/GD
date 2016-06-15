@@ -23,5 +23,27 @@ namespace WindowsFormsApplication1.Generar_Publicación
             form4.Show();
             this.Close();
         }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (!usuario.Rol.Equals("Administrador"))
+            {
+                modificarPublicacion();
+            }
+            Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
+            form2.Show();
+            this.Close();
+        }
+
+        public void modificarPublicacion()
+        {
+        }
+
+
     }
 }

@@ -246,6 +246,7 @@ namespace WindowsFormsApplication1
             {
                 DataRow dr = tablaRoles.NewRow();
                 dr["Rol_nombre"] = "Administrador";
+                
                 roleslist.Add("Administrador");
 
                 tablaRoles.Rows.InsertAt(dr, 0);
@@ -255,10 +256,17 @@ namespace WindowsFormsApplication1
             {
 
 
-                
-                comboBox1.SelectedIndex = 0;
+                String rol;
+                if (roleslist.Count != 0)
+                {
+                    rol = roleslist.First();
+                }
+                else
+                {
+                    rol = (tablaRoles.Rows[0]["Rol_nombre"]).ToString();
+                }
 
-                String rol = roleslist.First();
+                
                 usuario.Rol = rol;
 
                 Form2 form = new Form2();
