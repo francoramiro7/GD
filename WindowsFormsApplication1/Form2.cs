@@ -30,13 +30,19 @@ namespace WindowsFormsApplication1
         {
 
             this.Text = rol;
+
+            if(rol.Equals("Administrador")){
+            //cargartodaslasfunc();
+            }
             cargarfun = new SqlCommand("PERSISTIENDO.FuncionalidadesPorRol", coneccion);
             cargarfun.Parameters.Add("@Rol", SqlDbType.VarChar).Value = rol;
             cargarfun.CommandType = CommandType.StoredProcedure;
             
             SqlDataReader reader = cargarfun.ExecuteReader();
          List<string> funcionalidades = new List<string>();
-                    int i=0;
+                   
+            int i=0;
+
                          while (reader.Read())
                          {
                                 funcionalidades.Add( reader.GetValue(0).ToString() );
@@ -58,6 +64,13 @@ namespace WindowsFormsApplication1
             botones.Add(button11);
             botones.Add(button12);
             botones.Add(button13);
+            botones.Add(button14);
+            botones.Add(button15);
+            botones.Add(button16);
+            botones.Add(button17);
+            botones.Add(button17);
+
+
 
             int size = func.Count();
             for (int i = 0; i < size; i++)
@@ -65,18 +78,10 @@ namespace WindowsFormsApplication1
 
                 String nombreBoton = func[i];
                 botones[i].Text = nombreBoton;
-                setearAccion(nombreBoton, botones[i]);
-               
-
-
+                
             }
 
         }
-
-
-
-
-
 
 
 
@@ -111,18 +116,133 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void setearAccion(String nombre, Button boton)
+        private void realizarAccion(String nombre)
         {
-            if (nombre.Equals("ABM Rol"))
+            if (nombre.Equals("ABM ROL"))
             {
                 ABM_Rol.Form1 formRol = new ABM_Rol.Form1();
+                formRol.Show();
+                this.Close();
                 
+            }
+
+            if (nombre.Equals("ABM USUARIO"))
+            {
+                ABM_Usuario.Form2 formUser = new ABM_Usuario.Form2();
+                formUser.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("ABM RUBRO"))
+            {
+                ABM_Rubro.Form1 formRubro = new ABM_Rubro.Form1();
+                formRubro.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("ABM VISIBILIDAD DE PUBLICACION"))
+            {
+                ABM_Visibilidad.Form1 formVisibilidad = new ABM_Visibilidad.Form1();
+                formVisibilidad.Show();
+                this.Close();
+
+
+            }
+
+            if (nombre.Equals("PUBLICACIONES"))
+            {
+                Generar_Publicación.Form2 formPublicacion = new Generar_Publicación.Form2();
+                formPublicacion.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("COMPRAR/OFERTAR"))
+            {
+                ComprarOfertar.Form1 formComprar = new ComprarOfertar.Form1();
+                formComprar.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("HISTORIAL DE CLIENTES"))
+            {
+                Historial_Cliente.Form1 formHist = new Historial_Cliente.Form1();
+                formHist.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("CALIFICAR AL VENDEDOR"))
+            {
+                Calificar.Form1 formCal = new Calificar.Form1();
+                formCal.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("CONSULTA DE FACTURAS"))
+            {
+                Facturas.Form1 formFac = new Facturas.Form1();
+                formFac.Show();
+                this.Close();
+
+            }
+
+            if (nombre.Equals("LISTADO ESTADISTICO"))
+            {
+                Listado_Estadistico.Form1 formList = new Listado_Estadistico.Form1();
+                formList.Show();
+                this.Close();
+
             }
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
+            realizarAccion(button10.Text);
+        }
 
+        private void button11_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button11.Text);
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button12.Text);
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button13.Text);
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button14.Text);
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button15.Text);
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button16.Text);
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button17.Text);
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            realizarAccion(button18.Text);
         }
 
     }
