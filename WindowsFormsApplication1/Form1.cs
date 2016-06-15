@@ -280,14 +280,12 @@ namespace WindowsFormsApplication1
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-<<<<<<< HEAD
 
             
-            Form2 form = new Form2(comboBox1.Text);
-=======
+            
+
             usuario.Rol = comboBox1.Text;
             Form2 form = new Form2();
->>>>>>> 91f052ee0e3a6cdfb459a68e76478ad76da059ce
             form.Show();
             this.Hide();
             
