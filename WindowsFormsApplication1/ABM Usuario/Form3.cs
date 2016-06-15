@@ -45,17 +45,39 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            button1.Visible = true;
+            button2.Visible = true;
             
             if (comboBox1.Text == "Cliente")
             {
+                
                 cargarClientes();
                 dataGridView1.Visible = true;
+                label2.Visible = true;
+                label3.Visible = true;
+                label4.Visible = true;
+                label5.Visible = true;
+                label1.Visible = false;
+                label6.Visible = false;
+                textBox1.Visible = true;
+                textBox2.Visible = true;
+                textBox3.Visible = true;
+                textBox4.Visible = true;
                
             }else{
 
           
                 cargarEmpresas();
+                textBox1.Visible = true;
+                textBox2.Visible = true;
+                textBox3.Visible = true;
+                textBox4.Visible = false;
+                label1.Visible = true;
+                label6.Visible = true;
+                label5.Visible = true;
+                label2.Visible =false;
+                label3.Visible =false;
+                label4.Visible = false;
                
                 dataGridView1.Visible = true;
             }
@@ -73,9 +95,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
             dataGridView1.DataSource = table;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-
-
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            
 
 
 
@@ -93,6 +114,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             adapter.Fill(table);
             dataGridView1.DataSource = table;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
 
            
@@ -103,8 +125,32 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if(comboBox1.Text.Equals("Cliente")){
 
-       
+
+                DataGridViewCell fila;
+            
+            ABM_Usuario.Form4 form4 = new Form4();
+                form4.Show();
+                this.Close();
+                
+            }
+            else {
+                ABM_Usuario.Form5 form5 = new Form5();
+                form5.Show();
+                this.Close();
+            }
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form2 form2 = new Form2();
+            form2.Show();
+            this.Hide();
+        }
 
 
     }
