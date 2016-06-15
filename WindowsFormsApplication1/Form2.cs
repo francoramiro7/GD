@@ -65,6 +65,8 @@ namespace WindowsFormsApplication1
 
                 String nombreBoton = func[i];
                 botones[i].Text = nombreBoton;
+                setearAccion(nombreBoton, botones[i]);
+               
 
 
             }
@@ -108,5 +110,20 @@ namespace WindowsFormsApplication1
         {
 
         }
+
+        private void setearAccion(String nombre, Button boton)
+        {
+            if (nombre.Equals("ABM Rol"))
+            {
+                ABM_Rol.Form1 formRol = new ABM_Rol.Form1();
+                
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
