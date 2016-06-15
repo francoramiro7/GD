@@ -48,7 +48,7 @@ namespace WindowsFormsApplication1
         private void button7_Click(object sender, EventArgs e)
         {
             this.Hide();
-            Generar_Publicación.Form1 generar_Publicacion = new Generar_Publicación.Form1();
+            Generar_Publicación.Form2 generar_Publicacion = new Generar_Publicación.Form2();
             generar_Publicacion.Show();
         }
     }

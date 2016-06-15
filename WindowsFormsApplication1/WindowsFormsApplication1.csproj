@@ -92,10 +92,10 @@
     <Compile Include="ABM Visibilidad\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Calificar\Form1.cs">
+    <Compile Include="Facturas\Calificar\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Calificar\Form1.Designer.cs">
+    <Compile Include="Facturas\Calificar\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Class1.cs" />
@@ -137,6 +137,24 @@
     </Compile>
     <Compile Include="Generar Publicación\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicación\Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicación\Form3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\Form3.Designer.cs">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Generar Publicación\Form4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Generar Publicación\Form4.Designer.cs">
+      <DependentUpon>Form4.cs</DependentUpon>
     </Compile>
     <Compile Include="Historial Cliente\Form1.cs">
       <SubType>Form</SubType>
@@ -181,6 +199,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Generar Publicación\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\Form3.resx">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generar Publicación\Form4.resx">
+      <DependentUpon>Form4.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
