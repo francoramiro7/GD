@@ -33,7 +33,7 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ABM_Usuario.Form1 abmUser = new ABM_Usuario.Form1();
+            ABM_Usuario.Form2 abmUser = new ABM_Usuario.Form2();
             abmUser.Show();
             this.Hide();
         }

@@ -16,8 +16,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand rubros, existeUsuario, existeDni;
+        SqlCommand rubros, existeUsuario, existeDni, existeRazon, existeCuit;
         int validacionCliente = 0;
+        int validacionEmpresa = 0;
         Boolean ingresonum = false;
         Boolean ingresonumNombre = false;
         Boolean ingresoLetraDni = false;
@@ -93,6 +94,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             label15.Visible = true;
             label20.Visible = true;
             textBox18.Visible = true;
+            button4.Visible = true;
 
             textBox3.Visible = true; //nommbre
             textBox4.Visible = true; //apellido
@@ -114,7 +116,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void crearCamposEmp()
         {
 
-
+            button4.Visible = true;
             label3.Visible = false;
             comboBox2.Visible = false;
             button1.Visible = false;
@@ -201,6 +203,190 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         }
 
+        private void validarCamposEmpresa() {
+
+            existeCuit = new SqlCommand("PERSISTIENDO.existeCuit", con);
+            existeCuit.CommandType = CommandType.StoredProcedure;
+            existeCuit.Parameters.Add("@Cuit", SqlDbType.VarChar).Value = textBox15.Text;
+            var resultado = existeCuit.Parameters.Add("@Valor", SqlDbType.Int);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            data = existeCuit.ExecuteReader();
+            var existeC = resultado.Value;
+            data.Close();
+
+            existeRazon = new SqlCommand("PERSISTIENDO.existeRazon", con);
+            existeRazon.CommandType = CommandType.StoredProcedure;
+            existeRazon.Parameters.Add("@Razon", SqlDbType.VarChar).Value = textBox12.Text;
+            var resul = existeRazon.Parameters.Add("@Valor", SqlDbType.Int);
+            resul.Direction = ParameterDirection.ReturnValue;
+            data = existeRazon.ExecuteReader();
+            var existeR = resul.Value;
+            data.Close();
+
+            existeUsuario = new SqlCommand("PERSISTIENDO.existeUsuario", con);
+            existeUsuario.CommandType = CommandType.StoredProcedure;
+            existeUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            var resultado2 = existeUsuario.Parameters.Add("@Valor", SqlDbType.Int);
+            resultado2.Direction = ParameterDirection.ReturnValue;
+            data = existeUsuario.ExecuteReader();
+            var existeU = resultado2.Value;
+            data.Close();
+
+            if ((int)existeU == 1)
+                textBox1.Text = "El usuario ya existe";
+            else
+                validacionEmpresa++;
+
+            if (textBox1.Text.Length > 30)
+                textBox1.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+            if (textBox2.Text.Length > 30)
+                textBox2.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+            if ((int)existeR == 1)
+                textBox12.Text = "La razon social ya existe";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox12.Text.Length > 255)
+                textBox12.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox13.Text.Length > 50)
+                textBox13.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox14.Text.Length > 30)
+            {
+                textBox14.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox14.Text.Any(char.IsLetter))
+            {
+                textBox14.Text = "No se permiten caracteres alfanumericos";
+            }
+            else
+                validacionEmpresa++;
+
+
+            if ((int)existeC == 1)
+                textBox14.Text = "El cuit ya existe";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox14.Text.Length > 50)
+                textBox14.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox7.Text.Length > 255)
+                textBox7.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox8.Text.Length > 18)
+            {
+                textBox8.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox8.Text.Any(char.IsLetter))
+            {
+                textBox8.Text = "No se permiten caracteres alfanumericos";
+            }
+            else
+                validacionEmpresa++;
+
+            if (textBox9.Text.Length > 18)
+            {
+                textBox9.Text = "Ha superado el limite de caracteres";
+            }
+            else
+
+                validacionEmpresa++;
+
+
+
+            if (textBox10.Text.Length > 50)
+                textBox10.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox11.Text.Length > 50)
+            {
+                textBox11.Text = "Ha superado el limite de caracteres";
+            }
+            else if (textBox11.Text.Any(char.IsLetter))
+            {
+                textBox11.Text = "No se permiten caracteres alfanumericos";
+            }
+            else
+                validacionEmpresa++;
+
+
+            if (textBox6.Text.Length > 50)
+                textBox6.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox16.Text.Length > 255)
+                textBox16.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (textBox17.Text.Length > 255)
+                textBox17.Text = "Ha superado el limite de caracteres";
+            else
+                validacionEmpresa++;
+
+
+            if (validacionEmpresa == 17)
+            {
+
+                String mensaje = "El usuario se ha creado correctamente";
+                String caption = "Usuario creado";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                
+            }
+            else
+            {
+
+                String mensaje = "Por favor, corrija los campos indicados";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                validacionEmpresa = 0;
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        }
+
         private void validarCamposCliente()
         {
            
@@ -267,7 +453,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
             if ((int)existeDoc == 1)
             {
-                textBox5.Text = "El usuario ya ha sido registrado";
+                label24.Visible = true;
             }
             else
             {
@@ -352,12 +538,15 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 String mensaje = "El usuario se ha creado correctamente";
                 String caption = "Usuario creado";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                label24.Visible = false;
             }
             else {
 
                 String mensaje = "Por favor, corrija los campos indicados";
                 String caption = "Error al crear usuario";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                validacionCliente = 0;
+                
 
             }
 
@@ -416,7 +605,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             else
             {
 
-                //validarCamposEmpresa();
+                validarCamposEmpresa();
             }
 
 
@@ -501,6 +690,65 @@ namespace WindowsFormsApplication1.ABM_Usuario
             {
                 ingresoletraPiso = true;
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            if (comboBox2.Text.Equals("Cliente"))
+            {
+
+                limpiarCliente();
+            }
+            else
+            {
+                limpiarEmpresa();
+            }
+
+
+
+
+        }
+
+
+        private void limpiarCliente()
+        {
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox3.Clear();
+            textBox4.Clear();
+            textBox5.Clear();
+            textBox6.Clear();
+            textBox7.Clear();
+            textBox8.Clear();
+            textBox9.Clear();
+            textBox10.Clear();
+            textBox11.Clear();
+            textBox18.Clear();
+            comboBox1.SelectedIndex = -1;
+        }
+
+        private void limpiarEmpresa()
+        {
+
+            textBox1.Clear();
+            textBox2.Clear();
+            textBox12.Clear();
+            textBox13.Clear();
+            textBox14.Clear();
+            textBox15.Clear();
+            textBox7.Clear();
+            textBox8.Clear();
+            textBox4.Clear();
+            textBox9.Clear();
+            textBox10.Clear();
+            textBox11.Clear();
+            textBox6.Clear();
+            textBox16.Clear();
+            textBox17.Clear();
+            comboBox3.SelectedIndex = -1;
+
+
         }
 
 
