@@ -333,7 +333,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
                 publicar.ExecuteNonQuery();
 
-                Form2 form2 = new Form2();
+                Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
                 form2.Show();
                 this.Close();
                
@@ -409,9 +409,54 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
+            Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
             form2.Show();
             this.Close();
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
 
     }

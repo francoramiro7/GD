@@ -72,6 +72,7 @@
             this.label2.Size = new System.Drawing.Size(55, 23);
             this.label2.TabIndex = 1;
             this.label2.Text = "Stock";
+            this.label2.Click += new System.EventHandler(this.label2_Click_1);
             // 
             // label5
             // 
@@ -82,6 +83,7 @@
             this.label5.Size = new System.Drawing.Size(60, 23);
             this.label5.TabIndex = 4;
             this.label5.Text = "Precio";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label7
             // 
@@ -92,6 +94,7 @@
             this.label7.Size = new System.Drawing.Size(61, 23);
             this.label7.TabIndex = 6;
             this.label7.Text = "Rubro";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label8
             // 
@@ -113,6 +116,7 @@
             this.label9.Size = new System.Drawing.Size(66, 23);
             this.label9.TabIndex = 8;
             this.label9.Text = "Estado";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // label10
             // 
@@ -123,6 +127,7 @@
             this.label10.Size = new System.Drawing.Size(46, 23);
             this.label10.TabIndex = 9;
             this.label10.Text = "Tipo";
+            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label11
             // 
@@ -133,6 +138,7 @@
             this.label11.Size = new System.Drawing.Size(94, 23);
             this.label11.TabIndex = 10;
             this.label11.Text = "Preguntas";
+            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // comboBox1
             // 
@@ -176,6 +182,7 @@
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(193, 21);
             this.comboBox3.TabIndex = 13;
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
             // comboBox4
             // 
@@ -230,6 +237,7 @@
             this.label6.Size = new System.Drawing.Size(55, 23);
             this.label6.TabIndex = 5;
             this.label6.Text = "Costo";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label3
             // 
@@ -295,6 +303,7 @@
             this.label4.Size = new System.Drawing.Size(55, 23);
             this.label4.TabIndex = 28;
             this.label4.Text = "Costo";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // Form1
             // 
