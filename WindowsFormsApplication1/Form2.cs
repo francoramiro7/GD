@@ -13,10 +13,10 @@ namespace WindowsFormsApplication1
     public partial class Form2 : Form
     {
         string rol;
-        public Form2(String Rol)
-            
+
+        public Form2()
         {
-            rol = Rol;
+            rol = usuario.Rol;
             InitializeComponent();
         }
 

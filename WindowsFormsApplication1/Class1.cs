@@ -9,5 +9,6 @@ namespace WindowsFormsApplication1
     class usuario
     {
         public static String username;
+        public static String Rol;
     }
 }

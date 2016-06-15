@@ -252,7 +252,7 @@ namespace WindowsFormsApplication1
             {
                 
                 comboBox1.SelectedIndex = 0;
-                Form2 form = new Form2(comboBox1.Text);
+                Form2 form = new Form2();
                 form.Show();
                 this.Hide();
             }
@@ -280,7 +280,8 @@ namespace WindowsFormsApplication1
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            Form2 form = new Form2(comboBox1.Text);
+            usuario.Rol = comboBox1.Text;
+            Form2 form = new Form2();
             form.Show();
             this.Hide();
             

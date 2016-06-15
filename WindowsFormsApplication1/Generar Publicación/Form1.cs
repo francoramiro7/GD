@@ -39,9 +39,10 @@ namespace WindowsFormsApplication1.Generar_Publicación
             DataTable tablavisiblidades = new DataTable();
 
             adapter.Fill(tablavisiblidades);
-            comboBox4.Text = "";
             comboBox4.DataSource = tablavisiblidades;
             comboBox4.DisplayMember = "Visibilidad_descripcion";
+            comboBox4.SelectedIndex = comboBox4.Items.IndexOf("New");
+
 
             rubros = new SqlCommand("PERSISTIENDO.listarRubros", coneccion);
             rubros.CommandType = CommandType.StoredProcedure;
@@ -50,7 +51,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
             adapterRubro.Fill(tablaRubros);
             comboBox5.DataSource = tablaRubros;
             comboBox5.DisplayMember = "Rubro_Descripcion";
-            comboBox5.Text = "Seleccione rubro";
+            comboBox5.SelectedIndex = comboBox5.Items.IndexOf("New");
 
         }
 
@@ -93,6 +94,47 @@ namespace WindowsFormsApplication1.Generar_Publicación
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
+            String ingresado = ((TextBox)sender).Text;
+            
+            if (esNumero(ingresado,false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox2.Text = "";
+            }
+        }
+
+        private bool esNumero(String ingresado,bool tieneComa){
+
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals(',')) || (comas>0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+
+                    
+                }
+            }
+            return true;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -149,7 +191,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
             costoTotal = (costo + envio).ToString();
 
             
-            textBox6.Text = "$" + costoTotal;
+            label4.Text = "$" + costoTotal;
 
         }
 
@@ -217,7 +259,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
         {
 
 
-            if (true)
+            if (validarCampos())
             {
 
                 ultimaPublicacion = new SqlCommand("PERSISTIENDO.ultimaPublicacion", coneccion);
@@ -290,8 +332,86 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 publicar.Parameters.Add("@Estado", SqlDbType.Int).Value = (int)codEstado;
 
                 publicar.ExecuteNonQuery();
+
+                Form2 form2 = new Form2();
+                form2.Show();
+                this.Close();
                
             }
+        }
+
+        private bool validarCampos()
+        {
+            if (string.IsNullOrEmpty(textBox1.Text) | string.IsNullOrEmpty(textBox2.Text) | string.IsNullOrEmpty(textBox5.Text) |
+              string.IsNullOrEmpty(comboBox1.Text) | string.IsNullOrEmpty(comboBox2.Text) | string.IsNullOrEmpty(comboBox3.Text) |
+                string.IsNullOrEmpty(comboBox4.Text) | string.IsNullOrEmpty(comboBox5.Text) | string.IsNullOrEmpty(comboBox6.Text)){
+
+
+                    String mensaje = "Todos los campos son obligatorios";
+                    String caption = "Error al crear publicación";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                    return false;
+     
+            }else {
+
+                int tDescripcion = textBox1.Text.Length;
+                int tStock = textBox2.Text.Length;
+                int tPrecio = textBox5.Text.Length;
+
+
+                if (tDescripcion > 256)
+                {
+                    String mensaje = "El campo Descripcion tiene más de 255 caracteres";
+                    String caption = "Error al crear publicación";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                    return false;
+
+                }else if(tStock>19){
+                   
+                    String mensaje = "El campo Stock tiene más de 18 digitos";
+                    String caption = "Error al crear publicación";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                    return false;
+
+                }else if(tPrecio>22){
+
+                    String mensaje = "El campo Stock tiene más de 18 digitos";
+                    String caption = "Error al crear publicación";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                    return false;
+
+                }else{
+
+                    return true;
+                
+                }
+
+            }
+
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox5.Text = "";
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2();
+            form2.Show();
+            this.Close();
         }
 
     }
