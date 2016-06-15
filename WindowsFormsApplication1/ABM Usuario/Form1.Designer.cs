@@ -76,6 +76,8 @@
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.textBox18 = new System.Windows.Forms.TextBox();
+            this.label24 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label6
@@ -94,7 +96,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(15, 79);
+            this.label1.Location = new System.Drawing.Point(15, 82);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(187, 34);
@@ -598,7 +600,7 @@
             // 
             this.textBox17.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox17.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox17.Location = new System.Drawing.Point(372, 813);
+            this.textBox17.Location = new System.Drawing.Point(372, 810);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(409, 32);
             this.textBox17.TabIndex = 114;
@@ -626,12 +628,39 @@
             this.textBox18.TabIndex = 116;
             this.textBox18.Visible = false;
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.label24.Location = new System.Drawing.Point(786, 311);
+            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(408, 24);
+            this.label24.TabIndex = 117;
+            this.label24.Text = "Este usuario ya esta ingresado en el sistema";
+            this.label24.Visible = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.MintCream;
+            this.button4.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(984, 431);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(280, 85);
+            this.button4.TabIndex = 118;
+            this.button4.Text = "LIMPIAR CAMPOS";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Visible = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateGray;
             this.ClientSize = new System.Drawing.Size(1326, 1017);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.label24);
             this.Controls.Add(this.textBox18);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.textBox17);
@@ -739,5 +768,7 @@
         private System.Windows.Forms.TextBox textBox17;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button4;
     }
 }

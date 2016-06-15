@@ -23,5 +23,24 @@ namespace WindowsFormsApplication1.ABM_Usuario
             form1.Show();
             this.Close();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form2 home = new Form2();
+            home.Show();
+            this.Close();
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form3 form3 = new Form3();
+            form3.Show();
+            this.Close();
+        }
     }
 }

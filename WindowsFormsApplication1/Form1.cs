@@ -280,6 +280,10 @@ namespace WindowsFormsApplication1
 
         private void button2_Click_1(object sender, EventArgs e)
         {
+
+            
+            
+
             usuario.Rol = comboBox1.Text;
             Form2 form = new Form2();
             form.Show();
