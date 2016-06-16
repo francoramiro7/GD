@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
@@ -16,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand rubros, existeUsuario, existeDni, existeRazon, existeCuit;
+        SqlCommand rubros, existeUsuario, existeDni, existeRazon, existeCuit, crearUsuario, crearCliente, crearEmpresa, crearRol;
         int validacionCliente = 0;
         int validacionEmpresa = 0;
         Boolean ingresonum = false;
@@ -184,8 +185,65 @@ namespace WindowsFormsApplication1.ABM_Usuario
                     if(comboBox2.Text.Equals("Cliente")){
                      
                         validarVaciosCliente();
+
+                        crearUsuario = new SqlCommand("PERSISTIENDO.crearUsuario", con);
+                        crearUsuario.CommandType = CommandType.StoredProcedure;
+
+                        crearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                        crearUsuario.Parameters.Add("@Password", SqlDbType.VarChar).Value = textBox2.Text;
+                        crearUsuario.ExecuteNonQuery();
+
+                        crearCliente = new SqlCommand("PERSISTIENDO.crearCliente", con);
+                        crearCliente.CommandType = CommandType.StoredProcedure;
+
+                        crearCliente.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                        crearCliente.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox4.Text;
+                        crearCliente.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox3.Text;
+                        crearCliente.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox18.Text;
+                        crearCliente.Parameters.Add("@calle", SqlDbType.VarChar).Value = textBox7.Text;
+                        crearCliente.Parameters.Add("@cp", SqlDbType.Float).Value = float.Parse(textBox11.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        crearCliente.Parameters.Add("@depto", SqlDbType.VarChar).Value = textBox10.Text;
+                        crearCliente.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        crearCliente.Parameters.Add("@dni", SqlDbType.Float).Value = float.Parse(textBox5.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        crearCliente.Parameters.Add("@tipo", SqlDbType.VarChar).Value = comboBox1.SelectedItem.ToString();
+                        crearCliente.Parameters.Add("@nro", SqlDbType.Float).Value = float.Parse(textBox8.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        crearCliente.Parameters.Add("@fechanac", SqlDbType.DateTime).Value = dateTimePicker1.Value;
+                        crearCliente.Parameters.Add("@fechacreac", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                        crearCliente.Parameters.Add("@localidad", SqlDbType.VarChar).Value = textBox6.Text;
+                        crearCliente.ExecuteNonQuery();
+
+                        crearRol = new SqlCommand("PERSISTIENDO.crearRol", con);
+                        crearRol.CommandType = CommandType.StoredProcedure;
+                        crearRol.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                        crearRol.Parameters.Add("@Rol", SqlDbType.Int).Value = 1;
+
+                        crearRol.ExecuteNonQuery();
+
+
+                        String mensaje = "El usuario se ha creado correctamente";
+                        String caption = "Usuario creado";
+                        MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                        validacionEmpresa = 0;
+                        
+
+
+
+
+                        
+   
+
+
+
                     }else{
                         validarVaciosEmpresa();
+
+                        crearUsuario = new SqlCommand("PERSISTIENDO.crearUsuario", con);
+                        crearUsuario.CommandType = CommandType.StoredProcedure;
+                        crearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+                        crearUsuario.Parameters.Add("@Password", SqlDbType.VarChar).Value = textBox2.Text;
+                        crearUsuario.ExecuteNonQuery();
+
+
                     }
            
 
