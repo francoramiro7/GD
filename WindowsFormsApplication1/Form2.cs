@@ -102,6 +102,7 @@ namespace WindowsFormsApplication1
 
                 String nombreBoton = func[i];
                 botones[i].Text = nombreBoton;
+                botones[i].Visible = true;
                 
             }
 
