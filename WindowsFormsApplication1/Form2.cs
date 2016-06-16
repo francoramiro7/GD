@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1
         string rol;
 
         SqlConnection coneccion;
-        SqlCommand cargarfun;
+        SqlCommand cargarfun, cargaradmin;
         public Form2()
         {
             rol = usuario.Rol;
@@ -31,27 +31,50 @@ namespace WindowsFormsApplication1
 
             this.Text = rol;
 
-            if(rol.Equals("Administrador")){
-            //cargartodaslasfunc();
+            if (rol.Equals("Administrador"))
+            {
+
+
+                cargaradmin = new SqlCommand("PERSISTIENDO.listarFuncionalidades", coneccion);
+
+                cargaradmin.CommandType = CommandType.StoredProcedure;
+
+
+
+                SqlDataReader reader = cargaradmin.ExecuteReader();
+                List<string> funcionalidades = new List<string>();
+
+                
+
+                while (reader.Read())
+                {
+                    funcionalidades.Add(reader.GetValue(0).ToString());
+                }
+                reader.Close();
+
+                crearBotones(funcionalidades);
             }
-            cargarfun = new SqlCommand("PERSISTIENDO.FuncionalidadesPorRol", coneccion);
-            cargarfun.Parameters.Add("@Rol", SqlDbType.VarChar).Value = rol;
-            cargarfun.CommandType = CommandType.StoredProcedure;
-            
-            SqlDataReader reader = cargarfun.ExecuteReader();
-         List<string> funcionalidades = new List<string>();
-                   
-            int i=0;
+            else
+            {
 
-                         while (reader.Read())
-                         {
-                                funcionalidades.Add( reader.GetValue(0).ToString() );
-                          }
-                      reader.Close();
+                cargarfun = new SqlCommand("PERSISTIENDO.FuncionalidadesPorRol", coneccion);
+                cargarfun.Parameters.Add("@Rol", SqlDbType.VarChar).Value = rol;
+                cargarfun.CommandType = CommandType.StoredProcedure;
 
-                     // crearBotones(funcionalidades);
+                SqlDataReader reader = cargarfun.ExecuteReader();
+                List<string> funcionalidades = new List<string>();
 
+               
 
+                while (reader.Read())
+                {
+                    funcionalidades.Add(reader.GetValue(0).ToString());
+                }
+                reader.Close();
+
+                crearBotones(funcionalidades);
+
+            }
         
         }
 
@@ -68,7 +91,8 @@ namespace WindowsFormsApplication1
             botones.Add(button15);
             botones.Add(button16);
             botones.Add(button17);
-            botones.Add(button17);
+            botones.Add(button18);
+            botones.Add(button19);
 
 
 
