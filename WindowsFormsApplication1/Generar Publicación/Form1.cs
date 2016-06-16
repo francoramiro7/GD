@@ -188,7 +188,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
         
             }
 
-            costoTotal = (costo + envio).ToString();
+            costoTotal = (costo).ToString();
 
             
             label4.Text = "$" + costoTotal;

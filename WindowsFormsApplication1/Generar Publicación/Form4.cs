@@ -78,5 +78,27 @@ namespace WindowsFormsApplication1.Generar_Publicación
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string cod ="";
+            string desc ="";
+            string precio = "";
+            string stock = "";
+            string estado = "";
+
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                cod = row.Cells[0].Value.ToString();
+                desc = row.Cells[1].Value.ToString();
+                precio = row.Cells[2].Value.ToString();
+                stock = row.Cells[3].Value.ToString();
+                estado = row.Cells[4].Value.ToString();
+            }
+
+            Generar_Publicación.Form3 form3 = new Generar_Publicación.Form3(cod,desc,precio,stock,estado);
+            form3.Show();
+            this.Close();
+        }
     }
 }
