@@ -440,7 +440,7 @@
             // 
             this.textBox12.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox12.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox12.Location = new System.Drawing.Point(372, 197);
+            this.textBox12.Location = new System.Drawing.Point(372, 195);
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(409, 32);
             this.textBox12.TabIndex = 99;
@@ -600,7 +600,7 @@
             // 
             this.textBox17.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox17.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox17.Location = new System.Drawing.Point(372, 810);
+            this.textBox17.Location = new System.Drawing.Point(372, 808);
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(409, 32);
             this.textBox17.TabIndex = 114;

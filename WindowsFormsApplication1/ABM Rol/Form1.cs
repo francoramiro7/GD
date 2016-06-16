@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace WindowsFormsApplication1.ABM_Rol
 {
     public partial class Form1 : Form
@@ -29,8 +30,7 @@ namespace WindowsFormsApplication1.ABM_Rol
         private void button1_Click(object sender, EventArgs e)
         {
             
-            crearRol.Show();
-            this.Close();
+            
 
         }
 
@@ -51,6 +51,12 @@ namespace WindowsFormsApplication1.ABM_Rol
         {
             
             eliminarRol.Show();
+            this.Close();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            crearRol.Show();
             this.Close();
         }
     }

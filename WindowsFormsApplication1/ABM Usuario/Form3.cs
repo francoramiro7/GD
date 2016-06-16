@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Globalization;
 
 namespace WindowsFormsApplication1.ABM_Usuario
 {
@@ -16,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
 
         SqlConnection coneccion;
-        SqlCommand cargar, cargar2;
+        SqlCommand cargar, cargar2, filtrar;
         public Form3()
         {
             InitializeComponent();
@@ -150,6 +151,30 @@ namespace WindowsFormsApplication1.ABM_Usuario
             ABM_Usuario.Form2 form2 = new Form2();
             form2.Show();
             this.Hide();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //filtrar = new SqlCommand("PERSISTIENDO.filter", coneccion);
+            //filtrar.CommandType = CommandType.StoredProcedure;
+
+            //filtrar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
+            //filtrar.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox2.Text;
+            //filtrar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox3.Text;
+            //filtrar.Parameters.Add("@dni", SqlDbType.Float).Value = float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat);
+            
+            //SqlDataAdapter adapter;
+            
+            //adapter = new SqlDataAdapter(filtrar);
+            //DataTable table;
+            //table = new DataTable("PERSISTIENDO.U");
+            //adapter.Fill(table);
+            //dataGridView1.DataSource = table;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
 

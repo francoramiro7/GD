@@ -107,16 +107,17 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(47, 238);
+            this.textBox1.Location = new System.Drawing.Point(47, 233);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(318, 39);
             this.textBox1.TabIndex = 29;
             this.textBox1.Visible = false;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(47, 366);
+            this.textBox2.Location = new System.Drawing.Point(47, 372);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(318, 39);
             this.textBox2.TabIndex = 31;
@@ -137,7 +138,7 @@
             // textBox3
             // 
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(47, 495);
+            this.textBox3.Location = new System.Drawing.Point(47, 498);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(318, 39);
             this.textBox3.TabIndex = 33;
@@ -224,6 +225,7 @@
             this.button1.Text = "FILTRAR";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button3
             // 
