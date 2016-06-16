@@ -16,9 +16,10 @@ namespace WindowsFormsApplication1.ABM_Rol
     public partial class Form2 : Form
     {
         SqlConnection coneccion;
-        SqlCommand cargarFunc, crearRol, codigoRol, crearFunc, existeRol;
+        SqlCommand cargarFunc, crearRol, codigoRol, crearFunc, existeRol, codigoFunc;
         List<String> funcion = new List<String>();
         SqlDataReader data;
+        int rol = 0;
 
         public Form2()
         {
@@ -123,7 +124,8 @@ namespace WindowsFormsApplication1.ABM_Rol
                 coneccion.Close();
                 
                 var codi = resultado.Value;
-                int rol = (int)codi;
+                rol = (int)codi;
+                data.Close();
 
                 crearFuncionalidades();
         
@@ -132,25 +134,52 @@ namespace WindowsFormsApplication1.ABM_Rol
         private void crearFuncionalidades()
         {
 
-        }
+            List<int> codigos = new List<int>();
+         
+            
+            for (int i = 0; i < funcion.Count(); i++)
+            {
+                coneccion.Open();
+                codigoFunc = new SqlCommand("PERSISTIENDO.codigoFuncionalidad", coneccion);
+                codigoFunc.CommandType = CommandType.StoredProcedure;
+                codigoFunc.Parameters.Add("@nombre", SqlDbType.VarChar).Value = funcion.ElementAt(i).ToString();
+                var resultado = codigoFunc.Parameters.Add("@Valor", SqlDbType.Int);
+                resultado.Direction = ParameterDirection.ReturnValue;
+                data = codigoFunc.ExecuteReader();
+                var codigo = resultado.Value;
+                int aniadir = (int)codigo;
+                codigos.Add(aniadir);
+                data.Close();
+                coneccion.Close();
+                
+            }
 
+            for (int i = 0; i < codigos.Count(); i++)
+            {
+                
+                coneccion.Open();
+                crearFunc = new SqlCommand("PERSISTIENDO.crearFuncionalidad", coneccion);
+                crearFunc.CommandType = CommandType.StoredProcedure;
+                crearFunc.Parameters.Add("@codigoRol", SqlDbType.VarChar).Value = rol;
+                crearFunc.Parameters.Add("@codigoFunc", SqlDbType.Int).Value = codigos.ElementAt(i);
+                crearFunc.ExecuteNonQuery();
+                coneccion.Close();
 
-      
+            }
+
+            rol = 0;
+            String mensaje = "El rol se ha creado exitosamente";
+            String caption = "Rol creado";
+            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            ABM_Rol.Form1 form1= new ABM_Rol.Form1();
+            form1.Show();
+            this.Close();
+
+            }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            
-            
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            listBox2.Items.Remove(listBox2.SelectedItem);
-        }
-
-        private void button3_Click_1(object sender, EventArgs e)
-        {
-            string text = listBox1.GetItemText(listBox1.SelectedItem);
+        string text = listBox1.GetItemText(listBox1.SelectedItem);
 
             if (funcion.Contains(text))
             {
@@ -170,6 +199,26 @@ namespace WindowsFormsApplication1.ABM_Rol
 
             }
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+        string text = listBox2.GetItemText(listBox2.SelectedItem);
+            listBox2.Items.Remove(listBox2.SelectedItem);
+
+            funcion.Remove(text);
+        }
+            
+            
+       
+
+
+
+
+      
+
+       
+
+       
 
 
     
