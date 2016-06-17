@@ -356,12 +356,13 @@
             // 
             this.button3.BackColor = System.Drawing.Color.MintCream;
             this.button3.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(979, 214);
+            this.button3.Location = new System.Drawing.Point(979, 219);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(280, 85);
             this.button3.TabIndex = 129;
-            this.button3.Text = "INHABILITAR USUARIO";
+            this.button3.Text = "INHABILITAR/ HABILITAR ";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -373,6 +374,7 @@
             this.button2.TabIndex = 128;
             this.button2.Text = "ATRAS";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 

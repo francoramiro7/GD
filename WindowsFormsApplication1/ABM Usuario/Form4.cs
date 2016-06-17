@@ -17,9 +17,10 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand existeDni;
+        SqlCommand existeDni, modificar, habilitado, bloquearUsuario, desbloquearUsuario;
         int validacionCliente = 0;
         float docu = 0;
+        String user = "";
 
 
         public Form4(String username, String nombre, String apellido, float dni, String tipo, String mail, String calle,
@@ -27,7 +28,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
 
             con = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
-
+            user = username;
             docu = dni;
             InitializeComponent();
             textBox1.Text = username;
@@ -99,8 +100,30 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void modificarCliente()
         {
+            con.Open();
+            modificar = new SqlCommand("PERSISTIENDO.updateCliente", con);
+            modificar.CommandType = CommandType.StoredProcedure;
 
+            modificar.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            modificar.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox2.Text;
+            modificar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox12.Text;
+            modificar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox3.Text;
+            modificar.Parameters.Add("@calle", SqlDbType.VarChar).Value = textBox7.Text;
+            modificar.Parameters.Add("@cp", SqlDbType.VarChar).Value = textBox11.Text;
+            modificar.Parameters.Add("@depto", SqlDbType.VarChar).Value = textBox10.Text;
+            modificar.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+            modificar.Parameters.Add("@dni", SqlDbType.Float).Value = float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat);
+            modificar.Parameters.Add("@tipo", SqlDbType.VarChar).Value = comboBox1.SelectedItem.ToString();
+            modificar.Parameters.Add("@nro", SqlDbType.Float).Value = float.Parse(textBox8.Text, CultureInfo.InvariantCulture.NumberFormat);
+            modificar.Parameters.Add("@fechanac", SqlDbType.DateTime).Value = dateTimePicker1.Value;
+            modificar.Parameters.Add("@localidad", SqlDbType.VarChar).Value = textBox6.Text;
+            modificar.ExecuteNonQuery();
+            con.Close();
 
+            String mensaje = "El usuario se ha modificado correctamente";
+            String caption = "Se ha modificado el usuario";
+            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            
         }
 
 
@@ -246,13 +269,70 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 validacionCliente = 0;
                 label15.Visible = true;
                 
+ }
 
+}
 
-            }
-
-
-
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form3 form3 = new ABM_Usuario.Form3();
+            this.Close();
+            form3.Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+           habilitado = new SqlCommand("PERSISTIENDO.estaBloqueado", con);
+            con.Open();
+            habilitado.CommandType = CommandType.StoredProcedure;
+            habilitado.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+               
+              var bloq = habilitado.Parameters.Add("@Valor", SqlDbType.Int);
+              bloq.Direction = ParameterDirection.ReturnValue;
+              data =  habilitado.ExecuteReader();
+              data.Close();
+              var bloqueado = bloq.Value;
+              con.Close();
+
+              if ((int)bloqueado == 1) {
+                
+                  DialogResult dialogResult = MessageBox.Show("El usuario se encuentra habilitado, deseea bloquearlo?", "Inhabilitar usuario", MessageBoxButtons.YesNo);
+                  if (dialogResult == DialogResult.Yes)
+                  {
+                      con.Open();
+                      bloquearUsuario = new SqlCommand("PERSISTIENDO.bloquearUsuario", con);
+
+                      bloquearUsuario.CommandType = CommandType.StoredProcedure;
+                      bloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+                      bloquearUsuario.ExecuteNonQuery();
+                      con.Close();
+                  }
+                
+                                         }
+
+              if ((int)bloqueado == 0)
+              {
+                  DialogResult dialogResult = MessageBox.Show("El usuario se encuentra inhabilitado, deseea desbloquearlo?", "Habilitar usuario", MessageBoxButtons.YesNo);
+                  if (dialogResult == DialogResult.Yes)
+                  {
+                      con.Open();
+                      desbloquearUsuario = new SqlCommand("PERSISTIENDO.desbloquearUsuario", con);
+
+                      desbloquearUsuario.CommandType = CommandType.StoredProcedure;
+                      desbloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+                      desbloquearUsuario.ExecuteNonQuery();
+                      con.Close();
+                  }
+
+
+
+              }
+                
+               
+                
+                }
 
 
 
