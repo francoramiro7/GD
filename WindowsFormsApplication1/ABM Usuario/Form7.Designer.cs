@@ -95,7 +95,7 @@
             // 
             this.button1.BackColor = System.Drawing.Color.MintCream;
             this.button1.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(121, 634);
+            this.button1.Location = new System.Drawing.Point(116, 634);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(303, 111);
             this.button1.TabIndex = 34;
@@ -107,12 +107,13 @@
             // 
             this.button2.BackColor = System.Drawing.Color.MintCream;
             this.button2.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(799, 634);
+            this.button2.Location = new System.Drawing.Point(890, 634);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(303, 111);
             this.button2.TabIndex = 35;
-            this.button2.Text = "AGREGAR";
+            this.button2.Text = "ACEPTAR";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form7
             // 

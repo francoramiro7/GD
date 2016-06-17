@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
          SqlConnection coneccion;
         SqlDataReader data;
-        SqlCommand cargarRoles, rolDeUsuario;
+        SqlCommand cargarRoles, rolDeUsuario, borrarRoles, agregarRoles, codigosRol;
         String usuario;
         List<String> funcionalidades = new List<String>();
 
@@ -114,6 +114,59 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            if (funcionalidades.Count == 0)
+            {
+                coneccion.Open();
+                borrarRoles = new SqlCommand("PERSISTIENDO.borrarRoles", coneccion);
+                borrarRoles.Parameters.Add("@Username", SqlDbType.VarChar).Value = usuario;
+                borrarRoles.CommandType = CommandType.StoredProcedure;
+                borrarRoles.ExecuteNonQuery();
+                coneccion.Close();
+
+
+
+            }
+            else
+            {
+                coneccion.Open();
+                borrarRoles = new SqlCommand("PERSISTIENDO.borrarRoles", coneccion);
+                borrarRoles.Parameters.Add("@Username", SqlDbType.VarChar).Value = usuario;
+                borrarRoles.CommandType = CommandType.StoredProcedure;
+                borrarRoles.ExecuteNonQuery();
+
+                List<int> codigos = new List<int>();
+
+                for (int i = 0; i < funcionalidades.Count(); i++)
+                {
+                    coneccion.Open();
+                    codigosRol = new SqlCommand("PERSISTIENDO.codigoRol", coneccion);
+                    codigosRol.CommandType = CommandType.StoredProcedure;
+                    codigosRol.Parameters.Add("@nombre", SqlDbType.VarChar).Value = funcionalidades.ElementAt(i).ToString();
+                    var resultado = codigosRol.Parameters.Add("@Valor", SqlDbType.Int);
+                    resultado.Direction = ParameterDirection.ReturnValue;
+                    data = codigosRol.ExecuteReader();
+                    var codigo = resultado.Value;
+                    int aniadir = (int)codigo;
+                    codigos.Add(aniadir);
+                    data.Close();
+                    coneccion.Close();
+
+                }
+
+                //ESTABAMOS POR ACA
+
+
+                
+            }
+
+
+
+
         }
     }
 }
