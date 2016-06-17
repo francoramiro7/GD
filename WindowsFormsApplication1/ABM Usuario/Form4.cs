@@ -334,6 +334,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 
                 }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form7 form7 = new ABM_Usuario.Form7(user);
+            form7.Show();
+        }
+
 
 
     }
