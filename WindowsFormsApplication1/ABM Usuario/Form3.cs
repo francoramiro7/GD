@@ -15,14 +15,14 @@ namespace WindowsFormsApplication1.ABM_Usuario
 {
     public partial class Form3 : Form
     {
-
+        SqlDataReader data;
         SqlConnection coneccion;
-        SqlCommand cargar, cargar2, filtrar;
+        SqlCommand cargar, cargar2, cargarDatos, filtrar, cliUser, cliTipo, cliCalle, cliNro, cliPiso, cliDpto, cliCp, clipFecha, cliLocalidad;
         public Form3()
         {
             InitializeComponent();
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
-            coneccion.Open();
+           
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
@@ -85,7 +85,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         }
 
         private void cargarClientes() {
-
+            coneccion.Open();
             cargar = new SqlCommand("PERSISTIENDO.cargarClientes", coneccion);
             cargar.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter adapter;
@@ -97,7 +97,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            
+            coneccion.Close();
 
 
 
@@ -106,6 +106,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void cargarEmpresas()
         {
+            coneccion.Open();
             cargar2 = new SqlCommand("PERSISTIENDO.cargarEmpresas", coneccion);
             cargar2.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter adapter;
@@ -116,6 +117,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             dataGridView1.DataSource = table;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            coneccion.Close();
 
 
            
@@ -130,14 +132,70 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             if(comboBox1.Text.Equals("Cliente")){
 
+                String nombre = "";
+                String apellido = "";
+                String mail = "";
+                float dni = 0;
+                String calle = "";
+                String tipo = "";
+                String depto= "";
+                float nro = 0;
+                float piso = 0;
+                String localidad = "";
+                String cp = "";
+                DateTime fecha = new DateTime();
+                String username = "";
 
-                DataGridViewCell fila;
-            
-            ABM_Usuario.Form4 form4 = new Form4();
+                foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                {
+                    dni = float.Parse(row.Cells[0].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);
+                    apellido = row.Cells[1].Value.ToString();
+                    nombre = row.Cells[2].Value.ToString();
+                    mail = row.Cells[3].Value.ToString();
+                    }
+
+                coneccion.Open();
+
+                cargarDatos = new SqlCommand("PERSISTIENDO.datosString", coneccion);
+                cargarDatos.Parameters.Add("@dni", SqlDbType.Float).Value = dni;
+                cargarDatos.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter adapter;
+                adapter = new SqlDataAdapter(cargarDatos);
+                DataTable table;
+                table = new DataTable();
+                adapter.Fill(table);
+                DataGridView datos = new DataGridView();
+                datos.DataSource = table;
+                dataGridView1.DataSource = table;
+                datos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                int cant = dataGridView1.Rows.Count;
+                
+                coneccion.Close();
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                   
+                    cp = row.Cells[0].Value.ToString();
+                    depto = row.Cells[1].Value.ToString();
+                    calle = row.Cells[2].Value.ToString();
+                    fecha = DateTime.Parse(row.Cells[3].Value.ToString());
+                    localidad = row.Cells[4].Value.ToString();
+                    nro = float.Parse(row.Cells[5].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);
+                    piso = float.Parse(row.Cells[6].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);
+                    tipo = row.Cells[7].Value.ToString();
+                    username = row.Cells[8].Value.ToString();
+                }
+
+                
+                
+                ABM_Usuario.Form4 form4 = new Form4(username, nombre, apellido, dni, tipo, mail, calle,
+                  nro, piso, depto, cp, fecha,localidad);
+
                 form4.Show();
                 this.Close();
                 
             }
+
             else {
                 ABM_Usuario.Form5 form5 = new Form5();
                 form5.Show();
@@ -155,21 +213,30 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //filtrar = new SqlCommand("PERSISTIENDO.filter", coneccion);
-            //filtrar.CommandType = CommandType.StoredProcedure;
+            filtrar = new SqlCommand("PERSISTIENDO.filter", coneccion);
+            filtrar.CommandType = CommandType.StoredProcedure;
 
-            //filtrar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
-            //filtrar.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox2.Text;
-            //filtrar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox3.Text;
-            //filtrar.Parameters.Add("@dni", SqlDbType.Float).Value = float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat);
-            
-            //SqlDataAdapter adapter;
-            
-            //adapter = new SqlDataAdapter(filtrar);
-            //DataTable table;
-            //table = new DataTable("PERSISTIENDO.U");
-            //adapter.Fill(table);
-            //dataGridView1.DataSource = table;
+            filtrar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
+            filtrar.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox2.Text;
+            filtrar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox3.Text;
+
+            float vardni = -1;
+
+            if (!String.IsNullOrEmpty(textBox4.Text))
+            {
+                vardni=float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat);
+
+            }
+
+            filtrar.Parameters.Add("@dni", SqlDbType.Float).Value = vardni;
+
+            SqlDataAdapter adapter;
+
+            adapter = new SqlDataAdapter(filtrar);
+            DataTable table;
+            table = new DataTable("PERSISTIENDO.U");
+            adapter.Fill(table);
+            dataGridView1.DataSource = table;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
