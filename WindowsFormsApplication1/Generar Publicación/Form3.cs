@@ -17,15 +17,22 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         String estado;
         float codigo;
+        float costo = 0;
         String descripcion;
         String precio;
         String stock;
+        String Rubro;
+        String Pregunta;
+        String envi;
+        String Visibilidad;
+        String Tipo;
         bool envia = false;
         String tipoVisibilidad = "";
         bool preguntas = true;
         SqlConnection coneccion;
         SqlCommand nombresVisibilidad, rubros, precioPorNombreVisibilidad, envioPorNombreVisibilidad, envioHabilitado, publicar,
-            codigoRubro, codigoTipo, codigoVisibilidad, codigoEstado, ultimaPublicacion;
+            codigoRubro, codigoTipo, codigoVisibilidad, codigoEstado, rubroPorPublicacion, datosPublicacion,
+            tieneFactura, ultimaFactura, facturar, itemFactura;
         SqlDataReader data;
 
 
@@ -61,7 +68,42 @@ namespace WindowsFormsApplication1.Generar_Publicación
             DataTable tablaRubros = new DataTable();
             adapterRubro.Fill(tablaRubros);
             comboBox5.DataSource = tablaRubros;
+
+            datosPublicacion = new SqlCommand("PERSISTIENDO.datosPublicacion", coneccion);
+            datosPublicacion.CommandType = CommandType.StoredProcedure;
+            datosPublicacion.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
+           
+            SqlDataAdapter adapter2 = new SqlDataAdapter(datosPublicacion);
+            DataTable table = new DataTable();
+            adapter2.Fill(table);
+
+           
+            if (table.Rows[0][0].ToString().Equals("True"))
+            {
+                Pregunta = "Si";
+            }
+            else
+            {
+                Pregunta = "No";
+            }
+
+            if (table.Rows[0][1].ToString().Equals("True"))
+            {
+                envi = "Si";
+            }
+            else
+            {
+                envi = "No";
+            }
+
+            Rubro = table.Rows[0][2].ToString();
+            Visibilidad = table.Rows[0][3].ToString();
+            Tipo = table.Rows[0][4].ToString();
             
+
+
+            data.Close();
+
 
             seteo();
 
@@ -84,6 +126,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
             if (!usuario.Rol.Equals("Administrador"))
             {
                 modificarPublicacion();
+
                 Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
                 form2.Show();
                 this.Close();
@@ -151,10 +194,10 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 publicar = new SqlCommand("PERSISTIENDO.modificarPublicacion", coneccion);
 
                 publicar.CommandType = CommandType.StoredProcedure;
-                publicar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = (float.Parse(codPublicacion.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
+                publicar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value =codigo;
                 publicar.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = textBox1.Text;
                 publicar.Parameters.Add("@Stock", SqlDbType.Int).Value = textBox2.Text;
-                publicar.Parameters.Add("@Precio", SqlDbType.Float).Value = textBox5.Text;
+                publicar.Parameters.Add("@Precio", SqlDbType.Float).Value = (float) Convert.ToDouble(textBox5.Text);
                 publicar.Parameters.Add("@Rubro", SqlDbType.Int).Value = (int)codRubro;
                 publicar.Parameters.Add("@Envio", SqlDbType.Bit).Value = envia;
                 publicar.Parameters.Add("@Tipo", SqlDbType.Int).Value = (int)codTipo;
@@ -164,9 +207,61 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
                 publicar.ExecuteNonQuery();
 
-                Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
-                form2.Show();
-                this.Close();
+
+
+                tieneFactura = new SqlCommand("PERSISTIENDO.tieneFactura", coneccion);
+
+                tieneFactura.CommandType = CommandType.StoredProcedure;
+                tieneFactura.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = codigo;
+                var tf = tieneFactura.Parameters.Add("@Cantidad", SqlDbType.Int);
+                tf.Direction = ParameterDirection.ReturnValue;
+                data = tieneFactura.ExecuteReader();
+                var facturasTiene = tf.Value;
+                data.Close();
+
+
+                if (comboBox3.Text.Equals("Activa")  && ((int)facturasTiene==0))
+                {
+                    ultimaFactura = new SqlCommand("PERSISTIENDO.ultimaFactura", coneccion);
+
+                    ultimaFactura.CommandType = CommandType.StoredProcedure;
+                    var uf = ultimaFactura.Parameters.Add("@Cantidad", SqlDbType.Float);
+                    uf.Direction = ParameterDirection.ReturnValue;
+                    data = ultimaFactura.ExecuteReader();
+                    var codFactura = uf.Value;
+                    data.Close();
+
+                    facturar = new SqlCommand("PERSISTIENDO.facturarPublicacion", coneccion);
+
+                    facturar.CommandType = CommandType.StoredProcedure;
+
+                    facturar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = codigo;
+                    facturar.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
+                    facturar.Parameters.Add("@Precio", SqlDbType.Float).Value = costo;
+                    facturar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                    facturar.Parameters.Add("@Pago", SqlDbType.VarChar).Value = "Efectivo";
+
+                    facturar.ExecuteNonQuery();
+
+                    itemFactura = new SqlCommand("PERSISTIENDO.newItemFactura", coneccion);
+
+                    itemFactura.CommandType = CommandType.StoredProcedure;
+
+                    itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
+                    itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = costo;
+                    itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Costo de publicacion: " + comboBox4.Text);
+
+                    itemFactura.ExecuteNonQuery();
+
+                    Generar_Publicación.Form5 form5 = new Generar_Publicación.Form5(textBox1.Text,
+                        comboBox4.Text, (costo.ToString()),
+                        Properties.Settings.Default.fecha,
+                        ((DateTime)Properties.Settings.Default.fecha).AddDays(7),
+                        codPublicacion.ToString());
+                    form5.Show();
+                }
+
+
 
             }
 
@@ -245,21 +340,25 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 comboBox3.Items.Add("Finalizada");
             }
 
-            comboBox5.DisplayMember = "Rubro_Descripcion"; //CAMBIARR!!!
+            comboBox5.DisplayMember = "Rubro_Descripcion";
             comboBox5.SelectedIndex = comboBox5.Items.IndexOf("New");
+            comboBox5.Text = Rubro;
 
-            comboBox4.DisplayMember = "Visibilidad_descripcion"; //CAMBIARR!!!
+            comboBox4.DisplayMember = "Visibilidad_descripcion";
             comboBox4.SelectedIndex = comboBox4.Items.IndexOf("New");
+            comboBox4.Text = Visibilidad;
 
-            comboBox2.DisplayMember = "Visibilidad_descripcion"; //CAMBIARR!!!
+            comboBox2.DisplayMember = Tipo;
             comboBox2.SelectedIndex = comboBox2.Items.IndexOf("New");
+            comboBox2.Text = Tipo;
 
-            comboBox1.DisplayMember = "Visibilidad_descripcion"; //CAMBIARR!!!
+            comboBox1.DisplayMember = Pregunta;
             comboBox1.SelectedIndex = comboBox1.Items.IndexOf("New");
+            comboBox1.Text = Pregunta;
 
-            comboBox6.DisplayMember = "Visibilidad_descripcion"; //CAMBIARR!!!
+            comboBox6.DisplayMember = envi;
             comboBox6.SelectedIndex = comboBox6.Items.IndexOf("New");
-
+            comboBox6.Text = envi;
 
             comboBox3.SelectedIndex = -1;
             comboBox3.Text = estado;
@@ -392,7 +491,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
         private void actualizar_costo()
         {
 
-            float costo = 0;
             float envio = 0;
             String costoTotal;
 
@@ -463,7 +561,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
             var envioHabi = preEnvio.Value;
             data.Close();
 
-            if ((int)envioHabi == 1)
+            if (((int)envioHabi == 1) && estado.Equals("Borrador")) 
             {
                 comboBox6.Enabled = true;
             }
@@ -473,15 +571,14 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 comboBox6.Enabled = false;
             }
 
-            if (comboBox2.Text.Equals("Subasta"))
+            if (comboBox2.Text.Equals("Subasta") && estado.Equals("Borrador"))
             {
                 textBox2.Text = "1";
                 textBox2.Enabled = false;
                 label5.Text = "Precio Inicial";
             }
-            else
+            else if(!comboBox2.Text.Equals("Subasta") && estado.Equals("Borrador"))
             {
-                textBox2.Text = "";
                 textBox2.Enabled = true;
                 label5.Text = "Precio";
             }
@@ -504,5 +601,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
                 preguntas = true;
             }
         }
+
     }
 }

@@ -18,11 +18,12 @@ namespace WindowsFormsApplication1.Generar_Publicación
         bool envia = false;
         String tipoVisibilidad = "";
         bool preguntas = true;
+        float costo = 0;
 
 
         SqlConnection coneccion;
         SqlCommand nombresVisibilidad,rubros, precioPorNombreVisibilidad, envioPorNombreVisibilidad, envioHabilitado,publicar,
-            codigoRubro, codigoTipo, codigoVisibilidad, codigoEstado,ultimaPublicacion;
+            codigoRubro, codigoTipo, codigoVisibilidad, codigoEstado,ultimaPublicacion,ultimaFactura,facturar,itemFactura;
         SqlDataReader data;
         
         public Form1()
@@ -150,7 +151,7 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         private void actualizar_costo(){
 
-            float costo =0;
+            
             float envio = 0;
             String costoTotal;
 
@@ -165,7 +166,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
             var precio = prePrecio.Value;
             data.Close();
 
-            //costo = Double.Parse(precio.ToString());
             costo = float.Parse(precio.ToString(), CultureInfo.InvariantCulture.NumberFormat);
 
             if (envia)
@@ -248,7 +248,6 @@ namespace WindowsFormsApplication1.Generar_Publicación
             }
             else
             {
-                textBox2.Text = "";
                 textBox2.Enabled = true;
                 label5.Text = "Precio";
             }
@@ -257,86 +256,139 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
         private void button2_Click(object sender, EventArgs e)
         {
-
-
-            if (validarCampos())
+            if (!usuario.Rol.Equals("Administrador"))
             {
+            
 
-                ultimaPublicacion = new SqlCommand("PERSISTIENDO.ultimaPublicacion", coneccion);
+                if (validarCampos())
+                {
 
-                ultimaPublicacion.CommandType = CommandType.StoredProcedure;
-                var up = ultimaPublicacion.Parameters.Add("@Cantidad", SqlDbType.Float);
-                up.Direction = ParameterDirection.ReturnValue;
-                data = ultimaPublicacion.ExecuteReader();
-                var codPublicacion = up.Value;
-                data.Close();
+                    ultimaPublicacion = new SqlCommand("PERSISTIENDO.ultimaPublicacion", coneccion);
 
-
-                codigoRubro = new SqlCommand("PERSISTIENDO.codigoRubro", coneccion);
-
-                codigoRubro.CommandType = CommandType.StoredProcedure;
-                codigoRubro.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = comboBox5.Text;
-                var cr = codigoRubro.Parameters.Add("@Cantidad", SqlDbType.Int);
-                cr.Direction = ParameterDirection.ReturnValue;
-                data = codigoRubro.ExecuteReader();
-                var codRubro = cr.Value;
-                data.Close();
-
-                codigoEstado = new SqlCommand("PERSISTIENDO.codigoEstado", coneccion);
-
-                codigoEstado.CommandType = CommandType.StoredProcedure;
-                codigoEstado.Parameters.Add("@Estado", SqlDbType.VarChar).Value = comboBox3.Text;
-                var ce = codigoEstado.Parameters.Add("@Cantidad", SqlDbType.Int);
-                ce.Direction = ParameterDirection.ReturnValue;
-                data = codigoEstado.ExecuteReader();
-                var codEstado = ce.Value;
-                data.Close();
-
-                codigoTipo = new SqlCommand("PERSISTIENDO.codigoTipoPublicacion", coneccion);
-
-                codigoTipo.CommandType = CommandType.StoredProcedure;
-                codigoTipo.Parameters.Add("@Tipo", SqlDbType.VarChar).Value = comboBox2.Text;
-                var ct = codigoTipo.Parameters.Add("@Cantidad", SqlDbType.Int);
-                ct.Direction = ParameterDirection.ReturnValue;
-                data = codigoTipo.ExecuteReader();
-                var codTipo = ct.Value;
-                data.Close();
-
-                codigoVisibilidad = new SqlCommand("PERSISTIENDO.codigoVisibilidad", coneccion);
-
-                codigoVisibilidad.CommandType = CommandType.StoredProcedure;
-                codigoVisibilidad.Parameters.Add("@Visibilidad", SqlDbType.VarChar).Value = comboBox4.Text;
-                var cv = codigoVisibilidad.Parameters.Add("@Cantidad", SqlDbType.Int);
-                cv.Direction = ParameterDirection.ReturnValue;
-                data = codigoVisibilidad.ExecuteReader();
-                var codVisibilidad = cv.Value;
-                data.Close();
+                    ultimaPublicacion.CommandType = CommandType.StoredProcedure;
+                    var up = ultimaPublicacion.Parameters.Add("@Cantidad", SqlDbType.Float);
+                    up.Direction = ParameterDirection.ReturnValue;
+                    data = ultimaPublicacion.ExecuteReader();
+                    var codPublicacion = up.Value;
+                    data.Close();
 
 
+                    codigoRubro = new SqlCommand("PERSISTIENDO.codigoRubro", coneccion);
 
-                publicar = new SqlCommand("PERSISTIENDO.crearPublicacion", coneccion);
+                    codigoRubro.CommandType = CommandType.StoredProcedure;
+                    codigoRubro.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = comboBox5.Text;
+                    var cr = codigoRubro.Parameters.Add("@Cantidad", SqlDbType.Int);
+                    cr.Direction = ParameterDirection.ReturnValue;
+                    data = codigoRubro.ExecuteReader();
+                    var codRubro = cr.Value;
+                    data.Close();
 
-                publicar.CommandType = CommandType.StoredProcedure;
-                publicar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = (float.Parse(codPublicacion.ToString(), CultureInfo.InvariantCulture.NumberFormat)+1);
-                publicar.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = textBox1.Text;
-                publicar.Parameters.Add("@Stock", SqlDbType.Int).Value = textBox2.Text;
-                publicar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
-                publicar.Parameters.Add("@Venci", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
-                publicar.Parameters.Add("@Precio", SqlDbType.Float).Value = textBox5.Text;
-                publicar.Parameters.Add("@Rubro", SqlDbType.Int).Value = (int)codRubro;
-                publicar.Parameters.Add("@Envio", SqlDbType.Bit).Value = envia;
-                publicar.Parameters.Add("@Vendedor", SqlDbType.VarChar).Value = usuario.username;
-                publicar.Parameters.Add("@Tipo", SqlDbType.Int).Value = (int)codTipo;
-                publicar.Parameters.Add("@Preguntas", SqlDbType.Bit).Value = preguntas;
-                publicar.Parameters.Add("@Visibilidad", SqlDbType.Int).Value = (int)codVisibilidad;
-                publicar.Parameters.Add("@Estado", SqlDbType.Int).Value = (int)codEstado;
+                    codigoEstado = new SqlCommand("PERSISTIENDO.codigoEstado", coneccion);
 
-                publicar.ExecuteNonQuery();
+                    codigoEstado.CommandType = CommandType.StoredProcedure;
+                    codigoEstado.Parameters.Add("@Estado", SqlDbType.VarChar).Value = comboBox3.Text;
+                    var ce = codigoEstado.Parameters.Add("@Cantidad", SqlDbType.Int);
+                    ce.Direction = ParameterDirection.ReturnValue;
+                    data = codigoEstado.ExecuteReader();
+                    var codEstado = ce.Value;
+                    data.Close();
 
-                Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
-                form2.Show();
-                this.Close();
+                    codigoTipo = new SqlCommand("PERSISTIENDO.codigoTipoPublicacion", coneccion);
+
+                    codigoTipo.CommandType = CommandType.StoredProcedure;
+                    codigoTipo.Parameters.Add("@Tipo", SqlDbType.VarChar).Value = comboBox2.Text;
+                    var ct = codigoTipo.Parameters.Add("@Cantidad", SqlDbType.Int);
+                    ct.Direction = ParameterDirection.ReturnValue;
+                    data = codigoTipo.ExecuteReader();
+                    var codTipo = ct.Value;
+                    data.Close();
+
+                    codigoVisibilidad = new SqlCommand("PERSISTIENDO.codigoVisibilidad", coneccion);
+
+                    codigoVisibilidad.CommandType = CommandType.StoredProcedure;
+                    codigoVisibilidad.Parameters.Add("@Visibilidad", SqlDbType.VarChar).Value = comboBox4.Text;
+                    var cv = codigoVisibilidad.Parameters.Add("@Cantidad", SqlDbType.Int);
+                    cv.Direction = ParameterDirection.ReturnValue;
+                    data = codigoVisibilidad.ExecuteReader();
+                    var codVisibilidad = cv.Value;
+                    data.Close();
+
+
+
+                    publicar = new SqlCommand("PERSISTIENDO.crearPublicacion", coneccion);
+
+                    publicar.CommandType = CommandType.StoredProcedure;
+                    publicar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = (float.Parse(codPublicacion.ToString(), CultureInfo.InvariantCulture.NumberFormat)+1);
+                    publicar.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = textBox1.Text;
+                    publicar.Parameters.Add("@Stock", SqlDbType.Int).Value = textBox2.Text;
+                    publicar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                    publicar.Parameters.Add("@Venci", SqlDbType.DateTime).Value = ((DateTime)Properties.Settings.Default.fecha).AddDays(7);
+                    publicar.Parameters.Add("@Precio", SqlDbType.Float).Value = textBox5.Text;
+                    publicar.Parameters.Add("@Rubro", SqlDbType.Int).Value = (int)codRubro;
+                    publicar.Parameters.Add("@Envio", SqlDbType.Bit).Value = envia;
+                    publicar.Parameters.Add("@Vendedor", SqlDbType.VarChar).Value = usuario.username;
+                    publicar.Parameters.Add("@Tipo", SqlDbType.Int).Value = (int)codTipo;
+                    publicar.Parameters.Add("@Preguntas", SqlDbType.Bit).Value = preguntas;
+                    publicar.Parameters.Add("@Visibilidad", SqlDbType.Int).Value = (int)codVisibilidad;
+                    publicar.Parameters.Add("@Estado", SqlDbType.Int).Value = (int)codEstado;
+
+                    publicar.ExecuteNonQuery();
+
+
+                    Generar_Publicación.Form2 form2 = new Generar_Publicación.Form2();
+                    form2.Show();
+
+                    if (comboBox3.Text.Equals("Activa"))
+                    {
+                        ultimaFactura = new SqlCommand("PERSISTIENDO.ultimaFactura", coneccion);
+
+                        ultimaFactura.CommandType = CommandType.StoredProcedure;
+                        var uf = ultimaFactura.Parameters.Add("@Cantidad", SqlDbType.Float);
+                        uf.Direction = ParameterDirection.ReturnValue;
+                        data = ultimaFactura.ExecuteReader();
+                        var codFactura = uf.Value;
+                        data.Close();
+
+                        facturar = new SqlCommand("PERSISTIENDO.facturarPublicacion", coneccion);
+
+                        facturar.CommandType = CommandType.StoredProcedure;
+
+                        facturar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = (float.Parse(codPublicacion.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
+                        facturar.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
+                        facturar.Parameters.Add("@Precio", SqlDbType.Float).Value = costo;
+                        facturar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                        facturar.Parameters.Add("@Pago", SqlDbType.VarChar).Value = "Efectivo";
+
+                        facturar.ExecuteNonQuery();
+
+                        itemFactura = new SqlCommand("PERSISTIENDO.newItemFactura", coneccion);
+
+                        itemFactura.CommandType = CommandType.StoredProcedure;
+
+                        itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
+                        itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = costo;
+                        itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Costo de publicacion: "+ comboBox4.Text);
+
+                        itemFactura.ExecuteNonQuery();
+
+                        Generar_Publicación.Form5 form5 = new Generar_Publicación.Form5(textBox1.Text,
+                            comboBox4.Text, (costo.ToString()),
+                            Properties.Settings.Default.fecha,
+                            ((DateTime)Properties.Settings.Default.fecha).AddDays(7),
+                            codPublicacion.ToString());
+                        form5.Show();
+                    }
+                    
+                    
+                    this.Close();
                
+                }
+            }
+            else
+            {
+                String mensaje = "No tiene permisos para generar publicaciones";
+                String caption = "Error al generar publicación";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
             }
         }
 
