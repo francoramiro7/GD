@@ -37,5 +37,10 @@ namespace WindowsFormsApplication1.Generar_Publicación
             form4.Show();
             this.Close();
         }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
