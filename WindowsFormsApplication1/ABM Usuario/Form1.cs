@@ -26,6 +26,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         Boolean ingresoletraNro = false;
         Boolean ingresoletraPiso = false;
         Boolean ingresoLetraCp = false;
+        Boolean cambioFecha = true;
         
        
 
@@ -96,6 +97,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
             label20.Visible = true;
             textBox18.Visible = true;
             button4.Visible = true;
+            dateTimePicker1.Text = "";
+            
 
             textBox3.Visible = true; //nommbre
             textBox4.Visible = true; //apellido
@@ -266,7 +269,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
                         crearCliente.Parameters.Add("@calle", SqlDbType.VarChar).Value = textBox7.Text;
                         crearCliente.Parameters.Add("@cp", SqlDbType.Float).Value = float.Parse(textBox11.Text, CultureInfo.InvariantCulture.NumberFormat);
                         crearCliente.Parameters.Add("@depto", SqlDbType.VarChar).Value = textBox10.Text;
-                        crearCliente.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+                        if (String.IsNullOrEmpty(textBox9.Text))
+                            crearCliente.Parameters.Add("@piso", SqlDbType.Float).Value = DBNull.Value;
+                        else
+                            crearCliente.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+
                         crearCliente.Parameters.Add("@dni", SqlDbType.Float).Value = float.Parse(textBox5.Text, CultureInfo.InvariantCulture.NumberFormat);
                         crearCliente.Parameters.Add("@tipo", SqlDbType.VarChar).Value = comboBox1.SelectedItem.ToString();
                         crearCliente.Parameters.Add("@nro", SqlDbType.Float).Value = float.Parse(textBox8.Text, CultureInfo.InvariantCulture.NumberFormat);
@@ -286,6 +293,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
                         String mensaje = "El usuario se ha creado correctamente";
                         String caption = "Usuario creado";
                         MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                        ABM_Usuario.Form2 form2 = new Form2();
+                        form2.Show();
+                        this.Close();
         
         
         }
@@ -655,7 +665,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
               string.IsNullOrEmpty(textBox4.Text) | string.IsNullOrEmpty(textBox5.Text) | string.IsNullOrEmpty(textBox5.Text) |
                 string.IsNullOrEmpty(textBox7.Text) | string.IsNullOrEmpty(textBox8.Text) | string.IsNullOrEmpty(textBox11.Text) |
                 string.IsNullOrEmpty(textBox6.Text) | string.IsNullOrEmpty(textBox18.Text) |
-                comboBox1.SelectedIndex == -1 | dateTimePicker1.Text == "")
+                comboBox1.SelectedIndex == -1 | cambioFecha)
             {
 
                 String mensaje = "Los campos (*) son obligatorios";
@@ -838,6 +848,21 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox3.SelectedIndex = -1;
 
 
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            cambioFecha = false;
+        }
+
+        private void dateTimePicker1_ValueChanged_1(object sender, EventArgs e)
+        {
+            cambioFecha = false;
+        }
+
+        private void dateTimePicker1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            cambioFecha = false;
         }
 
 

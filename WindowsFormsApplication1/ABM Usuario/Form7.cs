@@ -87,8 +87,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
             if (funcionalidades.Contains(text))
             {
 
-                String mensaje = "Esta funcionalidad ya ha sido ingresada";
-                String caption = "Funcionalidad duplicada";
+                String mensaje = "Este rol ya ha sido ingresado";
+                String caption = "Rol duplicada";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
             }
@@ -129,8 +129,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 coneccion.Close();
 
 
-
-            }
+                }
             else
             {
                 coneccion.Open();
@@ -138,6 +137,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 borrarRoles.Parameters.Add("@Username", SqlDbType.VarChar).Value = usuario;
                 borrarRoles.CommandType = CommandType.StoredProcedure;
                 borrarRoles.ExecuteNonQuery();
+                coneccion.Close();
 
                 List<int> codigos = new List<int>();
 
@@ -151,14 +151,33 @@ namespace WindowsFormsApplication1.ABM_Usuario
                     resultado.Direction = ParameterDirection.ReturnValue;
                     data = codigosRol.ExecuteReader();
                     var codigo = resultado.Value;
-                    int aniadir = (int)codigo;
-                    codigos.Add(aniadir);
+                    int cod = (int)codigo;
+                    codigos.Add(cod);
                     data.Close();
                     coneccion.Close();
 
                 }
 
-                //ESTABAMOS POR ACA
+                for (int i = 0; i < codigos.Count(); i++)
+                {
+
+                    coneccion.Open();
+                    agregarRoles = new SqlCommand("PERSISTIENDO.crearRol", coneccion);
+                    agregarRoles.CommandType = CommandType.StoredProcedure;
+                    agregarRoles.Parameters.Add("@Username", SqlDbType.VarChar).Value = usuario;
+                    agregarRoles.Parameters.Add("@rol", SqlDbType.Int).Value = codigos.ElementAt(i);
+                    agregarRoles.ExecuteNonQuery();
+                    coneccion.Close();
+
+                }
+
+                String mensaje = "Los roles del usuario se han modificado correctamente";
+                String caption = "Roles modificados";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+                this.Close();
+
+                
 
 
                 
