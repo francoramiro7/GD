@@ -402,13 +402,15 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Location = new System.Drawing.Point(372, 709);
+            this.dateTimePicker1.Location = new System.Drawing.Point(372, 714);
             this.dateTimePicker1.MaxDate = new System.DateTime(2006, 12, 31, 0, 0, 0, 0);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(409, 34);
             this.dateTimePicker1.TabIndex = 96;
             this.dateTimePicker1.Value = new System.DateTime(2006, 12, 31, 0, 0, 0, 0);
             this.dateTimePicker1.Visible = false;
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged_1);
+            this.dateTimePicker1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dateTimePicker1_KeyPress);
             // 
             // comboBox1
             // 
@@ -529,7 +531,7 @@
             // 
             this.textBox16.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox16.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox16.Location = new System.Drawing.Point(372, 709);
+            this.textBox16.Location = new System.Drawing.Point(372, 713);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(409, 32);
             this.textBox16.TabIndex = 108;

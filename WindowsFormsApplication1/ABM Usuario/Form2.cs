@@ -26,7 +26,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Form2 home = new Form2();
+            
+            WindowsFormsApplication1.Form2 home = new WindowsFormsApplication1.Form2();
+                
             home.Show();
             this.Close();
         }

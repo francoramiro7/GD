@@ -140,7 +140,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 String tipo = "";
                 String depto= "";
                 float nro = 0;
-                float piso = 0;
+                String piso = "";
                 String localidad = "";
                 String cp = "";
                 DateTime fecha = new DateTime();
@@ -181,7 +181,10 @@ namespace WindowsFormsApplication1.ABM_Usuario
                     fecha = DateTime.Parse(row.Cells[3].Value.ToString());
                     localidad = row.Cells[4].Value.ToString();
                     nro = float.Parse(row.Cells[5].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);
-                    piso = float.Parse(row.Cells[6].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);
+                    if (String.IsNullOrEmpty(row.Cells[6].Value.ToString()))
+                        piso = "";
+                    else
+                        piso = (row.Cells[6]).ToString();
                     tipo = row.Cells[7].Value.ToString();
                     username = row.Cells[8].Value.ToString();
                 }

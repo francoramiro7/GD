@@ -24,7 +24,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
 
         public Form4(String username, String nombre, String apellido, float dni, String tipo, String mail, String calle,
-                  float nro, float piso, String depto, String cp, DateTime fecha, String localidad)
+                  float nro, String piso, String depto, String cp, DateTime fecha, String localidad)
         {
 
             con = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
@@ -39,7 +39,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox1.Text = tipo;
             textBox7.Text = calle;
             textBox8.Text = nro.ToString();
-            textBox9.Text = piso.ToString();
+            textBox9.Text = piso;
             textBox10.Text = depto;
             textBox11.Text = cp;
             textBox6.Text = localidad;
