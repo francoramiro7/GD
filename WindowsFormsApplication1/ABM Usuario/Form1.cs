@@ -216,7 +216,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
             cod = new SqlCommand("PERSISTIENDO.codigoRubro", con);
             cod.CommandType = CommandType.StoredProcedure;
-            cod.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = comboBox3.SelectedText.ToString();
+            cod.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = comboBox3.Text.ToString();
 
             var result= cod.Parameters.Add("@Valor", SqlDbType.Int);
             result.Direction = ParameterDirection.ReturnValue;
@@ -228,21 +228,32 @@ namespace WindowsFormsApplication1.ABM_Usuario
             crearEmpresa.CommandType = CommandType.StoredProcedure;
 
             crearEmpresa.Parameters.Add("@user", SqlDbType.VarChar).Value = textBox1.Text;
-            crearEmpresa.Parameters.Add("@razon", SqlDbType.VarChar).Value = textBox4.Text;
-            crearEmpresa.Parameters.Add("@cuit", SqlDbType.VarChar).Value = textBox3.Text;
+            crearEmpresa.Parameters.Add("@razon", SqlDbType.VarChar).Value = textBox12.Text;
+            crearEmpresa.Parameters.Add("@cuit", SqlDbType.VarChar).Value = textBox15.Text;
             crearEmpresa.Parameters.Add("@creacion", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
-            crearEmpresa.Parameters.Add("@mail", SqlDbType.VarChar).Value =
+            crearEmpresa.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox13.Text;
             crearEmpresa.Parameters.Add("@calle", SqlDbType.VarChar).Value = textBox7.Text;
             crearEmpresa.Parameters.Add("@num", SqlDbType.Float).Value = float.Parse(textBox8.Text, CultureInfo.InvariantCulture.NumberFormat);
-            crearEmpresa.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
-            crearEmpresa.Parameters.Add("@depto", SqlDbType.Float).Value = float.Parse(textBox10.Text, CultureInfo.InvariantCulture.NumberFormat);
-            crearEmpresa.Parameters.Add("@cp", SqlDbType.VarChar).Value = comboBox1.SelectedItem.ToString();
+            if (String.IsNullOrEmpty(textBox9.Text))
+                crearEmpresa.Parameters.Add("@piso", SqlDbType.Float).Value = DBNull.Value;
+            else
+                crearEmpresa.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+
+            crearEmpresa.Parameters.Add("@depto", SqlDbType.VarChar).Value = textBox10.Text;
+            crearEmpresa.Parameters.Add("@cp", SqlDbType.VarChar).Value = textBox11.Text;
             crearEmpresa.Parameters.Add("@rubro", SqlDbType.Int).Value = (int)codigoRubro;
-            crearEmpresa.Parameters.Add("@contacto", SqlDbType.DateTime).Value = dateTimePicker1.Value;
-            crearEmpresa.Parameters.Add("@localidad", SqlDbType.DateTime).Value = 
+            crearEmpresa.Parameters.Add("@contacto", SqlDbType.VarChar).Value = textBox16.Text;
+            crearEmpresa.Parameters.Add("@localidad", SqlDbType.VarChar).Value = textBox6.Text;
             crearEmpresa.Parameters.Add("@ciudad", SqlDbType.VarChar).Value = textBox17.Text;
-            crearEmpresa.Parameters.Add("@tel", SqlDbType.VarChar).Value = textBox6.Text;
+            crearEmpresa.Parameters.Add("@tel", SqlDbType.VarChar).Value = textBox14.Text;
             crearEmpresa.ExecuteNonQuery();
+
+            String mensaje = "El usuario se ha creado correctamente";
+                        String caption = "Usuario creado";
+                        MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                        ABM_Usuario.Form2 form2 = new Form2();
+                        form2.Show();
+                        this.Close();
 
 
 

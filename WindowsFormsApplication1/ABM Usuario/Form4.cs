@@ -54,7 +54,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button4_Click(object sender, EventArgs e)
         {
-            textBox1.Text = string.Empty;
+            
             textBox12.Text = string.Empty;
             textBox2.Text = string.Empty;
             textBox3.Text = string.Empty;

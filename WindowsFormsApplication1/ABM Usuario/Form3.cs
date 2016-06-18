@@ -164,10 +164,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 DataTable table;
                 table = new DataTable();
                 adapter.Fill(table);
-                DataGridView datos = new DataGridView();
-                datos.DataSource = table;
+                
                 dataGridView1.DataSource = table;
-                datos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+               
                 int cant = dataGridView1.Rows.Count;
                 
                 coneccion.Close();
@@ -200,7 +199,69 @@ namespace WindowsFormsApplication1.ABM_Usuario
             }
 
             else {
-                ABM_Usuario.Form5 form5 = new Form5();
+                String username = "";
+                String razon = "";
+                String mail = "";
+                String telefono = "";
+                String cuit = "";
+                String calle = "";
+                String nro = "";
+                String piso = "";
+                String depto = "";
+                String cp = "";
+                String loca = "";
+                String nombre = "";
+                String rubro = "";
+                String ciudad = "";
+
+                foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                {
+                    cuit = row.Cells[0].Value.ToString();
+                    razon = row.Cells[1].Value.ToString();
+                    mail = row.Cells[2].Value.ToString();
+                   
+                }
+
+                coneccion.Open();
+
+                cargarDatos = new SqlCommand("PERSISTIENDO.datosEmpresa", coneccion);
+                cargarDatos.Parameters.Add("@cuit", SqlDbType.VarChar).Value = cuit;
+                cargarDatos.CommandType = CommandType.StoredProcedure;
+                SqlDataAdapter adapter;
+                adapter = new SqlDataAdapter(cargarDatos);
+                DataTable table;
+                table = new DataTable();
+                adapter.Fill(table);
+                dataGridView1.DataSource = table;
+                int cant = dataGridView1.Rows.Count;
+                coneccion.Close();
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+
+                    ciudad = row.Cells[0].Value.ToString();
+                    cp = row.Cells[1].Value.ToString();
+                    depto = row.Cells[2].Value.ToString();
+                    calle = row.Cells[3].Value.ToString();
+                    loca = row.Cells[4].Value.ToString();
+                    mail = row.Cells[5].Value.ToString();
+                    nombre = row.Cells[6].Value.ToString();
+                    nro = row.Cells[7].Value.ToString();
+                    piso = row.Cells[8].Value.ToString();
+                    rubro = row.Cells[9].Value.ToString();
+                    telefono = row.Cells[10].Value.ToString();
+                    username = row.Cells[11].Value.ToString();
+                  
+}
+
+
+
+
+
+
+
+                ABM_Usuario.Form5 form5 = new Form5(username, razon, mail, telefono, cuit, calle, nro, piso, depto, cp, loca, nombre,
+                    rubro, ciudad);
                 form5.Show();
                 this.Close();
             }
