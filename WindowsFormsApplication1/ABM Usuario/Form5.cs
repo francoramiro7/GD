@@ -53,7 +53,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
             comboBox3.DisplayMember = "Rubro_Descripcion";
             comboBox3.Text = rubro;
             con.Close();
-
+            
+           
 
 
 
