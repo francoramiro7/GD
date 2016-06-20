@@ -19,9 +19,10 @@ namespace WindowsFormsApplication1.ComprarOfertar
         String rubro;
         String tipo;
         int stock;
+        float oferta;
 
         SqlConnection coneccion;
-        SqlCommand datosPublicacion, stockPublicacion;
+        SqlCommand datosPublicacion, stockPublicacion, ultimaOferta;
         SqlDataReader data;
 
 
@@ -47,15 +48,38 @@ namespace WindowsFormsApplication1.ComprarOfertar
             textBox1.Text = "1";
 
             if(tipo.Equals("Subasta")){
-                label2.Visible=false;
+                label2.Visible=true;
+                label8.Text = "Ultima Oferta:";
+                label2.Text = "Oferta:";
                 label5.Visible=false;
                 textBox1.Visible=false;
                 botonTerminar.Text = "Ofertar";
                 this.Text = "Ofertar por Publicación";
                 textBox1.Text = "1";
                 textBox1.Enabled = false;
+                if (false)
+                {
+
+                    ultimaOferta = new SqlCommand("PERSISTIENDO.ultimaOferta", coneccion);
+                    ultimaOferta.CommandType = CommandType.StoredProcedure;
+                    ultimaOferta.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
+                    var uo = ultimaOferta.Parameters.Add("@Cantidad", SqlDbType.Float);
+                    uo.Direction = ParameterDirection.ReturnValue;
+                    data = ultimaOferta.ExecuteReader();
+                    var varOferta = uo.Value;
+                    data.Close();
+
+                    oferta = (float)varOferta;
+
+                    label6.Text = "$" + oferta.ToString();
+                }
+
+
+            
             }else{
                 label2.Visible=true;
+                label8.Text = "Precio";
+                label2.Text = "Cantidad:";
                 label5.Visible=true;
                 textBox1.Visible=true;
                 botonTerminar.Text = "Comprar";
