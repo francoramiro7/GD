@@ -284,10 +284,10 @@ Where Factura_Nro is not null
 Insert into PERSISTIENDO.Compra(Compra_comprador,Compra_codigo_publicacion)
 select distinct Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod
 From GD1C2016.gd_esquema.Maestra
-Where Calificacion_Codigo is not null
+Where Compra_Fecha is not null
 
 Insert into PERSISTIENDO.Calificacion (Calificacion_codigo,Calificacion_cant_estrellas,Calificacion_descripcion,Calificacion_codigo_compra)
-select Calificacion_Codigo,Calificacion_Cant_Estrellas,Calificacion_Descripcion,Compra_codigo
+select distinct Calificacion_Codigo,Calificacion_Cant_Estrellas,Calificacion_Descripcion,Compra_codigo
 From GD1C2016.gd_esquema.Maestra, PERSISTIENDO.Compra
 where Calificacion_Codigo is not null and Compra_comprador = Cli_Dni and Compra_codigo_publicacion = Publicacion_Cod
 
