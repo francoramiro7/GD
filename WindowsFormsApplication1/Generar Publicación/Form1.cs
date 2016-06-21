@@ -115,6 +115,12 @@ namespace WindowsFormsApplication1.Generar_Publicación
             int comas = 0;
             for (int i = 0; i < ingresado.Length; i++)
             {
+
+                if (ingre[0].Equals(','))
+                {
+                    return false;
+                }
+
                 if (!char.IsNumber(ingre[i]))
                 {
                     if (tieneComa)

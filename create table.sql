@@ -148,6 +148,7 @@ Oferta_fecha datetime NOT NULL,
 Oferta_monto numeric(18,2) NOT NULL,
 Oferta_publicacion numeric(18,0) NOT NULL,
 Oferta_ofertante nvarchar(30) NOT NULL,
+Oferta_envio bit not null,
 PRIMARY KEY(Oferta_codigo),
 CONSTRAINT fk_oferta_ofertante FOREIGN KEY (Oferta_ofertante) REFERENCES PERSISTIENDO.Usuario(Usuario_username),
 CONSTRAINT fk_oferta_publicaciones FOREIGN KEY (Oferta_publicacion) REFERENCES PERSISTIENDO.Publicacion(Publicacion_codigo)
@@ -176,23 +177,23 @@ CONSTRAINT fk_item_factura_codigo_factura FOREIGN KEY (Item_Factura_codigo_factu
 )
 GO
 
-CREATE TABLE PERSISTIENDO.Calificacion(
-Calificacion_codigo numeric(18,0) NOT NULL,
-Calificacion_cant_estrellas numeric(18,0) NOT NULL,
-Calificacion_descripcion nvarchar(255),
-PRIMARY KEY (Calificacion_codigo)
-)
-GO
-
 CREATE TABLE PERSISTIENDO.Compra(
 Compra_codigo INT IDENTITY (1,1) NOT NULL,
-Compra_calificacion numeric(18,0) NOT NULL,
 Compra_comprador nvarchar(30) NOT NULL,
 Compra_codigo_publicacion numeric(18,0) NOT NULL,
 PRIMARY KEY (Compra_codigo),
-CONSTRAINT fk_compra_calificacion FOREIGN KEY (Compra_calificacion) REFERENCES PERSISTIENDO.Calificacion(Calificacion_codigo),
 CONSTRAINT fk_compra_comprador FOREIGN KEY (Compra_comprador) REFERENCES PERSISTIENDO.Usuario(Usuario_username),
 CONSTRAINT fk_compra_publicacion FOREIGN KEY (Compra_codigo_publicacion) REFERENCES PERSISTIENDO.Publicacion(Publicacion_codigo)
+)
+GO
+
+CREATE TABLE PERSISTIENDO.Calificacion(
+Calificacion_codigo numeric(18,0) NOT NULL,
+Calificacion_codigo_compra int not null,
+Calificacion_cant_estrellas numeric(18,0) NOT NULL,
+Calificacion_descripcion nvarchar(255),
+PRIMARY KEY (Calificacion_codigo),
+CONSTRAINT fk_calificacion_compra FOREIGN KEY (Calificacion_codigo_compra) REFERENCES PERSISTIENDO.Compra(Compra_codigo)
 )
 GO
 
@@ -269,11 +270,6 @@ Select distinct Publicacion_Cod,Publicacion_Descripcion,1,1,Publicacion_Fecha,Pu
 From GD1C2016.gd_esquema.Maestra 
 where Publ_Empresa_Cuit is not null And Publicacion_Tipo is not null
 
-Insert into PERSISTIENDO.Calificacion (Calificacion_codigo,Calificacion_cant_estrellas,Calificacion_descripcion)
-select Calificacion_Codigo,Calificacion_Cant_Estrellas,Calificacion_Descripcion
-From GD1C2016.gd_esquema.Maestra
-where Calificacion_Codigo is not null
-
 Insert into PERSISTIENDO.Factura(Factura_numero,Factura_total,Factura_fecha,Factura_forma_de_pago,Factura_codigo_publicacion)
 Select distinct Factura_Nro,Factura_Total,Factura_Fecha,Forma_Pago_Desc,Publicacion_Cod
 From GD1C2016.gd_esquema.Maestra
@@ -285,13 +281,18 @@ From GD1C2016.gd_esquema.Maestra
 Where Factura_Nro is not null
 
 
-Insert into PERSISTIENDO.Compra(Compra_calificacion,Compra_comprador,Compra_codigo_publicacion)
-select distinct Calificacion_Codigo,Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod
+Insert into PERSISTIENDO.Compra(Compra_comprador,Compra_codigo_publicacion)
+select distinct Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod
 From GD1C2016.gd_esquema.Maestra
 Where Calificacion_Codigo is not null
 
-Insert into PERSISTIENDO.Oferta(Oferta_fecha,Oferta_monto,Oferta_ofertante,Oferta_publicacion)
-select distinct Oferta_Fecha,Oferta_Monto,Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod
+Insert into PERSISTIENDO.Calificacion (Calificacion_codigo,Calificacion_cant_estrellas,Calificacion_descripcion,Calificacion_codigo_compra)
+select Calificacion_Codigo,Calificacion_Cant_Estrellas,Calificacion_Descripcion,Compra_codigo
+From GD1C2016.gd_esquema.Maestra, PERSISTIENDO.Compra
+where Calificacion_Codigo is not null and Compra_comprador = Cli_Dni and Compra_codigo_publicacion = Publicacion_Cod
+
+Insert into PERSISTIENDO.Oferta(Oferta_fecha,Oferta_monto,Oferta_ofertante,Oferta_publicacion,Oferta_envio)
+select distinct Oferta_Fecha,Oferta_Monto,Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod,0
 From GD1C2016.gd_esquema.Maestra
 Where Oferta_Fecha is not null
 

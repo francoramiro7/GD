@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Globalization;
+
 
 namespace WindowsFormsApplication1.ComprarOfertar
 {
@@ -19,10 +21,14 @@ namespace WindowsFormsApplication1.ComprarOfertar
         String rubro;
         String tipo;
         int stock;
-        float oferta;
+        float oferta = 0;
+        String estado;
+        bool envia;
+        String vendedor;
+        String visibilidad;
 
         SqlConnection coneccion;
-        SqlCommand datosPublicacion, stockPublicacion, ultimaOferta;
+        SqlCommand datosPublicacion, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
         SqlDataReader data;
 
 
@@ -47,7 +53,10 @@ namespace WindowsFormsApplication1.ComprarOfertar
             label7.Text = rubro;
             textBox1.Text = "1";
 
+            
+
             if(tipo.Equals("Subasta")){
+                label9.Visible = true;
                 label2.Visible=true;
                 label8.Text = "Ultima Oferta:";
                 label2.Text = "Oferta:";
@@ -57,34 +66,49 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 this.Text = "Ofertar por Publicación";
                 textBox1.Text = "1";
                 textBox1.Enabled = false;
-                if (false)
+                textBox2.Visible = true;
+                label9.Text = "Precio sugerido: $" + precio.ToString();
+
+
+                cantidadOfertas = new SqlCommand("PERSISTIENDO.cantidadOfertas", coneccion);
+                cantidadOfertas.CommandType = CommandType.StoredProcedure;
+                cantidadOfertas.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
+                var co = cantidadOfertas.Parameters.Add("@Cantidad", SqlDbType.Int);
+                co.Direction = ParameterDirection.ReturnValue;
+                data = cantidadOfertas.ExecuteReader();
+                var varCofertas = co.Value;
+                data.Close();
+
+
+
+
+                if (((int)varCofertas)>0)
                 {
 
                     ultimaOferta = new SqlCommand("PERSISTIENDO.ultimaOferta", coneccion);
                     ultimaOferta.CommandType = CommandType.StoredProcedure;
                     ultimaOferta.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
-                    var uo = ultimaOferta.Parameters.Add("@Cantidad", SqlDbType.Float);
-                    uo.Direction = ParameterDirection.ReturnValue;
-                    data = ultimaOferta.ExecuteReader();
-                    var varOferta = uo.Value;
-                    data.Close();
+                    SqlDataAdapter adapter3 = new SqlDataAdapter(ultimaOferta);
+                    DataTable table2 = new DataTable();
+                    adapter3.Fill(table2);
 
-                    oferta = (float)varOferta;
-
-                    label6.Text = "$" + oferta.ToString();
+                    oferta = (float)Double.Parse(table2.Rows[0][0].ToString());
                 }
 
-
+                label6.Text = "$" + oferta.ToString();
             
             }else{
                 label2.Visible=true;
+                label9.Visible = false;
                 label8.Text = "Precio";
                 label2.Text = "Cantidad:";
                 label5.Visible=true;
                 textBox1.Visible=true;
                 botonTerminar.Text = "Comprar";
                 this.Text = "Comprar";
+                textBox2.Visible = false;
                 textBox1.Enabled = true;
+                textBox1.Text = "1";
             }
 
             datosPublicacion = new SqlCommand("PERSISTIENDO.datosPublicacion", coneccion);
@@ -95,6 +119,10 @@ namespace WindowsFormsApplication1.ComprarOfertar
             DataTable table = new DataTable();
             adapter2.Fill(table);
 
+
+            estado = table.Rows[0][5].ToString();
+            vendedor = table.Rows[0][6].ToString();
+            visibilidad = table.Rows[0][3].ToString();
 
             if (table.Rows[0][0].ToString().Equals("True"))
             {
@@ -115,6 +143,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 comboBox1.DisplayMember = "No";
                 comboBox1.SelectedIndex = comboBox1.Items.IndexOf("New");
                 comboBox1.Text = "No";
+
             }
 
             stockPublicacion = new SqlCommand("PERSISTIENDO.stockPublicacion", coneccion);
@@ -180,7 +209,179 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         private void botonTerminar_Click(object sender, EventArgs e)
         {
-           
+
+            if (!usuario.username.Equals(vendedor))
+            {
+
+                if (!usuario.Rol.Equals("Administrador"))
+                {
+
+                    if (estado.Equals("Pausada"))
+                    {
+                        String mensaje = "La publicación esta pausada, intentelo más tarde";
+                        String caption = "Imposible realizar la compra/oferta";
+                        MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        if (!String.IsNullOrEmpty(comboBox1.Text))
+                        {
+                            if (tipo.Equals("Subasta"))
+                            {
+
+                                if (!String.IsNullOrEmpty(textBox2.Text))
+                                {
+                                    if (((float)Double.Parse(textBox2.Text)) > oferta)
+                                    {
+
+                                        ofertar = new SqlCommand("PERSISTIENDO.ofertar", coneccion);
+
+                                        ofertar.CommandType = CommandType.StoredProcedure;
+                                        ofertar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = (float.Parse(codigo.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                        ofertar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                                        ofertar.Parameters.Add("@Monto", SqlDbType.Float).Value = textBox2.Text;
+                                        ofertar.Parameters.Add("@Envio", SqlDbType.Bit).Value = envia;
+                                        ofertar.Parameters.Add("@Ofertante", SqlDbType.VarChar).Value = usuario.username;
+
+                                        ofertar.ExecuteNonQuery();
+
+                                        ComprarOfertar.Form1 form1 = new ComprarOfertar.Form1();
+                                        form1.Show();
+                                        this.Close();
+
+                                    }
+                                    else
+                                    {
+                                        String mensaje = "La oferta debe ser mayor al ultimo monto ofertado";
+                                        String caption = "Imposible realizar la oferta";
+                                        MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                                    }
+                                }
+                                else
+                                {
+                                    String mensaje = "Debe completar el campo oferta";
+                                    String caption = "Imposible realizar la oferta";
+                                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+                                }
+
+                            }
+                            else
+                            {
+                                if (!String.IsNullOrEmpty(textBox1.Text))
+                                {
+                                    //Obtener cod factura
+                                    facturaPorPublicacion = new SqlCommand("PERSISTIENDO.facturaPorPublicacion", coneccion);
+                                    facturaPorPublicacion.CommandType = CommandType.StoredProcedure;
+                                    facturaPorPublicacion.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
+                                    var fp = facturaPorPublicacion.Parameters.Add("@Cantidad", SqlDbType.Int);
+                                    fp.Direction = ParameterDirection.ReturnValue;
+                                    data = facturaPorPublicacion.ExecuteReader();
+                                    var codFactura = fp.Value;
+                                    data.Close();
+
+
+                                    //Obtener % visibilidad
+                                    porVisibilidad = new SqlCommand("PERSISTIENDO.porcentajeVisibilidad", coneccion);
+                                    porVisibilidad.CommandType = CommandType.StoredProcedure;
+                                    porVisibilidad.Parameters.Add("@Visibilidad", SqlDbType.VarChar).Value = visibilidad;
+                                    SqlDataAdapter adapter4 = new SqlDataAdapter(porVisibilidad);
+                                    DataTable table3 = new DataTable();
+                                    adapter4.Fill(table3);
+
+                                    float porcentaje = (float)Double.Parse(table3.Rows[0][0].ToString());
+                                    float precioEnvio = (float)Double.Parse(table3.Rows[0][1].ToString());
+
+                                    float total = ((float)Double.Parse(precio) * (Int32.Parse(textBox1.Text)))*porcentaje;
+                                    
+
+                                    //generar item_factura
+                                    itemFactura = new SqlCommand("PERSISTIENDO.itemFactura", coneccion);
+                                    itemFactura.CommandType = CommandType.StoredProcedure;
+                                    itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                    itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = total;
+                                    itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Comision por venta: " + visibilidad);
+                                    itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = (Int32.Parse(textBox1.Text)) ;
+
+                                    itemFactura.ExecuteNonQuery();
+
+                                    if (comboBox1.Text.Equals("Si"))
+                                    {
+
+                                        itemFactura = new SqlCommand("PERSISTIENDO.itemFactura", coneccion);
+                                        itemFactura.CommandType = CommandType.StoredProcedure;
+                                        itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                        itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = precioEnvio;
+                                        itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Envio: " + visibilidad);
+                                        itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = 1;
+
+                                        itemFactura.ExecuteNonQuery();
+
+                                    }
+                                    
+                                    //actualizar stock
+                                    //si el stock queda en 0 finalizar publicacion
+
+                                    modificarStockEstadoPublicacion = new SqlCommand("PERSISTIENDO.modificarStockEstadoPublicacion", coneccion);
+                                    modificarStockEstadoPublicacion.CommandType = CommandType.StoredProcedure;
+                                    modificarStockEstadoPublicacion.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = (float.Parse(codigo.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+
+                                    int stockFinal = stock - (Int32.Parse(textBox1.Text));
+
+                                    modificarStockEstadoPublicacion.Parameters.Add("@Stock", SqlDbType.Float).Value = stockFinal;
+                                    if (stockFinal == 0)
+                                    {
+                                        modificarStockEstadoPublicacion.Parameters.Add("@Estado", SqlDbType.Int).Value = 4;
+                                    }
+                                    else
+                                    {
+                                        modificarStockEstadoPublicacion.Parameters.Add("@Estado", SqlDbType.Int).Value = 1;
+                                    }
+
+                                    modificarStockEstadoPublicacion.ExecuteNonQuery();
+
+                                    //generarCompra
+                                    newCompra = new SqlCommand("PERSISTIENDO.newCompra", coneccion);
+                                    newCompra.CommandType = CommandType.StoredProcedure;
+                                    newCompra.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
+                                    newCompra.Parameters.Add("@Comprador", SqlDbType.VarChar).Value = usuario.username;
+                                   
+                                    newCompra.ExecuteNonQuery();
+                                    
+
+                                    ComprarOfertar.Form1 form1 = new ComprarOfertar.Form1();
+                                    form1.Show();
+                                    this.Close();
+                                }
+                                else
+                                {
+                                    String mensaje = "Debe completar el campo cantidad";
+                                    String caption = "Imposible realizar la compra";
+                                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            String mensaje = "Debe completar el campo envio";
+                            String caption = "Imposible realizar la compra/oferta";
+                            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                        }
+                    }
+                }
+                else
+                {
+                    String mensaje = "No tiene permisos para comprar/ofertar";
+                    String caption = "Error de permisos";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                }
+            }
+            else
+            {
+                String mensaje = "No puede comprar/ofertar por una publicación propia";
+                String caption = "Imposible realizar la compra/oferta";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            }
         }
 
         private bool esNumero(String ingresado, bool tieneComa)
@@ -188,8 +389,15 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
             char[] ingre = ingresado.ToCharArray();
             int comas = 0;
+            
             for (int i = 0; i < ingresado.Length; i++)
             {
+
+                if (ingre[0].Equals(','))
+                {
+                    return false;
+                }
+
                 if (!char.IsNumber(ingre[i]))
                 {
                     if (tieneComa)
@@ -212,6 +420,38 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 }
             }
             return true;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, true))
+            {
+                if (!textBox2.Text.Equals(""))
+                {
+                }
+            }
+            else
+            {
+                String mensaje = "No puede ingresar letras";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox2.Text = "";
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text.Equals("No"))
+            {
+                envia = false;
+            }
+            else
+            {
+                envia = true;
+            }
         }
     }
 }
