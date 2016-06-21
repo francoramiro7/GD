@@ -111,7 +111,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
             modificar.Parameters.Add("@calle", SqlDbType.VarChar).Value = textBox7.Text;
             modificar.Parameters.Add("@cp", SqlDbType.VarChar).Value = textBox11.Text;
             modificar.Parameters.Add("@depto", SqlDbType.VarChar).Value = textBox10.Text;
-            modificar.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+            if (String.IsNullOrEmpty(textBox9.Text))
+                modificar.Parameters.Add("@piso", SqlDbType.Float).Value = DBNull.Value;
+            else
+                modificar.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+            
             modificar.Parameters.Add("@dni", SqlDbType.Float).Value = float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat);
             modificar.Parameters.Add("@tipo", SqlDbType.VarChar).Value = comboBox1.SelectedItem.ToString();
             modificar.Parameters.Add("@nro", SqlDbType.Float).Value = float.Parse(textBox8.Text, CultureInfo.InvariantCulture.NumberFormat);
