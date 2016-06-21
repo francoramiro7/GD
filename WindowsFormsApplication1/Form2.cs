@@ -202,7 +202,7 @@ namespace WindowsFormsApplication1
 
             if (nombre.Equals("CALIFICAR AL VENDEDOR"))
             {
-                Calificar.Form1 formCal = new Calificar.Form1();
+                Calificar.Form2 formCal = new Calificar.Form2();
                 formCal.Show();
                 this.Close();
 
