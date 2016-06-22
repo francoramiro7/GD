@@ -51,7 +51,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
             adapter.Fill(tablaRubros);
             comboBox3.DataSource = tablaRubros;
             comboBox3.DisplayMember = "Rubro_Descripcion";
-            comboBox3.Text = rubro;
+            comboBox3.Text = "";
+            if (!(string.IsNullOrEmpty(rubro)))
+            {
+                comboBox3.Text = rubro;
+            }
+           
             con.Close();
             
            

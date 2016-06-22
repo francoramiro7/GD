@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
         SqlDataReader data;
         SqlConnection coneccion;
-        SqlCommand cargar, cargar2, cargarDatos, filtrar, cliUser, cliTipo, cliCalle, cliNro, cliPiso, cliDpto, cliCp, clipFecha, cliLocalidad;
+        SqlCommand cargar, cargar2, cargarDatos, cargarDatos3,cargarDatos2, rubro,filtrar, cliUser, cliTipo, cliCalle, cliNro, cliPiso, cliDpto, cliCp, clipFecha, cliLocalidad;
         public Form3()
         {
             InitializeComponent();
@@ -211,8 +211,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 String cp = "";
                 String loca = "";
                 String nombre = "";
-                String rubro = "";
+                String codrubro = "";
                 String ciudad = "";
+                String ru = "";
 
                 foreach (DataGridViewRow row in dataGridView1.SelectedRows)
                 {
@@ -224,17 +225,20 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
                 coneccion.Open();
 
-                cargarDatos = new SqlCommand("PERSISTIENDO.datosEmpresa", coneccion);
-                cargarDatos.Parameters.Add("@cuit", SqlDbType.VarChar).Value = cuit;
-                cargarDatos.CommandType = CommandType.StoredProcedure;
+                cargarDatos2 = new SqlCommand("PERSISTIENDO.datosEmpresa", coneccion);
+                cargarDatos2.Parameters.Add("@cuit", SqlDbType.VarChar, 50).Value = cuit;
+                cargarDatos2.CommandType = CommandType.StoredProcedure;
                 SqlDataAdapter adapter;
-                adapter = new SqlDataAdapter(cargarDatos);
+                adapter = new SqlDataAdapter(cargarDatos2);
                 DataTable table;
                 table = new DataTable();
                 adapter.Fill(table);
+                String user = table.Rows[0][0].ToString();
+
                 dataGridView1.DataSource = table;
                 int cant = dataGridView1.Rows.Count;
                 coneccion.Close();
+                
 
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
@@ -248,20 +252,31 @@ namespace WindowsFormsApplication1.ABM_Usuario
                     nombre = row.Cells[6].Value.ToString();
                     nro = row.Cells[7].Value.ToString();
                     piso = row.Cells[8].Value.ToString();
-                    rubro = row.Cells[9].Value.ToString();
+                    codrubro = row.Cells[9].Value.ToString();
                     telefono = row.Cells[10].Value.ToString();
                     username = row.Cells[11].Value.ToString();
                   
 }
 
-
-
-
-
+                if (String.IsNullOrEmpty(codrubro))
+                {
+                }
+                else
+                {
+                    rubro = new SqlCommand("PERSISTIENDO.nombreRubro", coneccion);
+                    rubro.Parameters.Add("@codigo", SqlDbType.Float).Value = int.Parse(codrubro);
+                    rubro.CommandType = CommandType.StoredProcedure;
+                    SqlDataAdapter adapter2;
+                    adapter2 = new SqlDataAdapter(rubro);
+                    DataTable table2;
+                    table2 = new DataTable();
+                    adapter2.Fill(table2);
+                    codrubro = table2.Rows[0][0].ToString();
+                }
 
 
                 ABM_Usuario.Form5 form5 = new Form5(username, razon, mail, telefono, cuit, calle, nro, piso, depto, cp, loca, nombre,
-                    rubro, ciudad);
+                    codrubro, ciudad);
                 form5.Show();
                 this.Close();
             }

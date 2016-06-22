@@ -553,7 +553,7 @@
             // 
             this.textBox16.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox16.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox16.Location = new System.Drawing.Point(372, 711);
+            this.textBox16.Location = new System.Drawing.Point(372, 716);
             this.textBox16.MaxLength = 255;
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(409, 32);
