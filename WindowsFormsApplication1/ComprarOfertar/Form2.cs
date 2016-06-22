@@ -28,7 +28,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
         String visibilidad;
 
         SqlConnection coneccion;
-        SqlCommand datosPublicacion, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
+        SqlCommand datosPublicacion,cuantasPorCalificar, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
         SqlDataReader data;
 
 
@@ -226,6 +226,17 @@ namespace WindowsFormsApplication1.ComprarOfertar
                     {
                         if (!String.IsNullOrEmpty(comboBox1.Text))
                         {
+                            cuantasPorCalificar = new SqlCommand("PERSISTIENDO.cuantasPorCalificar", coneccion);
+                            cuantasPorCalificar.CommandType = CommandType.StoredProcedure;
+                            cuantasPorCalificar.Parameters.Add("@Usuario", SqlDbType.VarChar).Value = usuario.username;
+                            SqlDataAdapter adapter7 = new SqlDataAdapter(cuantasPorCalificar);
+                            DataTable table7 = new DataTable();
+                            adapter7.Fill(table7);
+
+                            float cantCali = (float)Double.Parse(table7.Rows[0][0].ToString());
+
+                            if (cantCali < 4) { 
+
                             if (tipo.Equals("Subasta"))
                             {
 
@@ -360,6 +371,12 @@ namespace WindowsFormsApplication1.ComprarOfertar
                                     MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                                 }
                             }
+                        }else{
+                            String mensaje = "Por favor califica antes de comprar/ofertar";
+                            String caption = "Imposible realizar la compra/oferta";
+                            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+                        }
                         }
                         else
                         {
