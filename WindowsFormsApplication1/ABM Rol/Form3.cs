@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         SqlConnection coneccion;
         SqlDataReader data;
-        SqlCommand cargarRoles, cargarFunc, fpr, existeRol, cambiarN;
+        SqlCommand cargarRoles, cargarFunc, fpr, existeRol, cambiarN, eliminar, crearFunc, codigoRol, codigoFunc;
         List<String> funcion = new List<String>();
         List<String> funcionesViejas = new List<String>();
         
@@ -117,12 +117,7 @@ namespace WindowsFormsApplication1.ABM_Rol
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
             }
-            else if (rol.Equals(textBox1.Text) && funcion.SequenceEqual(funcionesViejas))
-            {
-                String mensaje = "No ha modificado ningun campo";
-                String caption = "Error al modificar el rol";
-                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-            }
+            
             else
             {
                 coneccion.Open();
@@ -151,13 +146,6 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void modificarRol() {
 
-
-
-            if (!(rol.Equals(textBox1.Text))) { 
-            
-                //actualizarelnombre
-                label4.Text = "cambio el nombre";
-
                 coneccion.Open();
                 cambiarN = new SqlCommand("PERSISTIENDO.modificarRol", coneccion);
                 cambiarN.CommandType = CommandType.StoredProcedure;
@@ -165,21 +153,72 @@ namespace WindowsFormsApplication1.ABM_Rol
                 cambiarN.Parameters.Add("@anterior", SqlDbType.VarChar).Value = rol;
                 cambiarN.ExecuteNonQuery();
 
-            }
 
-            if(!(funcion.SequenceEqual(funcionesViejas))){
-           
-            //actualizarfunc;
-                label5.Text = "cambiaron las func";
+                codigoRol = new SqlCommand("PERSISTIENDO.codigoRol", coneccion);
+                codigoRol.CommandType = CommandType.StoredProcedure;
+                codigoRol.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
+                var resultado = codigoRol.Parameters.Add("@Valor", SqlDbType.Int);
+                resultado.Direction = ParameterDirection.ReturnValue;
+                data = codigoRol.ExecuteReader();
+               
 
-            }
+                var codi = resultado.Value;
+                int codigo = (int)codi;
+                data.Close();
+
+                eliminar = new SqlCommand("PERSISTIENDO.eliminarFuncionalidades", coneccion);
+                eliminar.CommandType = CommandType.StoredProcedure;
+                eliminar.Parameters.Add("@rol", SqlDbType.Int).Value = codigo;
+                eliminar.ExecuteNonQuery();
+                coneccion.Close();
+
+                List<int> codigos = new List<int>();
 
 
+                for (int i = 0; i < funcion.Count(); i++)
+                {
+                    coneccion.Open();
+                    codigoFunc = new SqlCommand("PERSISTIENDO.codigoFuncionalidad", coneccion);
+                    codigoFunc.CommandType = CommandType.StoredProcedure;
+                    codigoFunc.Parameters.Add("@nombre", SqlDbType.VarChar).Value = funcion.ElementAt(i).ToString();
+                    var resultado2 = codigoFunc.Parameters.Add("@Valor", SqlDbType.Int);
+                    resultado2.Direction = ParameterDirection.ReturnValue;
+                    data = codigoFunc.ExecuteReader();
+                    var codigo2 = resultado2.Value;
+                    int aniadir = (int)codigo2;
+                    codigos.Add(aniadir);
+                    data.Close();
+                    coneccion.Close();
+                                    }
+
+
+                for (int i = 0; i < codigos.Count(); i++)
+                {
+
+                    coneccion.Open();
+                    crearFunc = new SqlCommand("PERSISTIENDO.crearFuncionalidad", coneccion);
+                    crearFunc.CommandType = CommandType.StoredProcedure;
+                    crearFunc.Parameters.Add("@codigoRol", SqlDbType.VarChar).Value = codigo;
+                    crearFunc.Parameters.Add("@codigoFunc", SqlDbType.Int).Value = codigos.ElementAt(i);
+                    crearFunc.ExecuteNonQuery();
+                    coneccion.Close();
+
+                }
+
+                String mensaje = "El rol se ha modificado correctamente";
+                String caption = "Rol modificado";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+
+                
+                
 
             
 
-
+          
         }
+
+
 
         
         
