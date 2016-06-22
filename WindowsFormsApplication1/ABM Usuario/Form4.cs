@@ -51,7 +51,42 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
 
         }
+        private bool esNumero(String ingresado, bool tieneComa)
+        {
 
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+
+                if (ingre[0].Equals(','))
+                {
+                    return false;
+                }
+
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals(',')) || (comas > 0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+            return true;
+        }
         private void button4_Click(object sender, EventArgs e)
         {
             
@@ -127,6 +162,14 @@ namespace WindowsFormsApplication1.ABM_Usuario
             String mensaje = "El usuario se ha modificado correctamente";
             String caption = "Se ha modificado el usuario";
             MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+            ABM_Usuario.Form3 form3 = new ABM_Usuario.Form3();
+            this.Close();
+            form3.Show();
+
+            ABM_Usuario.Form7 form7 = new ABM_Usuario.Form7(user,0);
+            form7.Close();
+
             
         }
 
@@ -150,130 +193,26 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
 
             if ((int)existeDoc == 1 && (docu != (float)Convert.ToDouble(textBox4.Text)))
-                label1.Visible=true;
+            {
+
+                String mensaje = "El dni ya ha sido registrado";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox4.Text = "";
+
                 
-
-            else
-                validacionCliente++;
-
-
-                 if (textBox12.Text.Length > 255)
-            {
-                textBox12.Text = "Ha superado el limite de caracteres";
             }
-            else if (textBox12.Text.Any(char.IsDigit))
-            {
-                textBox12.Text = "No se permiten caracteres numericos";
-            }
-            else
-                validacionCliente++;
-
-
-            if (textBox2.Text.Length > 255)
-            {
-                textBox2.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox2.Text.Any(char.IsDigit))
-            {
-                textBox2.Text = "No se permiten caracteres numericos";
-            }
-            else
-                validacionCliente++;
-
-
-            if (textBox3.Text.Length > 255)
-                textBox3.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-
-            if (textBox4.Text.Length > 18)
-            {
-                textBox4.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox4.Text.Any(char.IsLetter))
-            {
-                textBox4.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionCliente++;
-            //dni
-
-            if (textBox7.Text.Length > 255)
-                textBox7.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-            //calle
-
-
-            if (textBox8.Text.Length > 18)
-            {
-                textBox8.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox8.Text.Any(char.IsLetter))
-            {
-                textBox8.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionCliente++;
-
-            //nro
-
-            if (textBox9.Text.Length > 18)
-            {
-                textBox9.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox9.Text.Any(char.IsLetter))
-            {
-                textBox9.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionCliente++;
-
-            //piso
-
-
-            if (textBox10.Text.Length > 50)
-                textBox10.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-            //depto
-
-            if (textBox10.Text.Length > 50)
-                textBox10.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-            //cp
-
-            if (textBox6.Text.Length > 255)
-                textBox6.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-            //localidad
 
 
 
-            if (validacionCliente == 11)
-            {
+            else {
 
-
-                label15.Visible = false;
                 modificarCliente();
             }
-            else
-            {
+               
 
-                String mensaje = "Por favor, corrija los campos indicados";
-                String caption = "Error al crear usuario";
-                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-                validacionCliente = 0;
-                label15.Visible = true;
-                
- }
+
+        
 
 }
 
@@ -340,8 +279,61 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button5_Click(object sender, EventArgs e)
         {
-            ABM_Usuario.Form7 form7 = new ABM_Usuario.Form7(user);
+            ABM_Usuario.Form7 form7 = new ABM_Usuario.Form7(user,1);
             form7.Show();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox4.Text = "";
+            }
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox8.Text = "";
+            }
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox9.Text = "";
+            }
         }
 
 

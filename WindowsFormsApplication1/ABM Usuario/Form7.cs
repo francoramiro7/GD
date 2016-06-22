@@ -21,7 +21,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         String usuario;
         List<String> funcionalidades = new List<String>();
 
-        public Form7(String username)
+        public Form7(String username, int tipo)
             
             
         {
@@ -42,7 +42,16 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 roles.Add(dat.GetString(0));
             }
 
-            roles.Remove("Empresa");
+
+            if (tipo == 1)
+            {
+                roles.Remove("Empresa");
+            }
+
+            if (tipo == 2) {
+                roles.Remove("Cliente");
+            }
+            
             comboBox1.DataSource = roles;
             dat.Close();
             comboBox1.DisplayMember = "Rol_nombre";

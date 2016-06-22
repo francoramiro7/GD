@@ -245,8 +245,16 @@ namespace WindowsFormsApplication1.ABM_Usuario
             crearEmpresa.Parameters.Add("@contacto", SqlDbType.VarChar).Value = textBox16.Text;
             crearEmpresa.Parameters.Add("@localidad", SqlDbType.VarChar).Value = textBox6.Text;
             crearEmpresa.Parameters.Add("@ciudad", SqlDbType.VarChar).Value = textBox17.Text;
-            crearEmpresa.Parameters.Add("@tel", SqlDbType.VarChar).Value = textBox14.Text;
+            crearEmpresa.Parameters.Add("@tel", SqlDbType.Float).Value = float.Parse(textBox14.Text, CultureInfo.InvariantCulture.NumberFormat);
             crearEmpresa.ExecuteNonQuery();
+
+
+            crearRol = new SqlCommand("PERSISTIENDO.crearRol", con);
+            crearRol.CommandType = CommandType.StoredProcedure;
+            crearRol.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            crearRol.Parameters.Add("@Rol", SqlDbType.Int).Value = 2;
+
+            crearRol.ExecuteNonQuery();
 
             String mensaje = "El usuario se ha creado correctamente";
                         String caption = "Usuario creado";
@@ -346,154 +354,33 @@ namespace WindowsFormsApplication1.ABM_Usuario
             data.Close();
 
             if ((int)existeU == 1)
-                textBox1.Text = "El usuario ya existe";
-            else
-                validacionEmpresa++;
-
-            if (textBox1.Text.Length > 30)
-                textBox1.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (textBox2.Text.Length > 30)
-                textBox2.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if ((int)existeR == 1)
-                textBox12.Text = "La razon social ya existe";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox12.Text.Length > 255)
-                textBox12.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox13.Text.Length > 50)
-                textBox13.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox14.Text.Length > 30)
-            {
-                textBox14.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox14.Text.Any(char.IsLetter))
-            {
-                textBox14.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-
-            if ((int)existeC == 1)
-                textBox14.Text = "El cuit ya existe";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox14.Text.Length > 50)
-                textBox14.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox7.Text.Length > 255)
-                textBox7.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox8.Text.Length > 18)
-            {
-                textBox8.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox8.Text.Any(char.IsLetter))
-            {
-                textBox8.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-            if (textBox9.Text.Length > 18)
-            {
-                textBox9.Text = "Ha superado el limite de caracteres";
-            }
-            else
-
-                validacionEmpresa++;
-
-
-
-            if (textBox10.Text.Length > 50)
-                textBox10.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox11.Text.Length > 50)
-            {
-                textBox11.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox11.Text.Any(char.IsLetter))
-            {
-                textBox11.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-
-            if (textBox6.Text.Length > 50)
-                textBox6.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox16.Text.Length > 255)
-                textBox16.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox17.Text.Length > 255)
-                textBox17.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (validacionEmpresa == 17)
             {
 
-                nuevaEmpresa();
-                
-            }
-            else
-            {
-
-                String mensaje = "Por favor, corrija los campos indicados";
+                 String mensaje = "El usuario ya existe";
                 String caption = "Error al crear usuario";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-                validacionEmpresa = 0;
-
 
             }
+            else if ((int)existeC == 1)
+            {
 
+                String mensaje = "El CUIT ingresado ya ha sido registrado";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
+            }
+            else if ((int)existeR == 1)
+            {
+                String mensaje = "La razon social ingresada ya esta registrada";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
-
-
-
-
-
-
-
-
-
-
+            }
+            else
+            {
+                nuevaEmpresa();
+            }
+           
 
         
         }
@@ -521,160 +408,28 @@ namespace WindowsFormsApplication1.ABM_Usuario
             var existeDoc = result.Value;
             data.Close();
 
+
             if ((int)existe == 1)
             {
-                String mensaje = "El usuario ya ha sido registrado";
+
+                String mensaje = "El usuario ya existe";
                 String caption = "Error al crear usuario";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
             }
-
             else if ((int)existeDoc == 1)
-            
             {
-
-                String mensaje = "El DNI ya ha sido registrado";
+                String mensaje = "El DNI ingresado ya se ha registrado en el sistema";
                 String caption = "Error al crear usuario";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-            }
-
-
-            if ((int)existe == 1)
-                textBox1.Text = "El usuario ya existe";
-            else
-                validacionCliente++;
-
-            if (textBox1.Text.Length > 30)
-                textBox1.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-            if (textBox2.Text.Length > 30)
-                textBox2.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-           
-            if (textBox3.Text.Length > 255)
-            {
-                textBox3.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox3.Text.Any(char.IsDigit))
-            {
-                textBox3.Text = "No se permiten caracteres numericos";
-            }
-            else
-               validacionCliente++;
-
-
-            if (textBox4.Text.Length > 255)
-            {
-                textBox4.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox4.Text.Any(char.IsDigit))
-            {
-                textBox4.Text = "No se permiten caracteres numericos";
-            }
-            else
-                validacionCliente++;
-
-
-            if ((int)existeDoc == 1)
-            {
-                label24.Visible = true;
-            }
-            else
-            {
-                validacionCliente++;
-            }
-
-
-            if (textBox5.Text.Length > 18)
-            {
-                textBox5.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox5.Text.Any(char.IsLetter))
-            {
-                textBox5.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionCliente++;
-
-
-
-            if (textBox7.Text.Length > 255)
-                textBox7.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-
-            if (textBox8.Text.Length > 18)
-            {
-                textBox8.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox8.Text.Any(char.IsLetter))
-            {
-                textBox8.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionCliente++;
-
-
-            if (textBox9.Text.Length > 18)
-            {
-                textBox9.Text = "Ha superado el limite de caracteres";
-            }
-            else
-            
-                validacionCliente++;
-
-
-
-            if (textBox10.Text.Length > 50)
-                textBox10.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-            
-            if (textBox11.Text.Length > 50)
-            {
-                textBox11.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox11.Text.Any(char.IsLetter))
-            {
-                textBox11.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionCliente++;
-
-
-            if (textBox6.Text.Length > 50)
-                textBox6.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-
-            if (textBox18.Text.Length > 255)
-                textBox18.Text = "Ha superado el limite de caracteres";
-            else
-                validacionCliente++;
-
-
-            if (validacionCliente == 14)
-            {
-
-               
-                label24.Visible = false;
-                nuevoCliente();
             }
             else {
 
-                String mensaje = "Por favor, corrija los campos indicados";
-                String caption = "Error al crear usuario";
-                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-                validacionCliente = 0;
-                
-
+                nuevoCliente();
+            
             }
+
+            
+            
 
             
 
@@ -692,7 +447,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
               string.IsNullOrEmpty(textBox4.Text) | string.IsNullOrEmpty(textBox5.Text) | string.IsNullOrEmpty(textBox5.Text) |
                 string.IsNullOrEmpty(textBox7.Text) | string.IsNullOrEmpty(textBox8.Text) | string.IsNullOrEmpty(textBox11.Text) |
                 string.IsNullOrEmpty(textBox6.Text) | string.IsNullOrEmpty(textBox18.Text) |
-                comboBox1.SelectedIndex == -1 | cambioFecha)
+                comboBox1.SelectedIndex == -1 | (cambioFecha))
             {
 
                 String mensaje = "Los campos (*) son obligatorios";
@@ -892,6 +647,48 @@ namespace WindowsFormsApplication1.ABM_Usuario
             cambioFecha = false;
         }
 
+
+
+
+        private bool esCuit(String ingresado, bool tieneComa)
+        {
+
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+
+                if (ingre[0].Equals('-'))
+                {
+                    return false;
+                }
+
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals('-')) || (comas > 1))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+            return true;
+        }
+       
+
+
         private bool esNumero(String ingresado, bool tieneComa)
         {
 
@@ -939,12 +736,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             String ingresado = ((TextBox)sender).Text;
 
-            if (esNumero(ingresado, true))
+            if (esNumero(ingresado, false))
             {
             }
             else
             {
-                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
                 String caption = "Error al ingresar datos";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 textBox5.Text = "";
@@ -955,12 +752,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             String ingresado = ((TextBox)sender).Text;
 
-            if (esNumero(ingresado, true))
+            if (esNumero(ingresado, false))
             {
             }
             else
             {
-                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
                 String caption = "Error al ingresar datos";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 textBox14.Text = "";
@@ -971,12 +768,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             String ingresado = ((TextBox)sender).Text;
 
-            if (esNumero(ingresado, true))
+            if (esNumero(ingresado, false))
             {
             }
             else
             {
-                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
                 String caption = "Error al ingresar datos";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 textBox8.Text = "";
@@ -987,12 +784,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             String ingresado = ((TextBox)sender).Text;
 
-            if (esNumero(ingresado, true))
+            if (esNumero(ingresado, false))
             {
             }
             else
             {
-                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
                 String caption = "Error al ingresar datos";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 textBox9.Text = "";
@@ -1001,24 +798,24 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void textBox15_TextChanged(object sender, EventArgs e)
         {
-           
+            String ingresado = ((TextBox)sender).Text;
+            if (esCuit(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y hasta 3 '-' en este campos";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox15.Text = "";
+
+            }
         }
 
         private void textBox15_KeyPress(object sender, KeyPressEventArgs e)
-        {
+       {
             
-            char keypress = e.KeyChar;
-            if (char.IsNumber(keypress) || keypress.Equals('-') || keypress == (char)Keys.Delete || keypress == (char)Keys.Back)
-            {
-            }else{
-
-                String mensaje = "Solo se pueden ingresar numeros y - en este campo";
-                String caption = "Error al ingresar datos";
-                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-               
-                
-            }
-            
+           
 
 
         }

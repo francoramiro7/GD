@@ -44,5 +44,12 @@ namespace WindowsFormsApplication1.ABM_Usuario
             form3.Show();
             this.Close();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form8 form8 = new ABM_Usuario.Form8();
+            form8.Show();
+            this.Close();
+        }
     }
 }

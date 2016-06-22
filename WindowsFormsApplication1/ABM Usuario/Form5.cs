@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         int validacionEmpresa = 0;
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand rubros, existeCuit, existeRazon;
+        SqlCommand rubros, existeCuit, existeRazon, cod, modificar, habilitado, bloquearUsuario, desbloquearUsuario;
         String user;
         String razonSocial;
         String cuitG;
@@ -63,6 +63,83 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void Form5_Load(object sender, EventArgs e)
         {
 
+        }
+
+
+        private bool esCuit(String ingresado, bool tieneComa)
+        {
+
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+
+                if (ingre[0].Equals('-'))
+                {
+                    return false;
+                }
+
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals('-')) || (comas > 1))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+            return true;
+        }
+
+
+
+        private bool esNumero(String ingresado, bool tieneComa)
+        {
+
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+
+                if (ingre[0].Equals(','))
+                {
+                    return false;
+                }
+
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals(',')) || (comas > 0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+            return true;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -145,7 +222,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 String mensaje = "El cuit ha ya sido registrado";
                 String caption = "Error al modificar";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-               
+
 
             }
             else if ((int)existeR == 1 && razonSocial != textBox12.Text)
@@ -154,106 +231,189 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 String mensaje = "La razon social ya ha sido registrada";
                 String caption = "Error al modificar";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-                
-            }
-
-            if (textBox12.Text.Length > 255)
-                textBox12.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (textBox13.Text.Length > 50)
-                textBox13.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-
-            if (textBox3.Text.Length > 18)
-            {
-                textBox3.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox3.Text.Any(char.IsLetter))
-            {
-                textBox3.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-
-            if (textBox4.Text.Length > 50)
-            {
-                textBox4.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox4.Text.Any(char.IsLetter))
-            {
-                textBox4.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-            if (textBox7.Text.Length > 100)
-                textBox7.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (textBox8.Text.Length > 18)
-            {
-                textBox8.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox8.Text.Any(char.IsLetter))
-            {
-                textBox8.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-            if (textBox9.Text.Length > 18)
-            {
-                textBox9.Text = "Ha superado el limite de caracteres";
-            }
-            else if (textBox9.Text.Any(char.IsLetter))
-            {
-                textBox9.Text = "No se permiten caracteres alfanumericos";
-            }
-            else
-                validacionEmpresa++;
-
-            if (textBox11.Text.Length > 50)
-                textBox11.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (textBox5.Text.Length > 255)
-                textBox5.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (textBox6.Text.Length > 255)
-                textBox6.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (textBox13.Text.Length > 255)
-                textBox13.Text = "Ha superado el limite de caracteres";
-            else
-                validacionEmpresa++;
-
-            if (validacionEmpresa == 12)
-            {
 
             }
             else
-            {
 
-                String mensaje = "Por favor, corrija los campos indicados";
-                String caption = "Error al crear usuario";
-                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-                validacionEmpresa = 0;
+                modificarEmpresa();
 
-            }
-
-
+       
             
+        }
+
+
+
+        private void modificarEmpresa()
+        {
+            con.Open();
+            cod = new SqlCommand("PERSISTIENDO.codigoRubro", con);
+            cod.CommandType = CommandType.StoredProcedure;
+            cod.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = comboBox3.Text.ToString();
+
+            var result = cod.Parameters.Add("@Valor", SqlDbType.Int);
+            result.Direction = ParameterDirection.ReturnValue;
+            data = cod.ExecuteReader();
+            data.Close();
+            var codigoRubro = result.Value;
+
+            modificar = new SqlCommand("PERSISTIENDO.updateEmpresa", con);
+            modificar.CommandType = CommandType.StoredProcedure;
+
+            modificar.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+            modificar.Parameters.Add("@razon", SqlDbType.VarChar).Value = textBox12.Text;
+            modificar.Parameters.Add("@cuil", SqlDbType.VarChar).Value = textBox4.Text;
+            modificar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox2.Text;
+            modificar.Parameters.Add("@calle", SqlDbType.VarChar).Value = textBox7.Text;
+            modificar.Parameters.Add("@cp", SqlDbType.VarChar).Value = textBox11.Text;
+            modificar.Parameters.Add("@depto", SqlDbType.VarChar).Value = textBox10.Text;
+            if (String.IsNullOrEmpty(textBox9.Text))
+                modificar.Parameters.Add("@piso", SqlDbType.Float).Value = DBNull.Value;
+            else
+                modificar.Parameters.Add("@piso", SqlDbType.Float).Value = float.Parse(textBox9.Text, CultureInfo.InvariantCulture.NumberFormat);
+
+            modificar.Parameters.Add("@rubro", SqlDbType.Int).Value = (int)codigoRubro;
+            modificar.Parameters.Add("@nro", SqlDbType.Float).Value = float.Parse(textBox8.Text, CultureInfo.InvariantCulture.NumberFormat);
+            modificar.Parameters.Add("@localidad", SqlDbType.VarChar).Value = textBox6.Text;
+            modificar.Parameters.Add("@ciudad", SqlDbType.VarChar).Value = textBox5.Text;
+            modificar.Parameters.Add("@tel", SqlDbType.Float).Value = float.Parse(textBox3.Text, CultureInfo.InvariantCulture.NumberFormat);
+            modificar.Parameters.Add("@contacto", SqlDbType.VarChar).Value = textBox13.Text;
+            con.Close();
+
+            String mensaje = "La empresa se ha modificado correctamente";
+            String caption = "Empresa modificada";
+            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+            ABM_Usuario.Form2 frm2 = new ABM_Usuario.Form2();
+            frm2.Show();
+            this.Close();
+
+
+
+
+
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox3.Text = "";
+            }
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+            if (esCuit(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y hasta 3 '-' en este campos";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox4.Text = "";
+
+            }
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox8.Text = "";
+            }
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox9.Text = "";
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            habilitado = new SqlCommand("PERSISTIENDO.estaBloqueado", con);
+            con.Open();
+            habilitado.CommandType = CommandType.StoredProcedure;
+            habilitado.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+            var bloq = habilitado.Parameters.Add("@Valor", SqlDbType.Int);
+            bloq.Direction = ParameterDirection.ReturnValue;
+            data = habilitado.ExecuteReader();
+            data.Close();
+            var bloqueado = bloq.Value;
+            con.Close();
+
+            if ((int)bloqueado == 1)
+            {
+
+                DialogResult dialogResult = MessageBox.Show("El usuario se encuentra habilitado, deseea bloquearlo?", "Inhabilitar usuario", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    con.Open();
+                    bloquearUsuario = new SqlCommand("PERSISTIENDO.bloquearUsuario", con);
+
+                    bloquearUsuario.CommandType = CommandType.StoredProcedure;
+                    bloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+                    bloquearUsuario.ExecuteNonQuery();
+                    con.Close();
+                }
+
+            }
+
+            if ((int)bloqueado == 0)
+            {
+                DialogResult dialogResult = MessageBox.Show("El usuario se encuentra inhabilitado, deseea desbloquearlo?", "Habilitar usuario", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    con.Open();
+                    desbloquearUsuario = new SqlCommand("PERSISTIENDO.desbloquearUsuario", con);
+
+                    desbloquearUsuario.CommandType = CommandType.StoredProcedure;
+                    desbloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
+
+                    desbloquearUsuario.ExecuteNonQuery();
+                    con.Close();
+                }
+
+
+
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ABM_Usuario.Form7 frm7 = new ABM_Usuario.Form7(user,2);
+            frm7.Show();
         }
     }
 }
