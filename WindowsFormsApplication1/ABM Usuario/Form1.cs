@@ -521,6 +521,22 @@ namespace WindowsFormsApplication1.ABM_Usuario
             var existeDoc = result.Value;
             data.Close();
 
+            if ((int)existe == 1)
+            {
+                String mensaje = "El usuario ya ha sido registrado";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            }
+
+            else if ((int)existeDoc == 1)
+            
+            {
+
+                String mensaje = "El DNI ya ha sido registrado";
+                String caption = "Error al crear usuario";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            }
+
 
             if ((int)existe == 1)
                 textBox1.Text = "El usuario ya existe";
@@ -875,6 +891,138 @@ namespace WindowsFormsApplication1.ABM_Usuario
         {
             cambioFecha = false;
         }
+
+        private bool esNumero(String ingresado, bool tieneComa)
+        {
+
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+
+                if (ingre[0].Equals(','))
+                {
+                    return false;
+                }
+
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals(',')) || (comas > 0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+            return true;
+        }
+
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox5.Text = "";
+            }
+        }
+
+        private void textBox14_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox14.Text = "";
+            }
+        }
+
+        private void textBox8_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox8.Text = "";
+            }
+        }
+
+        private void textBox9_TextChanged(object sender, EventArgs e)
+        {
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, true))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros y , en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox9.Text = "";
+            }
+        }
+
+        private void textBox15_TextChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void textBox15_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+            char keypress = e.KeyChar;
+            if (char.IsNumber(keypress) || keypress.Equals('-') || keypress == (char)Keys.Delete || keypress == (char)Keys.Back)
+            {
+            }else{
+
+                String mensaje = "Solo se pueden ingresar numeros y - en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+               
+                
+            }
+            
+
+
+        }
+
 
 
        

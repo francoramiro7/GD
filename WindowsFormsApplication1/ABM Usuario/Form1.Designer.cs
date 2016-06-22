@@ -107,7 +107,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(15, 132);
+            this.label2.Location = new System.Drawing.Point(15, 138);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(178, 34);
@@ -130,6 +130,7 @@
             this.textBox1.BackColor = System.Drawing.SystemColors.Info;
             this.textBox1.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(372, 84);
+            this.textBox1.MaxLength = 30;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(409, 32);
             this.textBox1.TabIndex = 27;
@@ -140,6 +141,7 @@
             this.textBox2.BackColor = System.Drawing.SystemColors.Info;
             this.textBox2.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(372, 137);
+            this.textBox2.MaxLength = 30;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(409, 32);
             this.textBox2.TabIndex = 28;
@@ -186,6 +188,7 @@
             this.textBox3.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox3.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox3.Location = new System.Drawing.Point(372, 194);
+            this.textBox3.MaxLength = 255;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(409, 32);
             this.textBox3.TabIndex = 76;
@@ -210,6 +213,7 @@
             this.textBox4.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox4.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox4.Location = new System.Drawing.Point(372, 250);
+            this.textBox4.MaxLength = 255;
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(409, 32);
             this.textBox4.TabIndex = 78;
@@ -232,10 +236,12 @@
             this.textBox5.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox5.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox5.Location = new System.Drawing.Point(372, 303);
+            this.textBox5.MaxLength = 18;
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(409, 32);
             this.textBox5.TabIndex = 80;
             this.textBox5.Visible = false;
+            this.textBox5.TextChanged += new System.EventHandler(this.textBox5_TextChanged);
             this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox5_KeyPress);
             // 
             // label8
@@ -267,6 +273,7 @@
             this.textBox7.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox7.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox7.Location = new System.Drawing.Point(372, 410);
+            this.textBox7.MaxLength = 100;
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(409, 32);
             this.textBox7.TabIndex = 84;
@@ -302,10 +309,12 @@
             this.textBox8.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox8.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox8.Location = new System.Drawing.Point(372, 461);
+            this.textBox8.MaxLength = 18;
             this.textBox8.Name = "textBox8";
             this.textBox8.Size = new System.Drawing.Size(409, 32);
             this.textBox8.TabIndex = 87;
             this.textBox8.Visible = false;
+            this.textBox8.TextChanged += new System.EventHandler(this.textBox8_TextChanged);
             this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox8_KeyPress);
             // 
             // textBox9
@@ -313,10 +322,12 @@
             this.textBox9.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox9.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox9.Location = new System.Drawing.Point(372, 515);
+            this.textBox9.MaxLength = 18;
             this.textBox9.Name = "textBox9";
             this.textBox9.Size = new System.Drawing.Size(409, 32);
             this.textBox9.TabIndex = 88;
             this.textBox9.Visible = false;
+            this.textBox9.TextChanged += new System.EventHandler(this.textBox9_TextChanged);
             this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox9_KeyPress);
             // 
             // label12
@@ -336,6 +347,7 @@
             this.textBox10.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox10.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox10.Location = new System.Drawing.Point(372, 568);
+            this.textBox10.MaxLength = 50;
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(409, 32);
             this.textBox10.TabIndex = 90;
@@ -358,6 +370,7 @@
             this.textBox11.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox11.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox11.Location = new System.Drawing.Point(372, 615);
+            this.textBox11.MaxLength = 50;
             this.textBox11.Name = "textBox11";
             this.textBox11.Size = new System.Drawing.Size(409, 32);
             this.textBox11.TabIndex = 92;
@@ -380,7 +393,8 @@
             // 
             this.textBox6.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox6.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox6.Location = new System.Drawing.Point(372, 659);
+            this.textBox6.Location = new System.Drawing.Point(372, 662);
+            this.textBox6.MaxLength = 255;
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(409, 32);
             this.textBox6.TabIndex = 94;
@@ -425,12 +439,13 @@
             this.comboBox1.Size = new System.Drawing.Size(409, 32);
             this.comboBox1.TabIndex = 97;
             this.comboBox1.Visible = false;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(13, 182);
+            this.label16.Location = new System.Drawing.Point(14, 192);
             this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(216, 34);
@@ -442,7 +457,8 @@
             // 
             this.textBox12.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox12.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox12.Location = new System.Drawing.Point(372, 195);
+            this.textBox12.Location = new System.Drawing.Point(372, 196);
+            this.textBox12.MaxLength = 255;
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(409, 32);
             this.textBox12.TabIndex = 99;
@@ -452,7 +468,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(14, 237);
+            this.label17.Location = new System.Drawing.Point(14, 242);
             this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(110, 34);
@@ -465,6 +481,7 @@
             this.textBox13.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox13.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox13.Location = new System.Drawing.Point(372, 250);
+            this.textBox13.MaxLength = 50;
             this.textBox13.Name = "textBox13";
             this.textBox13.Size = new System.Drawing.Size(409, 32);
             this.textBox13.TabIndex = 101;
@@ -487,11 +504,13 @@
             this.textBox14.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox14.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox14.Location = new System.Drawing.Point(372, 303);
+            this.textBox14.MaxLength = 18;
             this.textBox14.Name = "textBox14";
             this.textBox14.Size = new System.Drawing.Size(409, 32);
             this.textBox14.TabIndex = 103;
             this.textBox14.Visible = false;
             this.textBox14.LocationChanged += new System.EventHandler(this.textBox14_LocationChanged);
+            this.textBox14.TextChanged += new System.EventHandler(this.textBox14_TextChanged);
             // 
             // label19
             // 
@@ -510,10 +529,13 @@
             this.textBox15.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox15.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox15.Location = new System.Drawing.Point(372, 357);
+            this.textBox15.MaxLength = 50;
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(409, 32);
             this.textBox15.TabIndex = 105;
             this.textBox15.Visible = false;
+            this.textBox15.TextChanged += new System.EventHandler(this.textBox15_TextChanged);
+            this.textBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox15_KeyPress);
             // 
             // label21
             // 
@@ -531,7 +553,8 @@
             // 
             this.textBox16.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox16.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox16.Location = new System.Drawing.Point(372, 715);
+            this.textBox16.Location = new System.Drawing.Point(372, 711);
+            this.textBox16.MaxLength = 255;
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(409, 32);
             this.textBox16.TabIndex = 108;
@@ -566,7 +589,7 @@
             // 
             this.comboBox3.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(372, 756);
+            this.comboBox3.Location = new System.Drawing.Point(372, 763);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(409, 32);
             this.comboBox3.TabIndex = 111;
@@ -602,7 +625,8 @@
             // 
             this.textBox17.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox17.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox17.Location = new System.Drawing.Point(372, 808);
+            this.textBox17.Location = new System.Drawing.Point(372, 812);
+            this.textBox17.MaxLength = 255;
             this.textBox17.Name = "textBox17";
             this.textBox17.Size = new System.Drawing.Size(409, 32);
             this.textBox17.TabIndex = 114;
@@ -612,7 +636,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(18, 756);
+            this.label20.Location = new System.Drawing.Point(18, 752);
             this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(110, 34);
@@ -624,7 +648,8 @@
             // 
             this.textBox18.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox18.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox18.Location = new System.Drawing.Point(372, 760);
+            this.textBox18.Location = new System.Drawing.Point(372, 763);
+            this.textBox18.MaxLength = 50;
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(409, 32);
             this.textBox18.TabIndex = 116;
