@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Rol
     {
         SqlConnection coneccion;
         SqlDataReader data;
-        SqlCommand cargarRoles, eliminar;
+        SqlCommand cargarRoles, eliminar, eliminar2, codigoRol;
 
         public Form4()
         {
@@ -45,11 +45,45 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            label3.Visible = true;
-            label4.Visible = true;
-            label4.Text = comboBox2.Text.ToString();
-            button2.Visible = true;
-            button3.Visible = true;
+             DialogResult dialogResult = MessageBox.Show("Esta seguro que desea eliminar el rol seleccionado?", "Eliminar Rol", MessageBoxButtons.YesNo);
+             if (dialogResult == DialogResult.Yes)
+             {
+
+                 string nombre = comboBox2.Text.ToString();
+                 coneccion.Open();
+                 codigoRol = new SqlCommand("PERSISTIENDO.codigoRol", coneccion);
+                 codigoRol.CommandType = CommandType.StoredProcedure;
+                 codigoRol.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                 var resultado = codigoRol.Parameters.Add("@Valor", SqlDbType.Int);
+                 resultado.Direction = ParameterDirection.ReturnValue;
+                 data = codigoRol.ExecuteReader();
+                 
+
+                 var codi = resultado.Value;
+                 int rol = (int)codi;
+                 data.Close();
+
+                 eliminar = new SqlCommand("PERSISTIENDO.eliminarFuncionalidades", coneccion);
+                 eliminar.CommandType = CommandType.StoredProcedure;
+                 eliminar.Parameters.Add("@rol", SqlDbType.Int).Value = rol;
+                 eliminar.ExecuteNonQuery();
+                 
+
+
+                 eliminar2 = new SqlCommand("PERSISTIENDO.eliminarRol", coneccion);
+                 eliminar2.CommandType = CommandType.StoredProcedure;
+                 eliminar2.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                 eliminar2.ExecuteNonQuery();
+                 coneccion.Close();
+
+
+                 String mensaje = "El rol se ha eliminado exitosamente";
+                 String caption = "Rol eliminado";
+                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+
+
+             }
 
             
 
@@ -58,20 +92,9 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //coneccion.Open();
-            //eliminar = new SqlCommand("PERSISTIENDO.eliminarRol", coneccion);
-            //eliminar.CommandType = CommandType.StoredProcedure;
-            //eliminar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = comboBox2.Text.ToString();
             
-            //eliminar.ExecuteNonQuery();
-            //coneccion.Close();
-
-            //ELIMINAR PRIMERO FUNCIONALIDADES Y LUEGO ROL
 
 
-            String mensaje = "El rol se ha eliminado exitosamente";
-            String caption = "Rol eliminado";
-            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -83,11 +106,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         private void button3_Click(object sender, EventArgs e)
         {
-            label3.Visible = false;
-            label4.Visible = false;
-            label4.Text = string.Empty;
-            button2.Visible = false;
-            button3.Visible = false;
+            
         }
     }
 }
