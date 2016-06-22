@@ -37,6 +37,7 @@ namespace WindowsFormsApplication1.Calificar
             table = new DataTable();
             adapter.Fill(table);
             dataGridView1.DataSource = table;
+            dataGridView1.Columns[0].Visible = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
 
@@ -78,6 +79,18 @@ namespace WindowsFormsApplication1.Calificar
         private void button2_Click(object sender, EventArgs e)
         {
 
+            string cod ="";
+            string detalle="";
+
+            foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+            {
+                cod = row.Cells[0].Value.ToString();
+                detalle = row.Cells[1].Value.ToString();
+            }
+
+            Calificar.Form3 form3 = new Calificar.Form3(cod,detalle);
+            form3.Show();
+            this.Close();
         }
     }
 }
