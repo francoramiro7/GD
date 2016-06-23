@@ -29,6 +29,10 @@ namespace WindowsFormsApplication1.ComprarOfertar
         SqlCommand rubros,getPublicaciones;
         SqlDataReader data;
 
+        int pag = 0;
+        int pagTotal;
+        int totalRows = 0;
+
 
         DataTable tablaTemporal;
         int totalPaginas;
@@ -308,6 +312,11 @@ namespace WindowsFormsApplication1.ComprarOfertar
             WindowsFormsApplication1.Form2 form2 = new WindowsFormsApplication1.Form2();
             form2.Show();
             this.Close();
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
