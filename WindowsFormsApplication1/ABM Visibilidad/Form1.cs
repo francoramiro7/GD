@@ -30,5 +30,12 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             this.Close();
             f3.Show();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ABM_Visibilidad.Form4 f4 = new ABM_Visibilidad.Form4();
+            this.Close();
+            f4.Show();
+        }
     }
 }
