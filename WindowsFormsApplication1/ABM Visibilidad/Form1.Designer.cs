@@ -44,6 +44,7 @@
             this.button1.TabIndex = 25;
             this.button1.Text = "Crear Visibilidad";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label6
             // 
@@ -66,6 +67,7 @@
             this.button3.TabIndex = 23;
             this.button3.Text = "Modificar Visibilidad";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -89,6 +91,7 @@
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ABM Visibilidad";
             this.ResumeLayout(false);
             this.PerformLayout();

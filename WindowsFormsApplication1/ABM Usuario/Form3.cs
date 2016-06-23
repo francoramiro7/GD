@@ -136,6 +136,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 String apellido = "";
                 String mail = "";
                 float dni = 0;
+                string dnii = "";
                 String calle = "";
                 String tipo = "";
                 String depto= "";
@@ -148,7 +149,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
                 foreach (DataGridViewRow row in dataGridView1.SelectedRows)
                 {
-                    dni = float.Parse(row.Cells[0].Value.ToString(), CultureInfo.InvariantCulture.NumberFormat);
+                    dnii = row.Cells[0].Value.ToString();
                     apellido = row.Cells[1].Value.ToString();
                     nombre = row.Cells[2].Value.ToString();
                     mail = row.Cells[3].Value.ToString();
@@ -159,7 +160,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
 
                 cargarDatos = new SqlCommand("PERSISTIENDO.datosString", coneccion);
-                cargarDatos.Parameters.Add("@dni", SqlDbType.Float).Value = dni;
+                cargarDatos.Parameters.Add("@dni", SqlDbType.Float).Value = dnii;
                 cargarDatos.CommandType = CommandType.StoredProcedure;
                 SqlDataAdapter adapter;
                 adapter = new SqlDataAdapter(cargarDatos);
@@ -184,7 +185,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
                     if (String.IsNullOrEmpty(row.Cells[6].Value.ToString()))
                         piso = "";
                     else
-                        piso = (row.Cells[6]).ToString();
+                        piso = row.Cells[6].Value.ToString();
                     tipo = row.Cells[7].Value.ToString();
                     username = row.Cells[8].Value.ToString();
                 }

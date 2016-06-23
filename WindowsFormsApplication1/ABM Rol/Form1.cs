@@ -59,5 +59,12 @@ namespace WindowsFormsApplication1.ABM_Rol
             crearRol.Show();
             this.Close();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            WindowsFormsApplication1.Form2 home = new WindowsFormsApplication1.Form2();
+            this.Close();
+            home.Show();
+        }
     }
 }

@@ -16,5 +16,19 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ABM_Visibilidad.Form2 f2 = new ABM_Visibilidad.Form2();
+            this.Close();
+            f2.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ABM_Visibilidad.Form3 f3 = new ABM_Visibilidad.Form3();
+            this.Close();
+            f3.Show();
+        }
     }
 }

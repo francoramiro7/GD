@@ -43,9 +43,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(131, 10);
+            this.label1.Location = new System.Drawing.Point(196, 15);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(139, 29);
+            this.label1.Size = new System.Drawing.Size(208, 43);
             this.label1.TabIndex = 0;
             this.label1.Text = "Por Calificar";
             // 
@@ -54,9 +55,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(535, 10);
+            this.label2.Location = new System.Drawing.Point(802, 15);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(280, 29);
+            this.label2.Size = new System.Drawing.Size(420, 43);
             this.label2.TabIndex = 1;
             this.label2.Text = "Historial de Calificaciones";
             // 
@@ -64,18 +66,20 @@
             // 
             this.dataGridView1.BackgroundColor = System.Drawing.Color.MediumAquamarine;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 53);
+            this.dataGridView1.Location = new System.Drawing.Point(18, 82);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(403, 367);
+            this.dataGridView1.Size = new System.Drawing.Size(604, 565);
             this.dataGridView1.TabIndex = 2;
             // 
             // dataGridView2
             // 
             this.dataGridView2.BackgroundColor = System.Drawing.Color.MediumAquamarine;
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(469, 53);
+            this.dataGridView2.Location = new System.Drawing.Point(704, 82);
+            this.dataGridView2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(403, 367);
+            this.dataGridView2.Size = new System.Drawing.Size(604, 565);
             this.dataGridView2.TabIndex = 3;
             this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             // 
@@ -83,10 +87,9 @@
             // 
             this.button2.BackColor = System.Drawing.Color.MintCream;
             this.button2.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(277, 425);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(353, 668);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(138, 37);
+            this.button2.Size = new System.Drawing.Size(207, 57);
             this.button2.TabIndex = 26;
             this.button2.Text = "CALIFICAR";
             this.button2.UseVisualStyleBackColor = false;
@@ -96,10 +99,9 @@
             // 
             this.button1.BackColor = System.Drawing.Color.MintCream;
             this.button1.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(11, 434);
-            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Location = new System.Drawing.Point(52, 668);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(107, 37);
+            this.button1.Size = new System.Drawing.Size(160, 57);
             this.button1.TabIndex = 27;
             this.button1.Text = "Atrás";
             this.button1.UseVisualStyleBackColor = false;
@@ -107,16 +109,17 @@
             // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MediumAquamarine;
-            this.ClientSize = new System.Drawing.Size(884, 482);
+            this.ClientSize = new System.Drawing.Size(1326, 1017);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form2";
             this.Text = "Calificar";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
