@@ -18,7 +18,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
 
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand ult, visi;
+        SqlCommand ult, visi, existe;
 
         public Form2()
         {
@@ -125,9 +125,10 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
         private void validarCampos()
         {
             if (string.IsNullOrEmpty(textBox1.Text) | string.IsNullOrEmpty(textBox5.Text) | string.IsNullOrEmpty(textBox3.Text) |
-              string.IsNullOrEmpty(textBox4.Text)) { 
-            
-            
+              string.IsNullOrEmpty(textBox4.Text))
+            {
+
+
                 String mensaje = "Todos los campos son obligatorios";
                 String caption = "Error al crear visibilidad";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
@@ -136,10 +137,29 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             else
             {
 
-                crearVisibilidad();
+
+                con.Open();
+                existe = new SqlCommand("PERSISTIENDO.existeVisibilidad", con);
+                existe.CommandType = CommandType.StoredProcedure;
+                existe.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
+                var resultado = existe.Parameters.Add("@Valor", SqlDbType.Int);
+                resultado.Direction = ParameterDirection.ReturnValue;
+                data = existe.ExecuteReader();
+                var existeR = resultado.Value;
+                data.Close();
+                con.Close();
+
+                if ((int)existeR == 1)
+                {
+                    String mensaje = "La visibilidad ya existe, ingrese otro nombre";
+                    String caption = "Error al crear la visibilidad";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                }
+                else
+                    crearVisibilidad();
 
             }
-            }
+        }
 
 
         private void crearVisibilidad()
@@ -153,14 +173,16 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             data = ult.ExecuteReader();
             var codigo = up.Value;
             data.Close();
-
+            
             visi= new SqlCommand("PERSISTIENDO.newVisibilidad", con);
+            double p = double.Parse(textBox4.Text);
+            double porcentaje = p / 100;
 
             visi.CommandType = CommandType.StoredProcedure;
             visi.Parameters.Add("@cod", SqlDbType.Float).Value = (float.Parse(codigo.ToString(), CultureInfo.InvariantCulture.NumberFormat) + 1);
             visi.Parameters.Add("@desc", SqlDbType.VarChar).Value = textBox1.Text;
             visi.Parameters.Add("@precio", SqlDbType.Float).Value = textBox3.Text;
-            visi.Parameters.Add("@porc", SqlDbType.Float).Value = (float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat))/100;
+            visi.Parameters.Add("@porc", SqlDbType.Float).Value = porcentaje;
             visi.Parameters.Add("@envio", SqlDbType.Float).Value = textBox5.Text;
             visi.ExecuteNonQuery();
 
