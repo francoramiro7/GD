@@ -19,7 +19,7 @@ namespace WindowsFormsApplication1.Historial_Cliente
         int totalRows=0;
 
         SqlConnection coneccion;
-        SqlCommand getPublicaciones;
+        SqlCommand ofertarYCompras, cuantasPorCalificar, cantidadDeEstrellas, comprasRealizadas;
         SqlDataReader data;
         DataTable tabla = new DataTable();
 
@@ -31,11 +31,54 @@ namespace WindowsFormsApplication1.Historial_Cliente
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
             coneccion.Open();
 
+            //Compras/ofertas concretadas
+
+            comprasRealizadas = new SqlCommand("PERSISTIENDO.comprasRealizadas", coneccion);
+            comprasRealizadas.CommandType = CommandType.StoredProcedure;
+            comprasRealizadas.Parameters.Add("@Usuario", SqlDbType.VarChar).Value = usuario.username;
+            var cr = comprasRealizadas.Parameters.Add("@Cantidad", SqlDbType.Int);
+            cr.Direction = ParameterDirection.ReturnValue;
+            data = comprasRealizadas.ExecuteReader();
+            var comReal = cr.Value;
+            data.Close();
+
+            label6.Text = comReal.ToString();
 
 
-            getPublicaciones = new SqlCommand("PERSISTIENDO.getPublicaciones", coneccion);
-            getPublicaciones.CommandType = CommandType.StoredProcedure;
-            SqlDataAdapter adapter = new SqlDataAdapter(getPublicaciones);
+
+
+
+            //CantidadDeEstrelllas
+
+            cantidadDeEstrellas = new SqlCommand("PERSISTIENDO.cantidadDeEstrellas", coneccion);
+            cantidadDeEstrellas.CommandType = CommandType.StoredProcedure;
+            cantidadDeEstrellas.Parameters.Add("@Usuario", SqlDbType.VarChar).Value = usuario.username;
+            var ce = cantidadDeEstrellas.Parameters.Add("@Cantidad", SqlDbType.Int);
+            ce.Direction = ParameterDirection.ReturnValue;
+            data = cantidadDeEstrellas.ExecuteReader();
+            var cantEstrellas = ce.Value;
+            data.Close();
+
+            label4.Text = cantEstrellas.ToString();
+
+            //Por calificar
+            cuantasPorCalificar = new SqlCommand("PERSISTIENDO.cuantasPorCalificar", coneccion);
+            cuantasPorCalificar.CommandType = CommandType.StoredProcedure;
+            cuantasPorCalificar.Parameters.Add("@Usuario", SqlDbType.VarChar).Value = usuario.username;
+            SqlDataAdapter adapter7 = new SqlDataAdapter(cuantasPorCalificar);
+            DataTable table7 = new DataTable();
+            adapter7.Fill(table7);
+
+            String cantCali = table7.Rows[0][0].ToString();
+
+            label3.Text = cantCali;
+
+
+            //Cargar Tabla
+            ofertarYCompras = new SqlCommand("PERSISTIENDO.ofertarYCompras", coneccion);
+            ofertarYCompras.CommandType = CommandType.StoredProcedure;
+            ofertarYCompras.Parameters.Add("@Usuario", SqlDbType.VarChar).Value = usuario.username;
+            SqlDataAdapter adapter = new SqlDataAdapter(ofertarYCompras);
             adapter.Fill(tabla);
 
             totalRows = tabla.Rows.Count;
@@ -85,6 +128,7 @@ namespace WindowsFormsApplication1.Historial_Cliente
 
             }
             dataGridView1.DataSource = temporal;
+            dataGridView1.Columns[0].Visible = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             label1.Text = "Pagina " + pag.ToString() + " de " + pagTotal.ToString();
