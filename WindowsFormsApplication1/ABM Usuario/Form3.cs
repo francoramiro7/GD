@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
     {
         SqlDataReader data;
         SqlConnection coneccion;
-        SqlCommand cargar, cargar2, cargarDatos, cargarDatos3,cargarDatos2, rubro,filtrar, cliUser, cliTipo, cliCalle, cliNro, cliPiso, cliDpto, cliCp, clipFecha, cliLocalidad;
+        SqlCommand cargar, cargar2, cargarDatos, cargarDatos3, cargarDatos2, rubro, filtrar, cliUser;
         public Form3()
         {
             InitializeComponent();
@@ -156,6 +156,8 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
                 coneccion.Open();
 
+
+
                 cargarDatos = new SqlCommand("PERSISTIENDO.datosString", coneccion);
                 cargarDatos.Parameters.Add("@dni", SqlDbType.Float).Value = dni;
                 cargarDatos.CommandType = CommandType.StoredProcedure;
@@ -164,7 +166,6 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 DataTable table;
                 table = new DataTable();
                 adapter.Fill(table);
-                
                 dataGridView1.DataSource = table;
                
                 int cant = dataGridView1.Rows.Count;
