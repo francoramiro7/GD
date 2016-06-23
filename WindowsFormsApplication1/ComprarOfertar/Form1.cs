@@ -30,17 +30,15 @@ namespace WindowsFormsApplication1.ComprarOfertar
         SqlDataReader data;
 
         int pag = 0;
-        int pagTotal;
+        int pagTotal=0;
         int totalRows = 0;
 
+        bool abrio = true;
 
-        DataTable tablaTemporal;
-        int totalPaginas;
-        int totalPublicaciones;
-        int publicacionesPorPagina = 10;
-        int paginaActual;
-        int ini;
-        int fin;
+
+        DataTable tabla;
+
+        
 
                 
         private void Form1_Load(object sender, EventArgs e)
@@ -85,169 +83,61 @@ namespace WindowsFormsApplication1.ComprarOfertar
             }
             else
             {
-                tablaTemporal = busquedaTemporal;
-                calcularPaginas();
-                ini = 0;
-                if (totalPublicaciones > 9)
+                tabla = busquedaTemporal;
+
+                totalRows = tabla.Rows.Count;
+                float cant = (tabla.Rows.Count / 10);
+
+                pagTotal = (int)cant;
+
+                if ((cant - ((int)cant)) != 0)
                 {
-                    fin = 9;
+                    pagTotal++;
                 }
-                else
-                {
-                    fin = totalPublicaciones;
-                }
-                calcularPaginas();
-                dataGridView1.DataSource = paginarDataGridView(ini, fin);
-                dataGridView1.Columns[0].Visible = false;
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                mostrarNrosPaginas(ini);
+
+                actualizarTabla();
             }
             AgregarBotonVerPublicacion();
         }
 
-        private void calcularPaginas()
-        {
-            totalPublicaciones = tablaTemporal.Rows.Count - 1;
-            totalPaginas = totalPublicaciones / publicacionesPorPagina;
-            if ((totalPublicaciones / publicacionesPorPagina) > 0)
-            {
-                totalPaginas += 1;
-            }
-        }
-
-        private DataTable paginarDataGridView(int ini, int fin)
-        {
-            DataTable publicacionesDeUnaPagina = new DataTable();
-            publicacionesDeUnaPagina = tablaTemporal.Clone();
-            for (int i = ini; i <= fin; i++)
-            {
-                publicacionesDeUnaPagina.ImportRow(tablaTemporal.Rows[i]);
-            }
-            return publicacionesDeUnaPagina;
-        }
-
-        private void mostrarNrosPaginas(int ini)
-        {
-            paginaActual = (ini / publicacionesPorPagina) + 1;
-            labelNrosPagina.Text = "Pagina " + paginaActual + "/" + totalPaginas;
-        }        
-
-        private bool VerificarSiSeBusco()
-        {
-            if (totalPaginas == 0)
-            {
-                MessageBox.Show("Aun no buscaste nada");
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private bool sePuedeRetrocederPaginas()
-        {
-            if (VerificarSiSeBusco() == false)
-            {
-                return false;
-            }
-            else
-            {
-                if (paginaActual == 1)
-                {
-                    MessageBox.Show("Ya estas en la 1º pagina");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        }
 
         private void botonPrimeraPagina_Click(object sender, EventArgs e)
         {
-            if (sePuedeRetrocederPaginas())
+            if (totalRows != 0)
             {
-                ini = 0;
-                fin = 9;
-                dataGridView1.DataSource = paginarDataGridView(ini, fin);
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                mostrarNrosPaginas(ini);
+                pag = 0;
+                actualizarTabla();
             }
         }
 
         private void botonPaginaAnterior_Click(object sender, EventArgs e)
         {
-            if (sePuedeRetrocederPaginas())
+            if (pag > 0)
             {
-                ini -= publicacionesPorPagina;
-                if (fin != totalPublicaciones)
-                {
-                    fin -= publicacionesPorPagina;
-                }
-                else
-                {
-                    fin = ini + 9;
-                }
+                pag = pag - 1;
+                actualizarTabla();
 
-                dataGridView1.DataSource = paginarDataGridView(ini, fin);
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                mostrarNrosPaginas(ini);
-            }
-        }
-
-        private bool sePuedeAvanzarPaginas()
-        {
-            if (VerificarSiSeBusco() == false)
-            {
-                return false;
-            }
-            else
-            {
-                if (paginaActual == totalPaginas)
-                {
-                    MessageBox.Show("Ya estas en la ultima pagina");
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
             }
         }
 
         private void botonPaginaSiguiente_Click(object sender, EventArgs e)
         {
-            if (sePuedeAvanzarPaginas())
+            if (pag != pagTotal && totalRows!=0)
             {
-                ini += publicacionesPorPagina;
-                if ((fin + publicacionesPorPagina) < totalPublicaciones)          
-                
-                {
-                    fin += publicacionesPorPagina;                    
-                }
-                else
-                {
-                    fin = totalPublicaciones;
-                }                
-                dataGridView1.DataSource = paginarDataGridView(ini, fin);
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                mostrarNrosPaginas(ini);
+                pag++;
+                actualizarTabla();
+
             }
         }
 
-
         private void botonUltimaPagina_Click(object sender, EventArgs e)
         {
-            if (sePuedeAvanzarPaginas())
+            if (totalRows != 0)
             {
-                ini = (totalPaginas - 1) * publicacionesPorPagina;
-                fin = totalPublicaciones;
-                dataGridView1.DataSource = paginarDataGridView(ini, fin);
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                mostrarNrosPaginas(ini);
+                pag = pagTotal;
+                actualizarTabla();
             }
+            
         }
 
         private void AgregarBotonVerPublicacion()
@@ -276,7 +166,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (e.ColumnIndex == 5)
+            if (e.ColumnIndex == 5 && abrio)
             {
                 string cod = "";
                 string desc = "";
@@ -285,14 +175,15 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 string tip = "";
 
                 
-                cod = tablaTemporal.Rows[e.RowIndex][0].ToString();
-                desc = tablaTemporal.Rows[e.RowIndex][1].ToString();
-                precio = tablaTemporal.Rows[e.RowIndex][2].ToString();
-                rub = tablaTemporal.Rows[e.RowIndex][3].ToString();
-                tip = tablaTemporal.Rows[e.RowIndex][4].ToString();
+                cod = tabla.Rows[(e.RowIndex)+(pag*10)][0].ToString();
+                desc = tabla.Rows[(e.RowIndex) + (pag * 10)][1].ToString();
+                precio = tabla.Rows[(e.RowIndex) + (pag * 10)][2].ToString();
+                rub = tabla.Rows[(e.RowIndex) + (pag * 10)][3].ToString();
+                tip = tabla.Rows[(e.RowIndex) + (pag * 10)][4].ToString();
                 
                 ComprarOfertar.Form2 form2 = new ComprarOfertar.Form2(cod, desc, precio, rub, tip);
                 form2.Show();
+                abrio = false;
                 this.Close();
             }
         }
@@ -302,6 +193,8 @@ namespace WindowsFormsApplication1.ComprarOfertar
             textBoxDescripcion.Clear();
             comboBoxRubro.SelectedIndex = -1;
             labelNrosPagina.Text = "";
+            totalRows = 0;
+            pagTotal = 0;
             dataGridView1.DataSource = null;
             if (dataGridView1.Columns.Contains("Ver Publicacion"))
                 dataGridView1.Columns.Remove("Ver Publicacion");
@@ -313,6 +206,43 @@ namespace WindowsFormsApplication1.ComprarOfertar
             form2.Show();
             this.Close();
         }
+
+
+
+        private void actualizarTabla()
+        {
+            int ini = pag * 10;
+
+            int n = 0;
+
+            DataTable temporal = tabla.Clone();
+
+
+            dataGridView1.ClearSelection();
+            temporal.Clear();
+
+            while (ini < totalRows && n < 10)
+            {
+
+                DataRow row;
+                row = temporal.NewRow();
+                row.ItemArray = tabla.Rows[ini].ItemArray;
+                temporal.Rows.Add(row);
+                ini++;
+                n++;
+
+            }
+            dataGridView1.DataSource = temporal;
+            dataGridView1.Columns[0].Visible = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            AgregarBotonVerPublicacion();
+
+            labelNrosPagina.Text = "Pagina " + pag.ToString() + " de " + pagTotal.ToString();
+
+        }
+
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
