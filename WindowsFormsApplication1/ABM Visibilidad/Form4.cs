@@ -14,10 +14,10 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
 {
     public partial class Form4 : Form
     {
-
+        double codVisibilidad = 0;
         SqlConnection con;
         SqlDataReader data;
-        SqlCommand visi, existe, codigo;
+        SqlCommand visi, existe, codigo, borrar;
         public Form4()
         {
             InitializeComponent();
@@ -56,7 +56,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             codigo = new SqlCommand("PERSISTIENDO.codigoVisibilidad", con);
             codigo.CommandType = CommandType.StoredProcedure;
             codigo.Parameters.Add("@Visibilidad", SqlDbType.VarChar).Value = nombre;
-            var resultado = existe.Parameters.Add("@Valor", SqlDbType.Int);
+            var resultado = codigo.Parameters.Add("@Valor", SqlDbType.Int);
             resultado.Direction = ParameterDirection.ReturnValue;
             data = codigo.ExecuteReader();
             var cod = resultado.Value;
@@ -64,6 +64,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             con.Close();
 
             double cod2 = double.Parse(cod.ToString());
+            codVisibilidad = cod2;
 
             con.Open();
             existe = new SqlCommand("PERSISTIENDO.hayPublicacionConVisibilidad", con);
@@ -75,6 +76,7 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             var exi = resultado2.Value;
             data.Close();
             con.Close();
+
 
             if ((int)exi != 0)
             {
@@ -95,8 +97,25 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
         public void eliminarVisibilidad()
         {
 
+            borrar= new SqlCommand("PERSISTIENDO.eliminarVisibilidad", con);
+            con.Open();
+           borrar.CommandType = CommandType.StoredProcedure;
+            borrar.Parameters.Add("@codigo", SqlDbType.Float).Value = codVisibilidad;
+            borrar.ExecuteNonQuery();
+            con.Close();
+            String mensaje = "La visibilidad se ha eliminado";
+            String caption = "Eliminar Visibilidad";
+            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
+            ABM_Visibilidad.Form1 f1 = new ABM_Visibilidad.Form1();
+            f1.Show();
+            this.Close();
 
+        
+        
+        
         }
+
+
     }
 }

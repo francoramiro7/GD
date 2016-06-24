@@ -69,7 +69,7 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(830, 339);
+            this.comboBox1.Location = new System.Drawing.Point(824, 282);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(0, 28);
             this.comboBox1.TabIndex = 29;
@@ -100,7 +100,7 @@
             // 
             this.button4.BackColor = System.Drawing.Color.MintCream;
             this.button4.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(968, 685);
+            this.button4.Location = new System.Drawing.Point(962, 629);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(170, 52);
             this.button4.TabIndex = 82;
@@ -113,7 +113,7 @@
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 20;
-            this.listBox2.Location = new System.Drawing.Point(856, 369);
+            this.listBox2.Location = new System.Drawing.Point(850, 312);
             this.listBox2.Name = "listBox2";
             this.listBox2.Size = new System.Drawing.Size(367, 284);
             this.listBox2.TabIndex = 81;
@@ -123,7 +123,7 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 20;
-            this.listBox1.Location = new System.Drawing.Point(396, 369);
+            this.listBox1.Location = new System.Drawing.Point(390, 312);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(367, 284);
             this.listBox1.TabIndex = 80;
@@ -133,7 +133,7 @@
             // 
             this.button3.BackColor = System.Drawing.Color.MintCream;
             this.button3.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(497, 685);
+            this.button3.Location = new System.Drawing.Point(491, 629);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(170, 52);
             this.button3.TabIndex = 79;
@@ -146,7 +146,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(22, 369);
+            this.label3.Location = new System.Drawing.Point(16, 312);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(331, 43);
@@ -158,7 +158,7 @@
             // 
             this.textBox1.BackColor = System.Drawing.Color.White;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(396, 275);
+            this.textBox1.Location = new System.Drawing.Point(396, 231);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(361, 39);
             this.textBox1.TabIndex = 77;
@@ -168,7 +168,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(16, 268);
+            this.label6.Location = new System.Drawing.Point(16, 224);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(314, 43);
@@ -180,7 +180,7 @@
             // 
             this.button2.BackColor = System.Drawing.Color.MintCream;
             this.button2.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(885, 811);
+            this.button2.Location = new System.Drawing.Point(891, 757);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(338, 68);
             this.button2.TabIndex = 84;
@@ -193,7 +193,7 @@
             // 
             this.button5.BackColor = System.Drawing.Color.MintCream;
             this.button5.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(142, 811);
+            this.button5.Location = new System.Drawing.Point(104, 748);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(338, 68);
             this.button5.TabIndex = 83;

@@ -209,6 +209,11 @@ namespace WindowsFormsApplication1.ABM_Rol
                 String caption = "Rol modificado";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
+                this.Close();
+                ABM_Rol.Form1 accionesRol = new ABM_Rol.Form1();
+                accionesRol.Show();
+                
+
 
                 
                 
