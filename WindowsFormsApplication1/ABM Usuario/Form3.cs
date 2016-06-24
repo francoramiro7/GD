@@ -54,6 +54,11 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 
                 cargarClientes();
                 dataGridView1.Visible = true;
+                textBox1.Text = "";
+                textBox2.Text = ""; 
+                textBox3.Text = "";
+                textBox4.Text = "";
+                textBox5.Text = "";
                 label2.Visible = true;
                 label3.Visible = true;
                 label4.Visible = true;
@@ -64,21 +69,30 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 textBox2.Visible = true;
                 textBox3.Visible = true;
                 textBox4.Visible = true;
+                textBox5.Visible = false;
+                button4.Visible = true;
                
             }else{
 
           
                 cargarEmpresas();
+                textBox1.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+                textBox4.Text = "";
+                textBox5.Text = "";
                 textBox1.Visible = true;
-                textBox2.Visible = true;
+                textBox2.Visible = false;
                 textBox3.Visible = true;
                 textBox4.Visible = false;
+                textBox5.Visible = true;
                 label1.Visible = true;
                 label6.Visible = true;
                 label5.Visible = true;
                 label2.Visible =false;
                 label3.Visible =false;
                 label4.Visible = false;
+                button4.Visible = true;
                
                 dataGridView1.Visible = true;
             }
@@ -294,37 +308,208 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button1_Click(object sender, EventArgs e)
         {
-            filtrar = new SqlCommand("PERSISTIENDO.filter", coneccion);
-            filtrar.CommandType = CommandType.StoredProcedure;
+            dataGridView1.DataSource = null;
 
-            
-            filtrar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
-            filtrar.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox2.Text;
-            filtrar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox3.Text;
-
-            float vardni = -1;
-
-            if (!String.IsNullOrEmpty(textBox4.Text))
+            if (comboBox1.Text.ToString().Equals("Cliente"))
             {
-                vardni=float.Parse(textBox4.Text, CultureInfo.InvariantCulture.NumberFormat);
+
+                String nombre = "'%'";
+                String apellido = "'%'";
+                String mail = "'%'";
+
+                if (!String.IsNullOrEmpty(textBox1.Text))
+                {
+                    nombre = "'%" + textBox1.Text + "%'";
+                }
+
+                if (!String.IsNullOrEmpty(textBox2.Text))
+                {
+                    apellido = "'%" + textBox2.Text + "%'";
+                }
+
+                if (!String.IsNullOrEmpty(textBox3.Text))
+                {
+                    mail = "'%" + textBox3.Text + "%'";
+                }
+
+                String query = "";
+                if (String.IsNullOrEmpty(textBox4.Text))
+                {
+
+                    query = "select Cliente_dni, Cliente_apellido, Cliente_nombre," +
+                    "Cliente_mail from PERSISTIENDO.Cliente where Cliente_nombre like" + nombre +
+                    "and Cliente_apellido like" + apellido + "and Cliente_mail like" + mail;
+                }
+                else
+                {
+                    double dni = double.Parse(textBox4.Text);
+                    query = "select Cliente_dni, Cliente_apellido, Cliente_nombre," +
+                    "Cliente_mail from PERSISTIENDO.Cliente where Cliente_nombre like" + nombre +
+                    "and Cliente_apellido like" + apellido + "and Cliente_mail like" + mail + "and Cliente_dni =" + dni;
+                }
+
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                DataTable busquedaTemporal = new DataTable();
+                SqlCommand comando = new SqlCommand(query, coneccion);
+
+                adapter = new SqlDataAdapter();
+                adapter.SelectCommand = comando;
+                adapter.Fill(busquedaTemporal);
+
+                int cantFilas = busquedaTemporal.Rows.Count;
+                if (cantFilas == 0)
+                {
+                    String mensaje = "No hay resultados";
+                    String caption = "Busqueda terminada";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                }
+                else
+                {
+                    dataGridView1.DataSource = busquedaTemporal;
+                }
+
+
 
             }
+            else
+            {
 
-            filtrar.Parameters.Add("@dni", SqlDbType.Float).Value = vardni;
+                String razon = "'%'";
+                String mail = "'%'";
+                
 
-            SqlDataAdapter adapter;
+                if (!String.IsNullOrEmpty(textBox1.Text))
+                {
+                    razon = "'%" + textBox1.Text + "%'";
+                }
 
-            adapter = new SqlDataAdapter(filtrar);
-            DataTable table;
-            table = new DataTable("PERSISTIENDO.U");
-            adapter.Fill(table);
-            dataGridView1.DataSource = table;
+                if (!String.IsNullOrEmpty(textBox3.Text))
+                {
+                    mail = "'%" + textBox3.Text + "%'";
+                }
+
+                String query = "";
+                if (String.IsNullOrEmpty(textBox5.Text))
+                {
+                    query = "select Empresa_cuil, Empresa_razon_social, Empresa_mail from PERSISTIENDO.Empresa" +
+                        " where Empresa_razon_social like" + razon + "and Empresa_mail like" + mail;
+
+                }
+                else
+                {
+
+                    String cuit = textBox5.Text;
+
+                    query = "select Empresa_cuil, Empresa_razon_social, Empresa_mail from PERSISTIENDO.Empresa " +
+                        "where Empresa_razon_social like" + razon + "and Empresa_mail like" + mail +
+                        "and Empresa_cuil ='" + cuit+"'";
+                }
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                DataTable busquedaTemporal = new DataTable();
+                SqlCommand comando = new SqlCommand(query, coneccion);
+
+                adapter = new SqlDataAdapter();
+                adapter.SelectCommand = comando;
+                adapter.Fill(busquedaTemporal);
+
+                int cantFilas = busquedaTemporal.Rows.Count;
+                if (cantFilas == 0)
+                {
+                    String mensaje = "No hay resultados";
+                    String caption = "Busqueda terminada";
+                    MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                }
+                else
+                {
+                    dataGridView1.DataSource = busquedaTemporal;
+                }
+
+
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+            textBox3.Text = "";
+            textBox4.Text = "";
+            if (comboBox1.Text == "Cliente")
+            {
+
+                cargarClientes();
+            }
+            else
+            {
+
+                cargarEmpresas();
+                textBox1.Text = "";
+                textBox2.Text = "";
+                textBox5.Text = "";
+               
+            }
+
+        }
+
+        private bool esNumero(String ingresado, bool tieneComa)
+        {
+
+            char[] ingre = ingresado.ToCharArray();
+            int comas = 0;
+            for (int i = 0; i < ingresado.Length; i++)
+            {
+
+                if (ingre[0].Equals(','))
+                {
+                    return false;
+                }
+
+                if (!char.IsNumber(ingre[i]))
+                {
+                    if (tieneComa)
+                    {
+                        if ((!ingre[i].Equals(',')) || (comas > 0))
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            comas++;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+
+                }
+            }
+            return true;
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+            String ingresado = ((TextBox)sender).Text;
+
+            if (esNumero(ingresado, false))
+            {
+            }
+            else
+            {
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
+                String caption = "Error al ingresar datos";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                textBox4.Text = "";
+            }
+        }
+
 
 
     }
