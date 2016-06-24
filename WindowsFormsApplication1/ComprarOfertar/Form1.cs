@@ -19,18 +19,19 @@ namespace WindowsFormsApplication1.ComprarOfertar
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
             coneccion.Open();
         }
-        
+
         private SqlCommand command { get; set; }
         private IList<SqlParameter> parametros = new List<SqlParameter>();
         public Object SelectedItem { get; set; }
 
+        List<String> funcion = new List<String>();
 
         SqlConnection coneccion;
-        SqlCommand rubros,getPublicaciones;
+        SqlCommand rubros, getPublicaciones, codigoRubro;
         SqlDataReader data;
 
         int pag = 0;
-        int pagTotal=0;
+        int pagTotal = 0;
         int totalRows = 0;
 
         bool abrio = true;
@@ -38,12 +39,12 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         DataTable tabla;
 
-        
 
-                
+
+
         private void Form1_Load(object sender, EventArgs e)
-        {            
-            CargarRubros();            
+        {
+            CargarRubros();
         }
 
         private void CargarRubros()
@@ -62,17 +63,87 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         private void botonBuscar_Click(object sender, EventArgs e)
         {
+
+            String descrip = "'%'";
+            String rub = null;
+
+            if (!String.IsNullOrWhiteSpace(textBoxDescripcion.Text))
+            {
+                descrip = "'%" + textBoxDescripcion.Text + "%'";
+            }
+
+            if (funcion.Count > 0)
+            {
+
+                if (funcion.Count > 1)
+                {
+
+
+                    rub = " and Rubro_codigo in (";
+
+                    int i;
+                    for (i = 0; i < funcion.Count; i++)
+                    {
+
+                        codigoRubro = new SqlCommand("PERSISTIENDO.codigoRubro", coneccion);
+
+                        codigoRubro.CommandType = CommandType.StoredProcedure;
+                        codigoRubro.Parameters.Add("@Rubro", SqlDbType.VarChar).Value = funcion[i];
+                        var cr = codigoRubro.Parameters.Add("@Cantidad", SqlDbType.Int);
+                        cr.Direction = ParameterDirection.ReturnValue;
+                        data = codigoRubro.ExecuteReader();
+                        var codRubro = cr.Value;
+                        data.Close();
+
+                        if (i != (funcion.Count - 1))
+                        {
+                            rub += (((int)codRubro).ToString() + ",");
+                        }
+                        else
+                        {
+
+                            rub += (((int)codRubro).ToString());
+                        }
+
+                    }
+                    rub += ")";
+
+                }
+                else
+                {
+                    rub = (" and Rubro_descripcion like '" + funcion[0] + "'");
+                }
+            }
+
+
+
+
+
             SqlDataAdapter adapter = new SqlDataAdapter();
-
-            //parametros = new List<SqlParameter>();
-            //parametros.Clear();
-            //parametros.Add(new SqlParameter("@usuario", idUsuarioActual));
-
             DataTable busquedaTemporal = new DataTable();
 
-            getPublicaciones = new SqlCommand("PERSISTIENDO.getPublicaciones", coneccion);
-            getPublicaciones.CommandType = CommandType.StoredProcedure;
-            adapter = new SqlDataAdapter(getPublicaciones);
+            //getPublicaciones = new SqlCommand("PERSISTIENDO.getPublicaciones", coneccion);
+            //getPublicaciones.CommandType = CommandType.StoredProcedure;
+            //getPublicaciones.Parameters.Add("@Descripcion", SqlDbType.VarChar).Value = descrip;
+            //getPublicaciones.Parameters.Add("@Rubros", SqlDbType.VarChar).Value = rub;
+
+            String query = "select Publicacion_codigo,Publicacion_descripcion,Publicacion_precio,Rubro_descripcion,Tipo_publicacion_descripcion" +
+            " from PERSISTIENDO.Publicacion" +
+" JOIN PERSISTIENDO.Visibilidad ON Visibilidad_cod = Publicacion_visibilidad" +
+" JOIN PERSISTIENDO.Tipo_publicacion ON Tipo_publicacion_codigo = Publicacion_tipo" +
+" JOIN PERSISTIENDO.Rubro ON Rubro_codigo = Publicacion_rubro" +
+" JOIN PERSISTIENDO.Estado_Publicacion ON Estado_Publicacion_codigo = Publicacion_estado" +
+" JOIN PERSISTIENDO.Usuario ON Publicacion_vendedor = Usuario_username" +
+" Where (Estado_Publicacion_descripcion like 'Activa' or Estado_Publicacion_descripcion like 'Pausada')" +
+" and Usuario_habilitado=1" +
+" and Publicacion_descripcion like " + descrip + rub +
+" Order by Visibilidad_precio desc,Publicacion_precio desc";
+
+
+            SqlCommand comando = new SqlCommand(query, coneccion);
+
+            adapter = new SqlDataAdapter();
+            adapter.SelectCommand = comando;
             adapter.Fill(busquedaTemporal);
 
             int cantFilas = busquedaTemporal.Rows.Count;
@@ -122,7 +193,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
         private void botonPaginaSiguiente_Click(object sender, EventArgs e)
         {
-            if (pag != pagTotal && totalRows!=0)
+            if (pag != pagTotal && totalRows != 0)
             {
                 pag++;
                 actualizarTabla();
@@ -137,7 +208,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 pag = pagTotal;
                 actualizarTabla();
             }
-            
+
         }
 
         private void AgregarBotonVerPublicacion()
@@ -161,7 +232,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
             dataGridView1.Columns.Add(buttons);
 
 
-        }        
+        }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -174,13 +245,13 @@ namespace WindowsFormsApplication1.ComprarOfertar
                 string rub = "";
                 string tip = "";
 
-                
-                cod = tabla.Rows[(e.RowIndex)+(pag*10)][0].ToString();
+
+                cod = tabla.Rows[(e.RowIndex) + (pag * 10)][0].ToString();
                 desc = tabla.Rows[(e.RowIndex) + (pag * 10)][1].ToString();
                 precio = tabla.Rows[(e.RowIndex) + (pag * 10)][2].ToString();
                 rub = tabla.Rows[(e.RowIndex) + (pag * 10)][3].ToString();
                 tip = tabla.Rows[(e.RowIndex) + (pag * 10)][4].ToString();
-                
+
                 ComprarOfertar.Form2 form2 = new ComprarOfertar.Form2(cod, desc, precio, rub, tip);
                 form2.Show();
                 abrio = false;
@@ -191,6 +262,8 @@ namespace WindowsFormsApplication1.ComprarOfertar
         private void botonLimpiar_Click(object sender, EventArgs e)
         {
             textBoxDescripcion.Clear();
+            listBox2.Items.Clear();
+            funcion.Clear();
             comboBoxRubro.SelectedIndex = -1;
             labelNrosPagina.Text = "";
             totalRows = 0;
@@ -248,5 +321,42 @@ namespace WindowsFormsApplication1.ComprarOfertar
         {
 
         }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            string text = comboBoxRubro.Text;
+
+            if (funcion.Contains(text))
+            {
+
+                String mensaje = "Esta funcionalidad ya ha sido ingresada";
+                String caption = "Funcionalidad duplicada";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+            }
+            else
+            {
+
+                listBox2.DisplayMember = "Func_nombre";
+                listBox2.Items.Add(comboBoxRubro.Text);
+
+                funcion.Add(text);
+
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string text = listBox2.GetItemText(listBox2.SelectedItem);
+            listBox2.Items.Remove(listBox2.SelectedItem);
+
+            funcion.Remove(text);
+        }
+
     }
 }
