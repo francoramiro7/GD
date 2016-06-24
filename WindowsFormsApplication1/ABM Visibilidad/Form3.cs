@@ -161,7 +161,9 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
             String mensaje = "La visibilidad se ha modificado correctamente";
             String caption = "Se modifico la visibilidad";
             MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
-
+            ABM_Visibilidad.Form1 f1 = new ABM_Visibilidad.Form1();
+            f1.Show();
+            this.Close();
 
         }
         private bool esNumero(String ingresado, bool tieneComa)

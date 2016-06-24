@@ -270,5 +270,12 @@ namespace WindowsFormsApplication1
             realizarAccion(button18.Text);
         }
 
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            WindowsFormsApplication1.Form3 frm3 = new WindowsFormsApplication1.Form3();
+            frm3.Show();
+            this.Close();
+        }
+
     }
 }
