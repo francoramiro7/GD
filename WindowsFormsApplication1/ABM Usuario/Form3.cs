@@ -297,6 +297,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             filtrar = new SqlCommand("PERSISTIENDO.filter", coneccion);
             filtrar.CommandType = CommandType.StoredProcedure;
 
+            
             filtrar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = textBox1.Text;
             filtrar.Parameters.Add("@apellido", SqlDbType.VarChar).Value = textBox2.Text;
             filtrar.Parameters.Add("@mail", SqlDbType.VarChar).Value = textBox3.Text;
