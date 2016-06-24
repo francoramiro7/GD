@@ -44,6 +44,8 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.textBox5 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,7 +53,7 @@
             // 
             this.button3.BackColor = System.Drawing.Color.MintCream;
             this.button3.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(109, 775);
+            this.button3.Location = new System.Drawing.Point(10, 772);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(166, 49);
             this.button3.TabIndex = 56;
@@ -70,6 +72,7 @@
             this.button1.Text = "FILTRAR";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Visible = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -100,10 +103,12 @@
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox4.Location = new System.Drawing.Point(43, 601);
+            this.textBox4.MaxLength = 18;
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(318, 39);
             this.textBox4.TabIndex = 51;
             this.textBox4.Visible = false;
+            this.textBox4.TextChanged += new System.EventHandler(this.textBox4_TextChanged);
             // 
             // label5
             // 
@@ -121,6 +126,7 @@
             // 
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox3.Location = new System.Drawing.Point(43, 484);
+            this.textBox3.MaxLength = 50;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(318, 39);
             this.textBox3.TabIndex = 49;
@@ -142,6 +148,7 @@
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(43, 358);
+            this.textBox2.MaxLength = 255;
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(318, 39);
             this.textBox2.TabIndex = 47;
@@ -163,6 +170,7 @@
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(43, 219);
+            this.textBox1.MaxLength = 255;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(318, 39);
             this.textBox1.TabIndex = 45;
@@ -236,12 +244,37 @@
             this.label1.Text = "Razon Social";
             this.label1.Visible = false;
             // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.MintCream;
+            this.button4.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(232, 772);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(166, 49);
+            this.button4.TabIndex = 57;
+            this.button4.Text = "LIMPIAR";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Visible = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // textBox5
+            // 
+            this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox5.Location = new System.Drawing.Point(48, 358);
+            this.textBox5.MaxLength = 50;
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(318, 39);
+            this.textBox5.TabIndex = 58;
+            this.textBox5.Visible = false;
+            // 
             // Form8
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.MediumAquamarine;
             this.ClientSize = new System.Drawing.Size(1326, 1017);
+            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
@@ -286,5 +319,7 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.TextBox textBox5;
     }
 }

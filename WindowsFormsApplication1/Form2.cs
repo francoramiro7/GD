@@ -277,5 +277,14 @@ namespace WindowsFormsApplication1
             this.Close();
         }
 
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            usuario.username = "";
+            usuario.Rol = "";
+            WindowsFormsApplication1.Form1 f1 = new WindowsFormsApplication1.Form1();
+            this.Close();
+            f1.Show();
+        }
+
     }
 }
