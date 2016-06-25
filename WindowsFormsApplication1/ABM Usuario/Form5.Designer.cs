@@ -68,7 +68,7 @@
             // 
             this.button5.BackColor = System.Drawing.Color.MintCream;
             this.button5.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(997, 511);
+            this.button5.Location = new System.Drawing.Point(997, 220);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(280, 85);
             this.button5.TabIndex = 165;
@@ -104,12 +104,13 @@
             // 
             this.button3.BackColor = System.Drawing.Color.MintCream;
             this.button3.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(997, 216);
+            this.button3.Location = new System.Drawing.Point(997, 519);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(280, 85);
             this.button3.TabIndex = 162;
-            this.button3.Text = "INHABILITAR/ HABILITAR ";
+            this.button3.Text = "HABILITAR ";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2

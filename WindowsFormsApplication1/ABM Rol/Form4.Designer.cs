@@ -102,6 +102,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label2);
             this.Name = "Form4";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Eliminar Rol";
             this.Load += new System.EventHandler(this.Form4_Load);
             this.ResumeLayout(false);

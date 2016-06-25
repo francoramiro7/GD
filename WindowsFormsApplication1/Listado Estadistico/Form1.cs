@@ -21,5 +21,10 @@ namespace WindowsFormsApplication1.Listado_Estadistico
         {
 
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

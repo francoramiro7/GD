@@ -86,7 +86,7 @@
             // 
             this.button4.BackColor = System.Drawing.Color.MintCream;
             this.button4.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button4.Location = new System.Drawing.Point(989, 835);
+            this.button4.Location = new System.Drawing.Point(979, 766);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(313, 89);
             this.button4.TabIndex = 22;
