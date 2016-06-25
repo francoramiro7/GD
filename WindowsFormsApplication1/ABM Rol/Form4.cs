@@ -62,24 +62,33 @@ namespace WindowsFormsApplication1.ABM_Rol
                  var codi = resultado.Value;
                  int rol = (int)codi;
                  data.Close();
+                 //inhabilitar rol
 
-                 eliminar = new SqlCommand("PERSISTIENDO.eliminarFuncionalidades", coneccion);
+
+                 eliminar = new SqlCommand("PERSISTIENDO.inhabilitarRol", coneccion);
                  eliminar.CommandType = CommandType.StoredProcedure;
-                 eliminar.Parameters.Add("@rol", SqlDbType.Int).Value = rol;
+                 eliminar.Parameters.Add("@codigo", SqlDbType.Int).Value = rol;
                  eliminar.ExecuteNonQuery();
-                 
+                
+                 //quitar RPU
 
 
-                 eliminar2 = new SqlCommand("PERSISTIENDO.eliminarRol", coneccion);
+                 eliminar2 = new SqlCommand("PERSISTIENDO.inhabilitarRolPorUsuario", coneccion);
                  eliminar2.CommandType = CommandType.StoredProcedure;
-                 eliminar2.Parameters.Add("@nombre", SqlDbType.VarChar).Value = nombre;
+                 eliminar2.Parameters.Add("@codigo", SqlDbType.Int).Value = rol;
                  eliminar2.ExecuteNonQuery();
                  coneccion.Close();
+
+                
 
 
                  String mensaje = "El rol se ha eliminado exitosamente";
                  String caption = "Rol eliminado";
                  MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+                 ABM_Rol.Form1 form1 = new ABM_Rol.Form1();
+                 this.Close();
+                 form1.Show();
 
 
 

@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
          SqlConnection coneccion;
         SqlDataReader data;
-        SqlCommand cargarRoles, rolDeUsuario, borrarRoles, agregarRoles, codigosRol;
+        SqlCommand cargarRoles, rolDeUsuario, borrarRoles, agregarRoles, codigosRol, habilitado;
         String usuario;
         List<String> funcionalidades = new List<String>();
 
@@ -92,7 +92,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void button3_Click(object sender, EventArgs e)
         {
             string text = comboBox1.Text.ToString();
-
+            int habilitado = estaHabilitado(text);
             if (funcionalidades.Contains(text))
             {
 
@@ -101,15 +101,26 @@ namespace WindowsFormsApplication1.ABM_Usuario
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
             }
+            else if (habilitado == 0) {
+                String mensaje = "No es posible agregar un rol inhabilitado a un usuario";
+                String caption = "Rol dinhabilitad";
+                MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+            
+            }
+
+
+
             else
             {
 
-                
                 listBox1.Items.Add(text);
 
                 funcionalidades.Add(text);
 
             }
+       
+        
+        
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -123,6 +134,23 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+
+        private int estaHabilitado(String rol)
+        {
+            coneccion.Open();
+            habilitado = new SqlCommand("PERSISTIENDO.rolHabilitado", coneccion);
+            habilitado.CommandType = CommandType.StoredProcedure;
+            habilitado.Parameters.Add("@nombre", SqlDbType.VarChar).Value = rol;
+            var resultado = habilitado.Parameters.Add("@Valor", SqlDbType.Bit);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            data = habilitado.ExecuteReader();
+            var habi = resultado.Value;
+            int respuesta = (int)habi;
+            coneccion.Close();
+            data.Close();
+            return respuesta;
         }
 
         private void button2_Click(object sender, EventArgs e)

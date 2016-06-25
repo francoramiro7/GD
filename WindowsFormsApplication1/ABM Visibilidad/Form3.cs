@@ -223,12 +223,12 @@ namespace WindowsFormsApplication1.ABM_Visibilidad
         {
             String ingresado = ((TextBox)sender).Text;
 
-            if (esNumero(ingresado, true))
+            if (esNumero(ingresado, false))
             {
             }
             else
             {
-                String mensaje = "Solo se pueden ingresar numeros y ',' en este campo";
+                String mensaje = "Solo se pueden ingresar numeros en este campo";
                 String caption = "Error al ingresar datos";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
                 textBox4.Text = "";

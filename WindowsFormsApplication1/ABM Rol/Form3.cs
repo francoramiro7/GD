@@ -17,7 +17,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
         SqlConnection coneccion;
         SqlDataReader data;
-        SqlCommand cargarRoles, cargarFunc, fpr, existeRol, cambiarN, eliminar, crearFunc, codigoRol, codigoFunc;
+        SqlCommand cargarRoles, cargarFunc, fpr, existeRol, cambiarN, eliminar, crearFunc, codigoRol, codigoFunc, habilitado, habilitar;
         List<String> funcion = new List<String>();
         List<String> funcionesViejas = new List<String>();
         
@@ -50,6 +50,11 @@ namespace WindowsFormsApplication1.ABM_Rol
         private void button1_Click(object sender, EventArgs e)
         {
             rol = comboBox2.Text.ToString();
+            int habilitado = estaHabilitado(rol);
+            if (habilitado == 0)
+                button6.Visible= true;
+            else
+                button6.Visible = false;
             label3.Visible = true;
             label6.Visible = true;
             textBox1.Visible = true;
@@ -63,6 +68,22 @@ namespace WindowsFormsApplication1.ABM_Rol
             cargarFuncionalidadesPorRol(rol);
 
    
+        }
+
+        private int estaHabilitado(String rol)
+        {
+            coneccion.Open();
+           habilitado = new SqlCommand("PERSISTIENDO.rolHabilitado", coneccion);
+           habilitado.CommandType = CommandType.StoredProcedure;
+           habilitado.Parameters.Add("@nombre", SqlDbType.VarChar).Value = rol;
+           var resultado = habilitado.Parameters.Add("@Valor", SqlDbType.Bit);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            data = habilitado.ExecuteReader();
+             var habi = resultado.Value;
+            int respuesta = (int)habi;
+            coneccion.Close();
+            data.Close();
+            return respuesta;
         }
 
        
@@ -295,6 +316,20 @@ namespace WindowsFormsApplication1.ABM_Rol
         private void button2_Click(object sender, EventArgs e)
         {
             validarCampos();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            coneccion.Open();
+            habilitar = new SqlCommand("PERSISTIENDO.habilitarRol", coneccion);
+            habilitar.CommandType = CommandType.StoredProcedure;
+            habilitar.Parameters.Add("@nombre", SqlDbType.VarChar).Value = comboBox2.Text.ToString();
+            habilitar.ExecuteNonQuery();
+            coneccion.Close();
+
+            String mensaje = "El rol ha sido habilitado";
+            String caption = "Rol modificado";
+            MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
         }
     }
 }

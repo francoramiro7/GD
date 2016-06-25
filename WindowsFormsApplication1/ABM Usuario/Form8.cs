@@ -173,25 +173,34 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
                 String user = table.Rows[0][0].ToString();
 
-                eliminar1 = new SqlCommand("PERSISTIENDO.eliminarRPU", coneccion);
+                eliminar1 = new SqlCommand("PERSISTIENDO.bloquearUsuario", coneccion);
                 eliminar1.CommandType = CommandType.StoredProcedure;
                 eliminar1.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
                 eliminar1.ExecuteNonQuery();
 
-                eliminar2 = new SqlCommand("PERSISTIENDO.eliminarCliente", coneccion);
-                eliminar2.CommandType = CommandType.StoredProcedure;
-                eliminar2.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
-                eliminar2.ExecuteNonQuery();
+                //eliminar1 = new SqlCommand("PERSISTIENDO.eliminarRPU", coneccion);
+                //eliminar1.CommandType = CommandType.StoredProcedure;
+                //eliminar1.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
+                //eliminar1.ExecuteNonQuery();
 
-                eliminar3 = new SqlCommand("PERSISTIENDO.eliminarUsuario", coneccion);
-                eliminar3.CommandType = CommandType.StoredProcedure;
-                eliminar3.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
-                eliminar3.ExecuteNonQuery();
-                coneccion.Close();
+                //eliminar2 = new SqlCommand("PERSISTIENDO.eliminarCliente", coneccion);
+                //eliminar2.CommandType = CommandType.StoredProcedure;
+                //eliminar2.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
+                //eliminar2.ExecuteNonQuery();
+
+                //eliminar3 = new SqlCommand("PERSISTIENDO.eliminarUsuario", coneccion);
+                //eliminar3.CommandType = CommandType.StoredProcedure;
+                //eliminar3.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
+                //eliminar3.ExecuteNonQuery();
+                //coneccion.Close();
 
                 String mensaje = "El usuario se ha eliminado correctamente";
                 String caption = "Usuario borrado";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+
+                ABM_Usuario.Form2 frm2 = new ABM_Usuario.Form2();
+                this.Close();
+                frm2.Show();
                 
 }
 
@@ -222,25 +231,33 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
                 String user = table.Rows[0][0].ToString();
 
-                eliminar1 = new SqlCommand("PERSISTIENDO.eliminarRPU", coneccion);
+                eliminar1 = new SqlCommand("PERSISTIENDO.bloquearUsuario", coneccion);
                 eliminar1.CommandType = CommandType.StoredProcedure;
                 eliminar1.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
                 eliminar1.ExecuteNonQuery();
 
-                eliminar2 = new SqlCommand("PERSISTIENDO.eliminarEmpresa", coneccion);
-                eliminar2.CommandType = CommandType.StoredProcedure;
-                eliminar2.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
-                eliminar2.ExecuteNonQuery();
+                //eliminar1 = new SqlCommand("PERSISTIENDO.eliminarRPU", coneccion);
+                //eliminar1.CommandType = CommandType.StoredProcedure;
+                //eliminar1.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
+                //eliminar1.ExecuteNonQuery();
 
-                eliminar3 = new SqlCommand("PERSISTIENDO.eliminarUsuario", coneccion);
-                eliminar3.CommandType = CommandType.StoredProcedure;
-                eliminar3.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
-                eliminar3.ExecuteNonQuery();
-                coneccion.Close();
+                //eliminar2 = new SqlCommand("PERSISTIENDO.eliminarEmpresa", coneccion);
+                //eliminar2.CommandType = CommandType.StoredProcedure;
+                //eliminar2.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
+                //eliminar2.ExecuteNonQuery();
+
+                //eliminar3 = new SqlCommand("PERSISTIENDO.eliminarUsuario", coneccion);
+                //eliminar3.CommandType = CommandType.StoredProcedure;
+                //eliminar3.Parameters.Add("@Username", SqlDbType.VarChar).Value = user;
+                //eliminar3.ExecuteNonQuery();
+                //coneccion.Close();
 
                 String mensaje = "El usuario se ha eliminado correctamente";
                 String caption = "Usuario borrado";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
+                ABM_Usuario.Form2 frm2 = new ABM_Usuario.Form2();
+                this.Close();
+                frm2.Show();
 
 
 
