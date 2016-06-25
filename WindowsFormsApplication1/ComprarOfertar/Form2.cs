@@ -28,7 +28,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
         String visibilidad;
 
         SqlConnection coneccion;
-        SqlCommand datosPublicacion,cuantasPorCalificar, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
+        SqlCommand datosPublicacion, modificarMontoFactura, cuantasPorCalificar, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
         SqlDataReader data;
 
 
@@ -316,6 +316,13 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
                                     itemFactura.ExecuteNonQuery();
 
+                                    modificarMontoFactura = new SqlCommand("PERSISTIENDO.modificarMontoFactura", coneccion);
+                                    modificarMontoFactura.CommandType = CommandType.StoredProcedure;
+                                    modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                    modificarMontoFactura.Parameters.Add("@Monto", SqlDbType.Float).Value = total;
+
+                                    modificarMontoFactura.ExecuteNonQuery();
+
                                     if (comboBox1.Text.Equals("Si"))
                                     {
 
@@ -327,6 +334,13 @@ namespace WindowsFormsApplication1.ComprarOfertar
                                         itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = 1;
 
                                         itemFactura.ExecuteNonQuery();
+
+                                        modificarMontoFactura = new SqlCommand("PERSISTIENDO.modificarMontoFactura", coneccion);
+                                        modificarMontoFactura.CommandType = CommandType.StoredProcedure;
+                                        modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                        modificarMontoFactura.Parameters.Add("@Monto", SqlDbType.Float).Value = precioEnvio;
+
+                                        modificarMontoFactura.ExecuteNonQuery();
 
                                     }
                                     

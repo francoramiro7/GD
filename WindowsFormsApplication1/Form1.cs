@@ -30,6 +30,8 @@ namespace WindowsFormsApplication1
             InitializeComponent();
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
             coneccion.Open();
+            
+          
         }
 
         private void Form1_Load(object sender, EventArgs e)
