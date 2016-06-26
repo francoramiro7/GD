@@ -334,8 +334,8 @@ namespace WindowsFormsApplication1.ComprarOfertar
             if (funcion.Contains(text))
             {
 
-                String mensaje = "Esta funcionalidad ya ha sido ingresada";
-                String caption = "Funcionalidad duplicada";
+                String mensaje = "Este rubro ya ha sido ingresado";
+                String caption = "Rubro duplicado";
                 MessageBox.Show(mensaje, caption, MessageBoxButtons.OK);
 
             }

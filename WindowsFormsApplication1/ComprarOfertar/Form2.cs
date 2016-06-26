@@ -28,7 +28,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
         String visibilidad;
 
         SqlConnection coneccion;
-        SqlCommand datosPublicacion, modificarMontoFactura, cuantasPorCalificar, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
+        SqlCommand datosPublicacion,ultimaFactura,facturar, modificarMontoFactura, cuantasPorCalificar, stockPublicacion, newCompra, modificarStockEstadoPublicacion, ultimaOferta, facturaPorPublicacion, cantidadOfertas, ofertar, itemFactura, porVisibilidad;
         SqlDataReader data;
 
 
@@ -281,15 +281,30 @@ namespace WindowsFormsApplication1.ComprarOfertar
                             {
                                 if (!String.IsNullOrEmpty(textBox1.Text))
                                 {
-                                    //Obtener cod factura
-                                    facturaPorPublicacion = new SqlCommand("PERSISTIENDO.facturaPorPublicacion", coneccion);
-                                    facturaPorPublicacion.CommandType = CommandType.StoredProcedure;
-                                    facturaPorPublicacion.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
-                                    var fp = facturaPorPublicacion.Parameters.Add("@Cantidad", SqlDbType.Int);
-                                    fp.Direction = ParameterDirection.ReturnValue;
-                                    data = facturaPorPublicacion.ExecuteReader();
-                                    var codFactura = fp.Value;
+                                    //Busco cod ultima factura
+                                    ultimaFactura = new SqlCommand("PERSISTIENDO.ultimaFactura", coneccion);
+
+                                    ultimaFactura.CommandType = CommandType.StoredProcedure;
+                                    var uf = ultimaFactura.Parameters.Add("@Cantidad", SqlDbType.Float);
+                                    uf.Direction = ParameterDirection.ReturnValue;
+                                    data = ultimaFactura.ExecuteReader();
+                                    var codFactura = uf.Value;
                                     data.Close();
+
+                                    float nFac= ((float) Double.Parse(codFactura.ToString()))+1;
+
+                                    //Generar factura
+                                    facturar = new SqlCommand("PERSISTIENDO.facturarPublicacion", coneccion);
+
+                                    facturar.CommandType = CommandType.StoredProcedure;
+
+                                    facturar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = codigo;
+                                    facturar.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = nFac;
+                                    facturar.Parameters.Add("@Precio", SqlDbType.Float).Value = 0;
+                                    facturar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                                    facturar.Parameters.Add("@Pago", SqlDbType.VarChar).Value = "Efectivo";
+
+                                    facturar.ExecuteNonQuery();
 
 
                                     //Obtener % visibilidad
@@ -309,7 +324,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
                                     //generar item_factura
                                     itemFactura = new SqlCommand("PERSISTIENDO.itemFactura", coneccion);
                                     itemFactura.CommandType = CommandType.StoredProcedure;
-                                    itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                    itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = nFac;
                                     itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = total;
                                     itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Comision por venta: " + visibilidad);
                                     itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = (Int32.Parse(textBox1.Text)) ;
@@ -318,7 +333,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
                                     modificarMontoFactura = new SqlCommand("PERSISTIENDO.modificarMontoFactura", coneccion);
                                     modificarMontoFactura.CommandType = CommandType.StoredProcedure;
-                                    modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                    modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = nFac;
                                     modificarMontoFactura.Parameters.Add("@Monto", SqlDbType.Float).Value = total;
 
                                     modificarMontoFactura.ExecuteNonQuery();
@@ -328,7 +343,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
                                         itemFactura = new SqlCommand("PERSISTIENDO.itemFactura", coneccion);
                                         itemFactura.CommandType = CommandType.StoredProcedure;
-                                        itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                        itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = nFac;
                                         itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = precioEnvio;
                                         itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Envio: " + visibilidad);
                                         itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = 1;
@@ -337,7 +352,7 @@ namespace WindowsFormsApplication1.ComprarOfertar
 
                                         modificarMontoFactura = new SqlCommand("PERSISTIENDO.modificarMontoFactura", coneccion);
                                         modificarMontoFactura.CommandType = CommandType.StoredProcedure;
-                                        modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = (float.Parse(codFactura.ToString(), CultureInfo.InvariantCulture.NumberFormat));
+                                        modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = nFac;
                                         modificarMontoFactura.Parameters.Add("@Monto", SqlDbType.Float).Value = precioEnvio;
 
                                         modificarMontoFactura.ExecuteNonQuery();
@@ -370,7 +385,9 @@ namespace WindowsFormsApplication1.ComprarOfertar
                                     newCompra.CommandType = CommandType.StoredProcedure;
                                     newCompra.Parameters.Add("@Codigo", SqlDbType.Float).Value = codigo;
                                     newCompra.Parameters.Add("@Comprador", SqlDbType.VarChar).Value = usuario.username;
-                                   
+                                    newCompra.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                                    newCompra.Parameters.Add("@Cant", SqlDbType.Float).Value = (float) Double.Parse(textBox1.Text);
+
                                     newCompra.ExecuteNonQuery();
                                     
 

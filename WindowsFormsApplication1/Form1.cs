@@ -17,8 +17,8 @@ namespace WindowsFormsApplication1
        
 
         SqlConnection coneccion;
-        SqlCommand validarUsuario, validarContra, cantidadRoles, validarIntentos, 
-            actualizarIntentos, resetearIntentos, bloquearUsuario, validarBloqueo, esAdmin, roles;
+        SqlCommand validarUsuario, validarContra, cantidadRoles, validarIntentos,
+            actualizarIntentos, itemFactura,newCompra, resetearIntentos,modificarStockEstadoPublicacion, modificarMontoFactura, bloquearUsuario, validarBloqueo, esAdmin, roles, vencer, ultimaFactura, facturar, porVisibilidad;
         SqlDataReader data;
         String username;
 
@@ -36,6 +36,194 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (!usuario.barrio)
+            {
+                String query = "Select * from PERSISTIENDO.Publicacion where Publicacion_estado != 4 and Publicacion_fecha_vencimiento < '"+Properties.Settings.Default.fecha.ToString()+"'";
+
+                SqlCommand listar = new SqlCommand(query, coneccion);
+                DataTable tabla = new DataTable();
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                adapter.SelectCommand = listar;
+                adapter.Fill(tabla);
+
+                if (tabla.Rows.Count > 0)
+                {
+                    int i;
+                    for (i = 0; i < tabla.Rows.Count; i++)
+                    {
+                        String codPubli = tabla.Rows[i][0].ToString();
+                        String estadoPubli = tabla.Rows[i][9].ToString();
+
+                        vencer = new SqlCommand("PERSISTIENDO.vencePublicacion", coneccion);
+                        vencer.CommandType = CommandType.StoredProcedure;
+                        vencer.Parameters.Add("@Codigo", SqlDbType.Float).Value = codPubli;
+                        vencer.ExecuteNonQuery();
+
+                        if (estadoPubli.Equals("1"))
+                        {
+                            String query2 = "Select Oferta_ofertante,MAX(Oferta_monto) as monto,Oferta_fecha,Oferta_envio" +
+                            " from PERSISTIENDO.Oferta" +
+                            " where Oferta_publicacion = '" + codPubli + "'" +
+                            " group by Oferta_ofertante,Oferta_fecha,Oferta_envio" +
+                            " order by monto desc";
+
+
+
+                            SqlCommand ofertaMaX = new SqlCommand(query2, coneccion);
+                            DataTable tabla2 = new DataTable();
+                            SqlDataAdapter adapter2 = new SqlDataAdapter();
+                            adapter2.SelectCommand = ofertaMaX;
+                            adapter2.Fill(tabla2);
+
+                            if (tabla2.Rows.Count != 0)
+                            {
+                                float precio = (float) Double.Parse(tabla.Rows[i][5].ToString());
+                                float ofertado = (float) Double.Parse(tabla2.Rows[0][1].ToString());
+                                bool hayEnvio = (bool)tabla2.Rows[0][3];
+
+                                if (ofertado >= precio)
+                                {
+
+
+                                    //Busco cod ultima factura
+                                    ultimaFactura = new SqlCommand("PERSISTIENDO.ultimaFactura", coneccion);
+
+                                    ultimaFactura.CommandType = CommandType.StoredProcedure;
+                                    var uf = ultimaFactura.Parameters.Add("@Cantidad", SqlDbType.Float);
+                                    uf.Direction = ParameterDirection.ReturnValue;
+                                    data = ultimaFactura.ExecuteReader();
+                                    var codFactura = uf.Value;
+                                    data.Close();
+
+                                    float nFac = ((float)Double.Parse(codFactura.ToString())) + 1;
+
+                                    //Generar factura
+                                    facturar = new SqlCommand("PERSISTIENDO.facturarPublicacion", coneccion);
+
+                                    facturar.CommandType = CommandType.StoredProcedure;
+
+                                    facturar.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = codPubli;
+                                    facturar.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = nFac;
+                                    facturar.Parameters.Add("@Precio", SqlDbType.Float).Value = 0;
+                                    facturar.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                                    facturar.Parameters.Add("@Pago", SqlDbType.VarChar).Value = "Efectivo";
+                                    facturar.ExecuteNonQuery();
+
+
+
+
+
+                                    //Obtener % visibilidad
+                                    porVisibilidad = new SqlCommand("PERSISTIENDO.porcentajeVisibilidadCodigo", coneccion);
+                                    porVisibilidad.CommandType = CommandType.StoredProcedure;
+                                    porVisibilidad.Parameters.Add("@Visibilidad", SqlDbType.Float).Value = (float) Double.Parse(tabla.Rows[i][11].ToString());
+                                    SqlDataAdapter adapter4 = new SqlDataAdapter(porVisibilidad);
+                                    DataTable table3 = new DataTable();
+                                    adapter4.Fill(table3);
+
+                                    float porcentaje = (float)Double.Parse(table3.Rows[0][0].ToString());
+                                    float precioEnvio = (float)Double.Parse(table3.Rows[0][1].ToString());
+                                    string visibilidad = table3.Rows[0][2].ToString();
+
+                                    float total = ofertado * porcentaje;
+
+
+                                    //generar item_factura
+                                    itemFactura = new SqlCommand("PERSISTIENDO.itemFactura", coneccion);
+                                    itemFactura.CommandType = CommandType.StoredProcedure;
+                                    itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = nFac;
+                                    itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = total;
+                                    itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Comision por venta: " + visibilidad);
+                                    itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = 1;
+                                    itemFactura.ExecuteNonQuery();
+
+                                    modificarMontoFactura = new SqlCommand("PERSISTIENDO.modificarMontoFactura", coneccion);
+                                    modificarMontoFactura.CommandType = CommandType.StoredProcedure;
+                                    modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = nFac;
+                                    modificarMontoFactura.Parameters.Add("@Monto", SqlDbType.Float).Value = total;
+                                    modificarMontoFactura.ExecuteNonQuery();
+
+                                    if (hayEnvio)
+                                    {
+
+                                        itemFactura = new SqlCommand("PERSISTIENDO.itemFactura", coneccion);
+                                        itemFactura.CommandType = CommandType.StoredProcedure;
+                                        itemFactura.Parameters.Add("@CodigoFactura", SqlDbType.Float).Value = nFac;
+                                        itemFactura.Parameters.Add("@Precio", SqlDbType.Float).Value = precioEnvio;
+                                        itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Envio: " + visibilidad);
+                                        itemFactura.Parameters.Add("@Cantidad", SqlDbType.Int).Value = 1;
+
+                                        itemFactura.ExecuteNonQuery();
+
+                                        modificarMontoFactura = new SqlCommand("PERSISTIENDO.modificarMontoFactura", coneccion);
+                                        modificarMontoFactura.CommandType = CommandType.StoredProcedure;
+                                        modificarMontoFactura.Parameters.Add("@Numero", SqlDbType.Float).Value = nFac;
+                                        modificarMontoFactura.Parameters.Add("@Monto", SqlDbType.Float).Value = precioEnvio;
+
+                                        modificarMontoFactura.ExecuteNonQuery();
+
+                                    }
+
+                                    //actualizar stock
+                                    //si el stock queda en 0 finalizar publicacion
+
+                                    modificarStockEstadoPublicacion = new SqlCommand("PERSISTIENDO.modificarStockEstadoPublicacion", coneccion);
+                                    modificarStockEstadoPublicacion.CommandType = CommandType.StoredProcedure;
+                                    modificarStockEstadoPublicacion.Parameters.Add("@CodigoPublicacion", SqlDbType.Float).Value = codPubli;
+                                    modificarStockEstadoPublicacion.Parameters.Add("@Stock", SqlDbType.Float).Value = 0;
+                                    modificarStockEstadoPublicacion.Parameters.Add("@Estado", SqlDbType.Int).Value = 4;
+                                    modificarStockEstadoPublicacion.ExecuteNonQuery();
+
+                                    //generarCompra
+                                    newCompra = new SqlCommand("PERSISTIENDO.newCompra", coneccion);
+                                    newCompra.CommandType = CommandType.StoredProcedure;
+                                    newCompra.Parameters.Add("@Codigo", SqlDbType.Float).Value = codPubli;
+                                    newCompra.Parameters.Add("@Comprador", SqlDbType.VarChar).Value = tabla2.Rows[0][0].ToString();
+                                    newCompra.Parameters.Add("@Fecha", SqlDbType.DateTime).Value = Properties.Settings.Default.fecha;
+                                    newCompra.Parameters.Add("@Cant", SqlDbType.Float).Value = 1;
+
+                                    newCompra.ExecuteNonQuery();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+
+
+
+                }
+
+
+
+                usuario.barrio = true;
+            }
+
+
+
+
+
 
         }
 

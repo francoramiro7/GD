@@ -12,5 +12,6 @@ namespace WindowsFormsApplication1
         public static String username;
         public static String Rol;
         SqlConnection coneccion;
+        public static bool barrio = false;
     }
 }

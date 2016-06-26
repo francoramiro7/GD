@@ -158,7 +158,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(247, 23);
             this.label5.TabIndex = 16;
-            this.label5.Text = "Cantidad de estrallas dadas:";
+            this.label5.Text = "Cantidad de estrellas dadas:";
             // 
             // label6
             // 
@@ -201,6 +201,7 @@
             this.Controls.Add(this.botonPrimeraPagina);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Historial de Cliente";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

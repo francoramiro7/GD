@@ -36,7 +36,7 @@ namespace WindowsFormsApplication1.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2016-06-23")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2012-01-20")]
         public global::System.DateTime fecha {
             get {
                 return ((global::System.DateTime)(this["fecha"]));

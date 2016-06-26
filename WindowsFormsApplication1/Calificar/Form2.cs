@@ -40,7 +40,14 @@ namespace WindowsFormsApplication1.Calificar
             dataGridView1.Columns[0].Visible = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-
+            if (table.Rows.Count == 0)
+            {
+                button2.Visible = false;
+            }
+            else
+            {
+                button2.Visible = true;
+            }
 
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 

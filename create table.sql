@@ -181,6 +181,8 @@ CREATE TABLE PERSISTIENDO.Compra(
 Compra_codigo INT IDENTITY (1,1) NOT NULL,
 Compra_comprador nvarchar(30) NOT NULL,
 Compra_codigo_publicacion numeric(18,0) NOT NULL,
+Compra_cantidad numeric(18,0) NOT NULL,
+Compra_fecha datetime NOT NULL,
 PRIMARY KEY (Compra_codigo),
 CONSTRAINT fk_compra_comprador FOREIGN KEY (Compra_comprador) REFERENCES PERSISTIENDO.Usuario(Usuario_username),
 CONSTRAINT fk_compra_publicacion FOREIGN KEY (Compra_codigo_publicacion) REFERENCES PERSISTIENDO.Publicacion(Publicacion_codigo)
@@ -281,15 +283,18 @@ From GD1C2016.gd_esquema.Maestra
 Where Factura_Nro is not null
 
 
-Insert into PERSISTIENDO.Compra(Compra_comprador,Compra_codigo_publicacion)
-select distinct Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod
+Insert into PERSISTIENDO.Compra(Compra_comprador,Compra_codigo_publicacion,Compra_fecha,Compra_cantidad)
+select distinct Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod,Compra_Fecha,Compra_Cantidad
 From GD1C2016.gd_esquema.Maestra
 Where Compra_Fecha is not null
 
 Insert into PERSISTIENDO.Calificacion (Calificacion_codigo,Calificacion_cant_estrellas,Calificacion_descripcion,Calificacion_codigo_compra)
-select distinct Calificacion_Codigo,Calificacion_Cant_Estrellas,Calificacion_Descripcion,Compra_codigo
-From GD1C2016.gd_esquema.Maestra, PERSISTIENDO.Compra
-where Calificacion_Codigo is not null and Compra_comprador = Cli_Dni and Compra_codigo_publicacion = Publicacion_Cod
+select distinct m.Calificacion_Codigo,m.Calificacion_Cant_Estrellas,m.Calificacion_Descripcion,c.Compra_codigo
+From GD1C2016.gd_esquema.Maestra as m,PERSISTIENDO.Compra as c
+where Calificacion_Codigo is not null and Compra_comprador =cast(Cli_Dni as varchar) 
+and Compra_codigo_publicacion = Publicacion_Cod
+and c.Compra_fecha = m.Compra_Fecha
+and c.Compra_cantidad = m.Compra_Cantidad
 
 Insert into PERSISTIENDO.Oferta(Oferta_fecha,Oferta_monto,Oferta_ofertante,Oferta_publicacion,Oferta_envio)
 select distinct Oferta_Fecha,Oferta_Monto,Cast(Cli_Dni as nvarchar(30)),Publicacion_Cod,0
