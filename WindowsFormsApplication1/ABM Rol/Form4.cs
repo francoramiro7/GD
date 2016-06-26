@@ -25,7 +25,7 @@ namespace WindowsFormsApplication1.ABM_Rol
 
             coneccion = new SqlConnection(@"Data Source=localhost\SQLSERVER2012;Initial Catalog=GD1C2016;Persist Security Info=True;User ID=gd;Password=gd2016");
             coneccion.Open();
-            cargarRoles = new SqlCommand("PERSISTIENDO.cargarRoles", coneccion);
+            cargarRoles = new SqlCommand("PERSISTIENDO.cargarRolesHabilitados", coneccion);
 
             cargarRoles.CommandType = CommandType.StoredProcedure;
 
@@ -116,6 +116,11 @@ namespace WindowsFormsApplication1.ABM_Rol
         private void button3_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

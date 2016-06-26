@@ -76,7 +76,6 @@
             this.textBox17 = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.textBox18 = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -148,6 +147,7 @@
             // 
             // comboBox2
             // 
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
@@ -157,7 +157,6 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(249, 37);
             this.comboBox2.TabIndex = 73;
-            this.comboBox2.Text = "Seleccione Tipo";
             // 
             // button1
             // 
@@ -187,7 +186,7 @@
             // 
             this.textBox3.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox3.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(372, 194);
+            this.textBox3.Location = new System.Drawing.Point(372, 196);
             this.textBox3.MaxLength = 255;
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(409, 32);
@@ -428,6 +427,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
@@ -457,7 +457,7 @@
             // 
             this.textBox12.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox12.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox12.Location = new System.Drawing.Point(372, 196);
+            this.textBox12.Location = new System.Drawing.Point(372, 192);
             this.textBox12.MaxLength = 255;
             this.textBox12.Name = "textBox12";
             this.textBox12.Size = new System.Drawing.Size(409, 32);
@@ -553,7 +553,7 @@
             // 
             this.textBox16.BackColor = System.Drawing.SystemColors.HighlightText;
             this.textBox16.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox16.Location = new System.Drawing.Point(372, 716);
+            this.textBox16.Location = new System.Drawing.Point(372, 714);
             this.textBox16.MaxLength = 255;
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(409, 32);
@@ -587,13 +587,13 @@
             // 
             // comboBox3
             // 
+            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox3.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox3.FormattingEnabled = true;
             this.comboBox3.Location = new System.Drawing.Point(372, 763);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(409, 32);
             this.comboBox3.TabIndex = 111;
-            this.comboBox3.Text = "Seleccione Rubro";
             this.comboBox3.Visible = false;
             // 
             // button3
@@ -655,18 +655,6 @@
             this.textBox18.TabIndex = 116;
             this.textBox18.Visible = false;
             // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.label24.Location = new System.Drawing.Point(786, 311);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(408, 24);
-            this.label24.TabIndex = 117;
-            this.label24.Text = "Este usuario ya esta ingresado en el sistema";
-            this.label24.Visible = false;
-            // 
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.MintCream;
@@ -687,7 +675,6 @@
             this.BackColor = System.Drawing.Color.MediumAquamarine;
             this.ClientSize = new System.Drawing.Size(1326, 1017);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.label24);
             this.Controls.Add(this.textBox18);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.textBox17);
@@ -795,7 +782,6 @@
         private System.Windows.Forms.TextBox textBox17;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBox18;
-        private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Button button4;
     }
 }
