@@ -174,6 +174,27 @@ namespace WindowsFormsApplication1.Generar_Publicación
 
             costo = float.Parse(precio.ToString(), CultureInfo.InvariantCulture.NumberFormat);
 
+
+            string query = "select Usuario_nuevo from PERSISTIENDO.Usuario where Usuario_username like '"+usuario.username+"'";
+
+            
+
+            SqlCommand comando = new SqlCommand(query, coneccion);
+            DataTable tabla7 = new DataTable();
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            adapter.SelectCommand = comando;
+            adapter.Fill(tabla7);
+
+
+            if(tabla7.Rows[0][0].ToString().Equals("True")){
+
+                costo = 0;
+
+            }
+
+
+
+
             if (envia)
             {
 
@@ -376,6 +397,15 @@ namespace WindowsFormsApplication1.Generar_Publicación
                         itemFactura.Parameters.Add("@Detalle", SqlDbType.VarChar).Value = ("Costo de publicacion: "+ comboBox4.Text);
 
                         itemFactura.ExecuteNonQuery();
+
+
+
+                        string query2 = "update PERSISTIENDO.Usuario set Usuario_nuevo = 0 where Usuario_username like '" + usuario.username + "'";
+                        SqlCommand comando2 = new SqlCommand(query2, coneccion);
+                        comando2.ExecuteNonQuery();
+
+
+
 
                         Generar_Publicación.Form5 form5 = new Generar_Publicación.Form5(textBox1.Text,
                             comboBox4.Text, (costo.ToString()),
