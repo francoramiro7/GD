@@ -39,7 +39,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void cargarClientes()
         {
             coneccion.Open();
-            cargar = new SqlCommand("PERSISTIENDO.cargarClientes", coneccion);
+            cargar = new SqlCommand("PERSISTIENDO.cargarClientesEliminar", coneccion);
             cargar.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter adapter;
             adapter = new SqlDataAdapter(cargar);
@@ -58,7 +58,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
         private void cargarEmpresas()
         {
             coneccion.Open();
-            cargar2 = new SqlCommand("PERSISTIENDO.cargarEmpresas", coneccion);
+            cargar2 = new SqlCommand("PERSISTIENDO.cargarEmpresasEliminar", coneccion);
             cargar2.CommandType = CommandType.StoredProcedure;
             SqlDataAdapter adapter;
             adapter = new SqlDataAdapter(cargar2);
