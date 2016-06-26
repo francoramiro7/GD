@@ -31,6 +31,7 @@ namespace WindowsFormsApplication1.Listado_Estadistico
 
         }
 
+<<<<<<< HEAD
         private void button2_Click(object sender, EventArgs e)
         {
              
@@ -202,6 +203,11 @@ namespace WindowsFormsApplication1.Listado_Estadistico
                 t1 = "9";
                 t2 = "12";
             }
+=======
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+>>>>>>> 2e4d7517680bad98cad8b391179181163b9ae3ce
         }
     }
 }

@@ -42,6 +42,9 @@ namespace WindowsFormsApplication1.ABM_Usuario
             textBox6.Text = loca;
             textBox5.Text = ciudad;
             textBox13.Text = nombre;
+            int habilitado = estaHabilitado(user);
+            if (habilitado == 0)
+                button3.Visible = true;
 
             con.Open();
             rubros = new SqlCommand("PERSISTIENDO.listarRubros", con);
@@ -51,6 +54,7 @@ namespace WindowsFormsApplication1.ABM_Usuario
             adapter.Fill(tablaRubros);
             comboBox3.DataSource = tablaRubros;
             comboBox3.DisplayMember = "Rubro_Descripcion";
+            comboBox3.SelectedIndex = comboBox3.Items.IndexOf("New");
             comboBox3.Text = "";
             if (!(string.IsNullOrEmpty(rubro)))
             {
@@ -67,7 +71,23 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void Form5_Load(object sender, EventArgs e)
         {
+            
+        }
 
+        private int estaHabilitado(String username)
+        {
+            con.Open();
+            habilitado = new SqlCommand("PERSISTIENDO.estaBloqueado", con);
+            habilitado.CommandType = CommandType.StoredProcedure;
+            habilitado.Parameters.Add("@Username", SqlDbType.VarChar).Value = username;
+            var resultado = habilitado.Parameters.Add("@Valor", SqlDbType.Bit);
+            resultado.Direction = ParameterDirection.ReturnValue;
+            data = habilitado.ExecuteReader();
+            var habi = resultado.Value;
+            int respuesta = (int)habi;
+            con.Close();
+            data.Close();
+            return respuesta;
         }
 
 
@@ -365,54 +385,20 @@ namespace WindowsFormsApplication1.ABM_Usuario
 
         private void button3_Click(object sender, EventArgs e)
         {
-            habilitado = new SqlCommand("PERSISTIENDO.estaBloqueado", con);
-            con.Open();
-            habilitado.CommandType = CommandType.StoredProcedure;
-            habilitado.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
 
-            var bloq = habilitado.Parameters.Add("@Valor", SqlDbType.Int);
-            bloq.Direction = ParameterDirection.ReturnValue;
-            data = habilitado.ExecuteReader();
-            data.Close();
-            var bloqueado = bloq.Value;
-            con.Close();
-
-            if ((int)bloqueado == 1)
+            DialogResult dialogResult = MessageBox.Show("El usuario se encuentra inhabilitado, deseea desbloquearlo?", "Habilitar usuario", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
             {
+                con.Open();
+                desbloquearUsuario = new SqlCommand("PERSISTIENDO.desbloquearUsuario", con);
 
-                DialogResult dialogResult = MessageBox.Show("El usuario se encuentra habilitado, deseea bloquearlo?", "Inhabilitar usuario", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    con.Open();
-                    bloquearUsuario = new SqlCommand("PERSISTIENDO.bloquearUsuario", con);
+                desbloquearUsuario.CommandType = CommandType.StoredProcedure;
+                desbloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
 
-                    bloquearUsuario.CommandType = CommandType.StoredProcedure;
-                    bloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
-
-                    bloquearUsuario.ExecuteNonQuery();
-                    con.Close();
-                }
-
+                desbloquearUsuario.ExecuteNonQuery();
+                con.Close();
             }
 
-            if ((int)bloqueado == 0)
-            {
-                DialogResult dialogResult = MessageBox.Show("El usuario se encuentra inhabilitado, deseea desbloquearlo?", "Habilitar usuario", MessageBoxButtons.YesNo);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    con.Open();
-                    desbloquearUsuario = new SqlCommand("PERSISTIENDO.desbloquearUsuario", con);
-
-                    desbloquearUsuario.CommandType = CommandType.StoredProcedure;
-                    desbloquearUsuario.Parameters.Add("@Username", SqlDbType.VarChar).Value = textBox1.Text;
-
-                    desbloquearUsuario.ExecuteNonQuery();
-                    con.Close();
-                }
-
-
-
-            }
         }
 
         private void button5_Click(object sender, EventArgs e)

@@ -218,6 +218,7 @@ namespace WindowsFormsApplication1
 
             if (nombre.Equals("LISTADO ESTADISTICO"))
             {
+                
                 Listado_Estadistico.Form1 formList = new Listado_Estadistico.Form1();
                 formList.Show();
                 this.Close();
